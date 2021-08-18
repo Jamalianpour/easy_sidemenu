@@ -22,7 +22,7 @@ Sidemenu is similar to bottom navigation bar but in the side of screen and usual
 
 | Open                                  | Compact                                  |
 | ------------------------------------- | ---------------------------------------- |
-| ![Open](images/screenshot_1.png) | ![Compact](images/screenshot_2.png) |
+| ![Open](images/Screenshot_1.png) | ![Compact](images/Screenshot_2.png) |
 
 | Auto                                   |
 | -------------------------------------- |
