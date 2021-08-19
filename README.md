@@ -30,7 +30,7 @@ Sidemenu is similar to bottom navigation bar but in the side of screen and usual
 
 ## Demo
 
-You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu_demo](https://jamalianpour.github.io/easy_sidemenu_demo)
+You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https://jamalianpour.github.io/easy_sidemenu)
 
 ## Usage
 
@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu_demo](h
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.1.1
+  easy_sidemenu: ^0.1.1+1
 ```
 
 Run `flutter packages get` in the root directory of your app.
