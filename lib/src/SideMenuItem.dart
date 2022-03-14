@@ -1,3 +1,5 @@
+import 'package:badges/badges.dart';
+
 import 'SideMenuDisplayMode.dart';
 import 'Global/Global.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ class SideMenuItem extends StatefulWidget {
     required this.title,
     required this.icon,
     required this.priority,
+    this.badgeContent,
+    this.badgeColor,
   }) : super(key: key);
 
   /// A function that call when tap on [SideMenuItem]
@@ -21,7 +25,7 @@ class SideMenuItem extends StatefulWidget {
   final String title;
 
   /// A Icon to display before [title]
-  final IconData icon;
+  final Icon icon;
 
   /// Priority of item to show on [SideMenu], lower value is displayed at the top
   ///
@@ -30,12 +34,19 @@ class SideMenuItem extends StatefulWidget {
   /// * This value used for page controller index
   final int priority;
 
+  /// Text show next to the icon as badge
+  /// By default this is null
+  final Widget? badgeContent;
+
+  // Background color for badge
+  final Color? badgeColor;
+
   @override
   _SideMenuItemState createState() => _SideMenuItemState();
 }
 
 class _SideMenuItemState extends State<SideMenuItem> {
-  double curentPage = 0;
+  double currentPage = 0;
   bool isHovered = false;
 
   @override
@@ -43,19 +54,41 @@ class _SideMenuItemState extends State<SideMenuItem> {
     super.initState();
     Global.controller.addListener(() {
       setState(() {
-        curentPage = Global.controller.page!;
+        currentPage = Global.controller.page!;
       });
     });
   }
 
   /// Set background color of [SideMenuItem]
   Color _setColor() {
-    if (widget.priority == curentPage) {
+    if (widget.priority == currentPage) {
       return Global.style.selectedColor ?? Theme.of(context).highlightColor;
     } else if (isHovered) {
       return Global.style.hoverColor ?? Colors.transparent;
     } else {
       return Colors.transparent;
+    }
+  }
+
+  /// Set icon for of [SideMenuItem]
+  Widget _generateIcon(Icon mainIcon) {
+    Icon icon = Icon(
+      mainIcon.icon,
+      color: widget.priority == currentPage
+          ? Global.style.selectedIconColor ?? Colors.black
+          : Global.style.unselectedIconColor ?? Colors.black54,
+      size: Global.style.iconSize ?? 24,
+    );
+    if (widget.badgeContent == null) {
+      return icon;
+    } else {
+      return Badge(
+        badgeContent: widget.badgeContent!,
+        badgeColor: widget.badgeColor ?? Colors.red,
+        alignment: Alignment.bottomRight,
+        position: BadgePosition(top: -13, end: -7),
+        child: icon,
+      );
     }
   }
 
@@ -81,13 +114,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
-                      widget.icon,
-                      color: widget.priority == curentPage
-                          ? Global.style.selectedIconColor ?? Colors.black
-                          : Global.style.unselectedIconColor ?? Colors.black54,
-                      size: Global.style.iconSize ?? 24,
-                    ),
+                    _generateIcon(widget.icon),
                     SizedBox(
                       width: 8.0,
                     ),
@@ -95,7 +122,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
                       Expanded(
                         child: Text(
                           widget.title,
-                          style: widget.priority == curentPage
+                          style: widget.priority == currentPage
                               ? TextStyle(fontSize: 17, color: Colors.black)
                                   .merge(Global.style.selectedTitleTextStyle)
                               : TextStyle(fontSize: 17, color: Colors.black54)

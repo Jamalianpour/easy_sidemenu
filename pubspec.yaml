@@ -1,6 +1,6 @@
 name: easy_sidemenu
-description: An easy to use side menu in flutter and can used for navigations
-version: 0.1.1+1
+description: An easy to use side menu in flutter and can used for navigation
+version: 0.2.0
 homepage: https://github.com/Jamalianpour/easy_sidemenu
 
 environment:
@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:

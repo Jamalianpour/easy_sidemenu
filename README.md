@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.1.1+1
+  easy_sidemenu: ^0.2.0
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -62,19 +62,23 @@ List<SideMenuItem> items = [
     priority: 0,
     title: 'Dashboard',
     onTap: () => page.jumpToPage(0),
-    icon: Icons.home,
+    icon: Icon(Icons.home),
+    badgeContent: Text(
+      '3',
+      style: TextStyle(color: Colors.white),
+    ),
   ),
   SideMenuItem(
     priority: 1,
     title: 'Settings',
     onTap: () => page.jumpToPage(1),
-    icon: Icons.settings,
+    icon: Icon(Icons.settings),
   ),
   SideMenuItem(
     priority: 2,
     title: 'Exit',
     onTap: () {},
-    icon: Icons.exit_to_app,
+    icon: Icon(Icons.exit_to_app),
   ),
 ];
 ```

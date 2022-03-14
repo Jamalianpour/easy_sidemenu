@@ -83,7 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(0);
                 },
-                icon: Icons.home,
+                icon: Icon(Icons.home),
+                badgeContent: Text(
+                  '3',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               SideMenuItem(
                 priority: 1,
@@ -91,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(1);
                 },
-                icon: Icons.supervisor_account,
+                icon: Icon(Icons.supervisor_account),
               ),
               SideMenuItem(
                 priority: 2,
@@ -99,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(2);
                 },
-                icon: Icons.file_copy_rounded,
+                icon: Icon(Icons.file_copy_rounded),
               ),
               SideMenuItem(
                 priority: 3,
@@ -107,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(3);
                 },
-                icon: Icons.download,
+                icon: Icon(Icons.download),
               ),
               SideMenuItem(
                 priority: 4,
@@ -115,13 +119,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(4);
                 },
-                icon: Icons.settings,
+                icon: Icon(Icons.settings),
               ),
               SideMenuItem(
                 priority: 6,
                 title: 'Exit',
                 onTap: () async {},
-                icon: Icons.exit_to_app,
+                icon: Icon(Icons.exit_to_app),
               ),
             ],
           ),
