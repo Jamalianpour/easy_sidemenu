@@ -139,7 +139,7 @@ style: SideMenuStyle(
   selectedColor: Colors.lightBlue,
   selectedIconColor: Colors.white,
   unselectedIconColor: Colors.black54,
-  backgroundColor: Colors.grey
+  backgroundColor: Colors.grey,
   selectedTitleTextStyle: TextStyle(color: Colors.white),
   unselectedTitleTextStyle: TextStyle(color: Colors.black54),
   iconSize: 20,
