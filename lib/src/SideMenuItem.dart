@@ -52,10 +52,19 @@ class _SideMenuItemState extends State<SideMenuItem> {
   @override
   void initState() {
     super.initState();
-    Global.controller.addListener(() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      // set initialPage
       setState(() {
-        currentPage = Global.controller.page!;
+        currentPage = Global.controller.initialPage.toDouble();
       });
+      if (this.mounted) {
+        // set controller SideMenuItem page controller callback
+        Global.controller.addListener(() {
+          setState(() {
+            currentPage = Global.controller.page!;
+          });
+        });
+      }
     });
   }
 
