@@ -83,7 +83,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
   Widget _generateIcon(Icon mainIcon) {
     Icon icon = Icon(
       mainIcon.icon,
-      color: widget.priority == currentPage
+      color: widget.priority == currentPage.ceil()
           ? Global.style.selectedIconColor ?? Colors.black
           : Global.style.unselectedIconColor ?? Colors.black54,
       size: Global.style.iconSize ?? 24,
@@ -117,12 +117,14 @@ class _SideMenuItemState extends State<SideMenuItem> {
             valueListenable: Global.displayModeState,
             builder: (context, value, child) {
               return Padding(
-                padding: value == SideMenuDisplayMode.compact
-                    ? EdgeInsets.only(left: 8.0)
-                    : EdgeInsets.only(left: 8.0, bottom: 8, top: 8),
+                padding: EdgeInsets.symmetric(
+                    vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      width: 8,
+                    ),
                     _generateIcon(widget.icon),
                     SizedBox(
                       width: 8.0,
@@ -131,7 +133,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
                       Expanded(
                         child: Text(
                           widget.title,
-                          style: widget.priority == currentPage
+                          style: widget.priority == currentPage.ceil()
                               ? TextStyle(fontSize: 17, color: Colors.black)
                                   .merge(Global.style.selectedTitleTextStyle)
                               : TextStyle(fontSize: 17, color: Colors.black54)

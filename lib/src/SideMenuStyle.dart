@@ -36,6 +36,9 @@ class SideMenuStyle {
   /// Size of icon on [SideMenuItem]
   double? iconSize;
 
+  /// Decoration of [SideMenu] container
+  BoxDecoration? decoration;
+
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
@@ -49,5 +52,6 @@ class SideMenuStyle {
     this.selectedIconColor = Colors.black,
     this.unselectedIconColor = Colors.black54,
     this.iconSize = 24,
+    this.decoration,
   });
 }

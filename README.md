@@ -20,12 +20,12 @@ Sidemenu is similar to bottom navigation bar but in the side of screen and usual
 
 ## Screenshots
 
-| Open                                  | Compact                                  |
-| ------------------------------------- | ---------------------------------------- |
+| Open                             | Compact                             |
+| -------------------------------- | ----------------------------------- |
 | ![Open](images/Screenshot_1.png) | ![Compact](images/Screenshot_2.png) |
 
-| Auto                                   |
-| -------------------------------------- |
+| Auto                              |
+| --------------------------------- |
 | ![Auto](images/easy_sidemenu.gif) |
 
 ## Demo
@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.2.0
+  easy_sidemenu: ^0.2.1
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -133,6 +133,7 @@ you can change style of side menu with `SideMenuStyle` :
 ```dart
 style: SideMenuStyle(
   displayMode: SideMenuDisplayMode.auto,
+  decoration: BoxDecoration(),
   openSideMenuWidth: 200,
   compactSideMenuWidth: 40,
   hoverColor: Colors.blue[100],
@@ -146,11 +147,45 @@ style: SideMenuStyle(
 ),
 ```
 
+#### Example style
+
+<details>
+<summary>Code</summary>
+
+```dart
+style: SideMenuStyle(
+  displayMode: SideMenuDisplayMode.auto,
+  hoverColor: Colors.blue[100],
+  selectedColor: Colors.blue[600],
+  selectedTitleTextStyle: TextStyle(color: Colors.white),
+  selectedIconColor: Colors.white,
+  unselectedIconColor: Colors.white70,
+  unselectedTitleTextStyle: TextStyle(color: Colors.white70),
+  decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      boxShadow: [
+        BoxShadow(
+          color: Color.fromARGB(255, 79, 117, 134),
+          spreadRadius: 1,
+          blurRadius: 10,
+          offset: Offset(0, 0), // changes position of shadow
+        ),
+      ]),
+  backgroundColor: Color.fromARGB(255, 79, 117, 134)
+  // openSideMenuWidth: 200
+),
+```
+
+</details>
+
+![Open](images/Screenshot_style.png)
+
 #### Style Props
 
 | props                    |         types          |                                   description                                   |
 | :----------------------- | :--------------------: | :-----------------------------------------------------------------------------: |
 | displayMode              | `SideMenuDisplayMode?` | SideMenuDisplayMode.auto, SideMenuDisplayMode.open, SideMenuDisplayMode.compact |
+| decoration               |    `BoxDecoration?`    |                 Decoration of `SideMenu` background (container)                 |
 | openSideMenuWidth        |       `double?`        |        Width of `SideMenu` when displayMode was SideMenuDisplayMode.open        |
 | compactSideMenuWidth     |       `double?`        |      Width of `SideMenu` when displayMode was SideMenuDisplayMode.compact       |
 | hoverColor               |        `Color?`        |                Color of `SideMenuItem` when mouse hover on that                 |

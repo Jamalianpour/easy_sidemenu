@@ -49,8 +49,10 @@ class _MyHomePageState extends State<MyHomePage> {
               selectedColor: Colors.lightBlue,
               selectedTitleTextStyle: TextStyle(color: Colors.white),
               selectedIconColor: Colors.white,
-              // backgroundColor: Colors.amber
-              // openSideMenuWidth: 200
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.all(Radius.circular(10)),
+              // ),
+              // backgroundColor: Colors.blueGrey[700]
             ),
             title: Column(
               children: [
@@ -137,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                   child: Center(
                     child: Text(
-                      'Page\n   1',
+                      'Dashboard',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
@@ -146,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                   child: Center(
                     child: Text(
-                      'Page\n   2',
+                      'Users',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
@@ -155,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                   child: Center(
                     child: Text(
-                      'Page\n   3',
+                      'Files',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
@@ -164,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                   child: Center(
                     child: Text(
-                      'Page\n   4',
+                      'Download',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
@@ -173,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                   child: Center(
                     child: Text(
-                      'Page\n   5',
+                      'Settings',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),

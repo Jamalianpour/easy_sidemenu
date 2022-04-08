@@ -1,12 +1,17 @@
+## [0.2.1]
+* Support RTL languages
+* Add `decoration` to `SideMenuStyle`
+* Fix initialPage bug
+
 ## [0.2.0]
-* add badge support to the sidemenu
-* change IconData to Icon for more flexibility
+* Add badge support to the sidemenu
+* Change IconData to Icon for more flexibility
 
 ## [0.1.1+1]
-* add demo to readme
+* Add demo to readme
 
 ## [0.1.1]
-* add readme to package
+* Add readme to package
 
 ## [0.1.0] 
-* first release
+* First release

@@ -26,7 +26,7 @@ class SideMenu extends StatelessWidget {
   /// ### Easy Sidemenu widget
   ///
   /// Sidemenu is a menu that is usually located
-  /// on the left or right of the page and can used for navigations
+  /// on the left or right of the page and can used for navigation
   const SideMenu({
     Key? key,
     required this.items,
@@ -55,6 +55,20 @@ class SideMenu extends StatelessWidget {
     }
   }
 
+  Decoration _decoration(SideMenuStyle? menuStyle) {
+    if (menuStyle == null || menuStyle.decoration == null) {
+      return BoxDecoration(
+        color: Global.style.backgroundColor ?? null,
+      );
+    } else {
+      if (menuStyle.backgroundColor != null) {
+        menuStyle.decoration =
+            menuStyle.decoration!.copyWith(color: menuStyle.backgroundColor);
+      }
+      return menuStyle.decoration!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Global.controller = controller;
@@ -66,7 +80,8 @@ class SideMenu extends StatelessWidget {
       width: _widthSize(
           Global.style.displayMode ?? SideMenuDisplayMode.auto, context),
       height: MediaQuery.of(context).size.height,
-      color: Global.style.backgroundColor ?? null,
+      // color: Global.style.backgroundColor ?? null,
+      decoration: _decoration(style),
       child: Stack(
         children: [
           SingleChildScrollView(
