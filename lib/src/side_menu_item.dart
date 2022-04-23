@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
+import 'package:easy_sidemenu/src/global/global.dart';
+import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 
-import 'SideMenuDisplayMode.dart';
-import 'Global/Global.dart';
 import 'package:flutter/material.dart';
 
 class SideMenuItem extends StatefulWidget {
