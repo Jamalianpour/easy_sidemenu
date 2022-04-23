@@ -1,5 +1,5 @@
+import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
-import 'SideMenuDisplayMode.dart';
 
 class SideMenuStyle {
   /// Width of [SideMenu] when [displayMode] was SideMenuDisplayMode.open

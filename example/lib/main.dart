@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,14 +15,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'easy_sidemenu Demo'),
+      home: const MyHomePage(title: 'easy_sidemenu Demo'),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -47,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
               displayMode: SideMenuDisplayMode.auto,
               hoverColor: Colors.blue[100],
               selectedColor: Colors.lightBlue,
-              selectedTitleTextStyle: TextStyle(color: Colors.white),
+              selectedTitleTextStyle: const TextStyle(color: Colors.white),
               selectedIconColor: Colors.white,
               // decoration: BoxDecoration(
               //   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -57,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Column(
               children: [
                 ConstrainedBox(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     maxHeight: 150,
                     maxWidth: 150,
                   ),
@@ -65,14 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     'assets/images/easy_sidemenu.png',
                   ),
                 ),
-                Divider(
+                const Divider(
                   indent: 8.0,
                   endIndent: 8.0,
                 ),
               ],
             ),
-            footer: Padding(
-              padding: const EdgeInsets.all(8.0),
+            footer: const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 'mohada',
                 style: TextStyle(fontSize: 15),
@@ -85,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(0);
                 },
-                icon: Icon(Icons.home),
-                badgeContent: Text(
+                icon: const Icon(Icons.home),
+                badgeContent: const Text(
                   '3',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -97,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(1);
                 },
-                icon: Icon(Icons.supervisor_account),
+                icon: const Icon(Icons.supervisor_account),
               ),
               SideMenuItem(
                 priority: 2,
@@ -105,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(2);
                 },
-                icon: Icon(Icons.file_copy_rounded),
+                icon: const Icon(Icons.file_copy_rounded),
               ),
               SideMenuItem(
                 priority: 3,
@@ -113,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(3);
                 },
-                icon: Icon(Icons.download),
+                icon: const Icon(Icons.download),
               ),
               SideMenuItem(
                 priority: 4,
@@ -121,13 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   page.jumpToPage(4);
                 },
-                icon: Icon(Icons.settings),
+                icon: const Icon(Icons.settings),
               ),
               SideMenuItem(
                 priority: 6,
                 title: 'Exit',
                 onTap: () async {},
-                icon: Icon(Icons.exit_to_app),
+                icon: const Icon(Icons.exit_to_app),
               ),
             ],
           ),
@@ -137,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Container(
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Dashboard',
                       style: TextStyle(fontSize: 35),
@@ -146,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Users',
                       style: TextStyle(fontSize: 35),
@@ -155,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Files',
                       style: TextStyle(fontSize: 35),
@@ -164,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Download',
                       style: TextStyle(fontSize: 35),
@@ -173,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Settings',
                       style: TextStyle(fontSize: 35),

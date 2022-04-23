@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
+import 'package:easy_sidemenu/src/global/global.dart';
+import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 
-import 'SideMenuDisplayMode.dart';
-import 'Global/Global.dart';
 import 'package:flutter/material.dart';
 
 class SideMenuItem extends StatefulWidget {
@@ -57,7 +57,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
       setState(() {
         currentPage = Global.controller.initialPage.toDouble();
       });
-      if (this.mounted) {
+      if (mounted) {
         // set controller SideMenuItem page controller callback
         Global.controller.addListener(() {
           setState(() {
@@ -95,7 +95,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
         badgeContent: widget.badgeContent!,
         badgeColor: widget.badgeColor ?? Colors.red,
         alignment: Alignment.bottomRight,
-        position: BadgePosition(top: -13, end: -7),
+        position: const BadgePosition(top: -13, end: -7),
         child: icon,
       );
     }
@@ -105,13 +105,13 @@ class _SideMenuItemState extends State<SideMenuItem> {
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Container(
           height: 50,
           width: double.infinity,
           decoration: BoxDecoration(
             color: _setColor(),
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
@@ -122,11 +122,11 @@ class _SideMenuItemState extends State<SideMenuItem> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     _generateIcon(widget.icon),
-                    SizedBox(
+                    const SizedBox(
                       width: 8.0,
                     ),
                     if (value == SideMenuDisplayMode.open)
@@ -134,9 +134,11 @@ class _SideMenuItemState extends State<SideMenuItem> {
                         child: Text(
                           widget.title,
                           style: widget.priority == currentPage.ceil()
-                              ? TextStyle(fontSize: 17, color: Colors.black)
+                              ? const TextStyle(
+                                      fontSize: 17, color: Colors.black)
                                   .merge(Global.style.selectedTitleTextStyle)
-                              : TextStyle(fontSize: 17, color: Colors.black54)
+                              : const TextStyle(
+                                      fontSize: 17, color: Colors.black54)
                                   .merge(Global.style.unselectedTitleTextStyle),
                         ),
                       ),

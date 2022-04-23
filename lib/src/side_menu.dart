@@ -1,9 +1,8 @@
+import 'package:easy_sidemenu/src/global/global.dart';
+import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
+import 'package:easy_sidemenu/src/side_menu_item.dart';
+import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:flutter/material.dart';
-
-import 'SideMenuStyle.dart';
-import 'Global/Global.dart';
-import 'SideMenuItem.dart';
-import 'SideMenuDisplayMode.dart';
 
 class SideMenu extends StatelessWidget {
   /// Page controller to control [PageView] widget
@@ -58,7 +57,7 @@ class SideMenu extends StatelessWidget {
   Decoration _decoration(SideMenuStyle? menuStyle) {
     if (menuStyle == null || menuStyle.decoration == null) {
       return BoxDecoration(
-        color: Global.style.backgroundColor ?? null,
+        color: Global.style.backgroundColor,
       );
     } else {
       if (menuStyle.backgroundColor != null) {
@@ -76,7 +75,7 @@ class SideMenu extends StatelessWidget {
     Global.style = style ?? SideMenuStyle();
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 350),
+      duration: const Duration(milliseconds: 350),
       width: _widthSize(
           Global.style.displayMode ?? SideMenuDisplayMode.auto, context),
       height: MediaQuery.of(context).size.height,
