@@ -39,6 +39,9 @@ class SideMenuStyle {
   /// Decoration of [SideMenu] container
   BoxDecoration? decoration;
 
+  /// Color of toggle button
+  Color? toggleColor;
+
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
@@ -53,5 +56,6 @@ class SideMenuStyle {
     this.unselectedIconColor = Colors.black54,
     this.iconSize = 24,
     this.decoration,
+    this.toggleColor = Colors.black54,
   });
 }
