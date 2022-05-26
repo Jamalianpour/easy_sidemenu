@@ -27,6 +27,9 @@ class SideMenu extends StatefulWidget {
   /// If the display mode is auto, this button will not be displayed
   final bool? showToggle;
 
+  /// Notify when [SideMenuDisplayMode] changed
+  final ValueChanged<SideMenuDisplayMode>? onDisplayModeChanged;
+
   /// ### Easy Sidemenu widget
   ///
   /// Sidemenu is a menu that is usually located
@@ -39,6 +42,7 @@ class SideMenu extends StatefulWidget {
     this.footer,
     this.style,
     this.showToggle,
+    this.onDisplayModeChanged,
   }) : super(key: key);
 
   @override
@@ -46,23 +50,44 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
-  /// Set [SideMenu] width according to displayMode
+  double _currentWidth = 0;
+  late bool showToggle;
+
+  @override
+  void initState() {
+    super.initState();
+    showToggle = widget.showToggle ?? false;
+  }
+
+  /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
-      if (MediaQuery.of(context).size.width > 600) {
+      if (MediaQuery.of(context).size.width > 600 &&
+          Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
+        widget.onDisplayModeChanged!(Global.displayModeState.value);
         return Global.style.openSideMenuWidth ?? 300;
-      } else {
+      }
+      if (MediaQuery.of(context).size.width <= 600 &&
+          Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
+        widget.onDisplayModeChanged!(Global.displayModeState.value);
         return Global.style.compactSideMenuWidth ?? 50;
       }
-    } else if (mode == SideMenuDisplayMode.open) {
+      return _currentWidth;
+    } else if (mode == SideMenuDisplayMode.open &&
+        Global.displayModeState.value != SideMenuDisplayMode.open) {
       Global.displayModeState.change(SideMenuDisplayMode.open);
+      widget.onDisplayModeChanged!(Global.displayModeState.value);
       return Global.style.openSideMenuWidth ?? 300;
-    } else {
+    }
+    if (mode == SideMenuDisplayMode.compact &&
+        Global.displayModeState.value != SideMenuDisplayMode.compact) {
       Global.displayModeState.change(SideMenuDisplayMode.compact);
+      widget.onDisplayModeChanged!(Global.displayModeState.value);
       return Global.style.compactSideMenuWidth ?? 50;
     }
+    return _currentWidth;
   }
 
   Decoration _decoration(SideMenuStyle? menuStyle) {
@@ -84,14 +109,13 @@ class _SideMenuState extends State<SideMenu> {
     Global.controller = widget.controller;
     widget.items.sort((a, b) => a.priority.compareTo(b.priority));
     Global.style = widget.style ?? SideMenuStyle();
-    bool showToggle = widget.showToggle ?? false;
+    _currentWidth = _widthSize(
+        Global.style.displayMode ?? SideMenuDisplayMode.auto, context);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 350),
-      width: _widthSize(
-          Global.style.displayMode ?? SideMenuDisplayMode.auto, context),
+      width: _currentWidth,
       height: MediaQuery.of(context).size.height,
-      // color: Global.style.backgroundColor ?? null,
       decoration: _decoration(widget.style),
       child: Stack(
         children: [
@@ -114,7 +138,12 @@ class _SideMenuState extends State<SideMenu> {
           if (Global.style.displayMode != SideMenuDisplayMode.auto &&
               showToggle)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+              padding: EdgeInsets.symmetric(
+                  horizontal:
+                      Global.displayModeState.value == SideMenuDisplayMode.open
+                          ? 0
+                          : 4,
+                  vertical: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -123,15 +152,11 @@ class _SideMenuState extends State<SideMenu> {
                       if (Global.displayModeState.value ==
                           SideMenuDisplayMode.compact) {
                         setState(() {
-                          Global.displayModeState
-                              .change(SideMenuDisplayMode.open);
                           Global.style.displayMode = SideMenuDisplayMode.open;
                         });
                       } else if (Global.displayModeState.value ==
                           SideMenuDisplayMode.open) {
                         setState(() {
-                          Global.displayModeState
-                              .change(SideMenuDisplayMode.compact);
                           Global.style.displayMode =
                               SideMenuDisplayMode.compact;
                         });

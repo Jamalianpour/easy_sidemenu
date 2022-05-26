@@ -1,3 +1,8 @@
+## [0.3.0]
+* Add listener to `SideMenuDisplayMode` changed
+* Add toggle button to open and compact sidemenu
+* Refactor code by [myConsciousness](https://github.com/myConsciousness) - [#8](https://github.com/Jamalianpour/easy_sidemenu/pull/8)
+
 ## [0.2.1]
 * Support RTL languages
 * Add `decoration` to `SideMenuStyle`

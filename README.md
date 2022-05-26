@@ -13,9 +13,9 @@
 </a>
 </div>
 
-Easy sidemenu is An easy to use side menu (bar) for flutter that you can use for navigations in your application.
+Easy sidemenu is An easy to use side menu (bar) for flutter that you can use for navigation in your application.
 
-Sidemenu is a menu that is usually located on the left or right of the page and can used for navigations or other things.
+Sidemenu is a menu that is usually located on the left or right of the page and can used for navigation or other things.
 Sidemenu is similar to bottom navigation bar but in the side of screen and usually used for larger screens.
 
 ## Screenshots
@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.2.1
+  easy_sidemenu: ^0.3.0
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -53,7 +53,7 @@ Now you can use `SideMenu` as a widget in your code.
 
 ##### 3. use SideMenu
 
-At first you should defind a list of item that will displayed on `SideMenu`:
+You must first define a list of items to display on `SideMenu`:
 
 ```dart
 List<SideMenuItem> items = [
@@ -96,12 +96,16 @@ Row(
   mainAxisAlignment: MainAxisAlignment.start,
   children: [
     SideMenu(
-      // page controller to manage a PageView
+      // Page controller to manage a PageView
       controller: page,
-      // will shows on top of all items, it can be a logo or a Title text
+      // Will shows on top of all items, it can be a logo or a Title text
       title: Image.asset('assets/images/easy_sidemenu.png'),
-      // will show on bottom of SideMenu when displayMode was SideMenuDisplayMode.open
+      // Will show on bottom of SideMenu when displayMode was SideMenuDisplayMode.open
       footer: Text('demo'),
+      // Notify when display mode changed
+      onDisplayModeChanged: (mode) {
+        print(mode);
+      },
       // List of SideMenuItem to show them on SideMenu
       items: items,
     ),

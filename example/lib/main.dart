@@ -45,6 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           SideMenu(
             controller: page,
+            onDisplayModeChanged: (mode) {
+              print(mode);
+            },
             style: SideMenuStyle(
               displayMode: SideMenuDisplayMode.auto,
               hoverColor: Colors.blue[100],

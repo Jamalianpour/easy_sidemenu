@@ -17,13 +17,18 @@ class _SideMenuToggleState extends State<SideMenuToggle> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 2),
+      padding: EdgeInsets.only(
+          top:
+              Global.displayModeState.value == SideMenuDisplayMode.open ? 4 : 0,
+          right: Global.displayModeState.value == SideMenuDisplayMode.open
+              ? 0
+              : 2),
       child: IconButton(
         color: Global.style.toggleColor,
         icon: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, anim) => RotationTransition(
-                  turns: child.key == const ValueKey('icon1')
+                  turns: child.key == const ValueKey('Sidemenu_icon1')
                       ? Tween<double>(begin: 1, end: 0.5).animate(anim)
                       : Tween<double>(begin: 0.5, end: 1).animate(anim),
                   child: FadeTransition(opacity: anim, child: child),
@@ -31,12 +36,12 @@ class _SideMenuToggleState extends State<SideMenuToggle> {
             child: Global.style.displayMode == SideMenuDisplayMode.open
                 ? const Icon(
                     Icons.navigate_next,
-                    key: ValueKey('icon1'),
+                    key: ValueKey('Sidemenu_icon1'),
                     size: 30,
                   )
                 : const Icon(
                     Icons.navigate_next,
-                    key: ValueKey('icon2'),
+                    key: ValueKey('Sidemenu_icon2'),
                     size: 30,
                   )),
         onPressed: () {
@@ -44,22 +49,6 @@ class _SideMenuToggleState extends State<SideMenuToggle> {
             widget.onTap!();
           }
         },
-        // icon: Row(
-        //   children: [
-        //     Expanded(
-        //       child: Icon(
-        //         Global.style.displayMode == SideMenuDisplayMode.open
-        //             ? Icons.navigate_before
-        //             : Icons.navigate_next,
-        //         size: 30,
-        //       ),
-        //     ),
-        //     const SizedBox(
-        //       width: 20,
-        //     ),
-        //   ],
-        // ),
-        // onPressed: () => _handleOnPressed(),
       ),
     );
   }
