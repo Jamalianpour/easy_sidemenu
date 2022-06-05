@@ -52,7 +52,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    _nonNullableWrap(WidgetsBinding.instance)!.addPostFrameCallback((timeStamp) {
       // set initialPage
       setState(() {
         currentPage = Global.controller.initialPage.toDouble();
@@ -67,6 +67,15 @@ class _SideMenuItemState extends State<SideMenuItem> {
       }
     });
   }
+
+  /// This allows a value of type T or T?
+  /// to be treated as a value of type T?.
+  ///
+  /// We use this so that APIs that have become
+  /// non-nullable can still be used with `!` and `?`
+  /// to support older versions of the API as well.
+  /// https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0#your-code
+  T? _nonNullableWrap<T>(T? value) => value;
 
   /// Set background color of [SideMenuItem]
   Color _setColor() {
