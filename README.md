@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.3.0
+  easy_sidemenu: ^0.3.1
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -144,7 +144,7 @@ style: SideMenuStyle(
   selectedColor: Colors.lightBlue,
   selectedIconColor: Colors.white,
   unselectedIconColor: Colors.black54,
-  backgroundColor: Colors.grey
+  backgroundColor: Colors.grey,
   selectedTitleTextStyle: TextStyle(color: Colors.white),
   unselectedTitleTextStyle: TextStyle(color: Colors.black54),
   iconSize: 20,
@@ -175,7 +175,7 @@ style: SideMenuStyle(
           offset: Offset(0, 0), // changes position of shadow
         ),
       ]),
-  backgroundColor: Color.fromARGB(255, 79, 117, 134)
+  backgroundColor: Color.fromARGB(255, 79, 117, 134),
   // openSideMenuWidth: 200
 ),
 ```
@@ -200,6 +200,7 @@ style: SideMenuStyle(
 | selectedTitleTextStyle   |      `TextStyle?`      |                   Style of `title` text when item is selected                   |
 | unselectedTitleTextStyle |      `TextStyle?`      |                  Style of `title` text when item is unselected                  |
 | iconSize                 |       `double?`        |                         Size of icon on `SideMenuItem`                          |
+| toggleColor              |        `Color?`        |                             Color of toggle button                              |
 
 ---
 

@@ -59,32 +59,38 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
   }
 
+  void _notifyParent() {
+    if (widget.onDisplayModeChanged != null) {
+      widget.onDisplayModeChanged!(Global.displayModeState.value);
+    }
+  }
+
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
       if (MediaQuery.of(context).size.width > 600 &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
-        widget.onDisplayModeChanged!(Global.displayModeState.value);
+        _notifyParent();
         return Global.style.openSideMenuWidth ?? 300;
       }
       if (MediaQuery.of(context).size.width <= 600 &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
-        widget.onDisplayModeChanged!(Global.displayModeState.value);
+        _notifyParent();
         return Global.style.compactSideMenuWidth ?? 50;
       }
       return _currentWidth;
     } else if (mode == SideMenuDisplayMode.open &&
         Global.displayModeState.value != SideMenuDisplayMode.open) {
       Global.displayModeState.change(SideMenuDisplayMode.open);
-      widget.onDisplayModeChanged!(Global.displayModeState.value);
+      _notifyParent();
       return Global.style.openSideMenuWidth ?? 300;
     }
     if (mode == SideMenuDisplayMode.compact &&
         Global.displayModeState.value != SideMenuDisplayMode.compact) {
       Global.displayModeState.change(SideMenuDisplayMode.compact);
-      widget.onDisplayModeChanged!(Global.displayModeState.value);
+      _notifyParent();
       return Global.style.compactSideMenuWidth ?? 50;
     }
     return _currentWidth;
