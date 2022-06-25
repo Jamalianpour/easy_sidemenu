@@ -30,6 +30,9 @@ class SideMenu extends StatefulWidget {
   /// Notify when [SideMenuDisplayMode] changed
   final ValueChanged<SideMenuDisplayMode>? onDisplayModeChanged;
 
+  /// Duration of [displayMode] toggling duration
+  final Duration? displayModeToggleDuration;
+
   /// ### Easy Sidemenu widget
   ///
   /// Sidemenu is a menu that is usually located
@@ -43,6 +46,7 @@ class SideMenu extends StatefulWidget {
     this.style,
     this.showToggle,
     this.onDisplayModeChanged,
+    this.displayModeToggleDuration,
   }) : super(key: key);
 
   @override
@@ -68,13 +72,19 @@ class _SideMenuState extends State<SideMenu> {
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
-      if (MediaQuery.of(context).size.width > 600 &&
+      if (MediaQuery
+          .of(context)
+          .size
+          .width > 600 &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
         _notifyParent();
         return Global.style.openSideMenuWidth ?? 300;
       }
-      if (MediaQuery.of(context).size.width <= 600 &&
+      if (MediaQuery
+          .of(context)
+          .size
+          .width <= 600 &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
@@ -110,6 +120,11 @@ class _SideMenuState extends State<SideMenu> {
     }
   }
 
+  Duration _toggleDuration() {
+    return widget.displayModeToggleDuration ??
+        const Duration(milliseconds: 350);
+  }
+
   @override
   Widget build(BuildContext context) {
     Global.controller = widget.controller;
@@ -119,9 +134,12 @@ class _SideMenuState extends State<SideMenu> {
         Global.style.displayMode ?? SideMenuDisplayMode.auto, context);
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 350),
+      duration: _toggleDuration(),
       width: _currentWidth,
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
       decoration: _decoration(widget.style),
       child: Stack(
         children: [
@@ -146,9 +164,9 @@ class _SideMenuState extends State<SideMenu> {
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal:
-                      Global.displayModeState.value == SideMenuDisplayMode.open
-                          ? 0
-                          : 4,
+                  Global.displayModeState.value == SideMenuDisplayMode.open
+                      ? 0
+                      : 4,
                   vertical: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
