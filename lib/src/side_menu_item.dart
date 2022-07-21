@@ -49,23 +49,32 @@ class _SideMenuItemState extends State<SideMenuItem> {
   double currentPage = 0;
   bool isHovered = false;
 
+  void _handleChange() {
+    setState(() {
+      currentPage = Global.controller.page!;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _nonNullableWrap(WidgetsBinding.instance)!.addPostFrameCallback((timeStamp) {
+    _nonNullableWrap(WidgetsBinding.instance)!
+        .addPostFrameCallback((timeStamp) {
       // set initialPage
       setState(() {
         currentPage = Global.controller.initialPage.toDouble();
       });
       if (mounted) {
         // set controller SideMenuItem page controller callback
-        Global.controller.addListener(() {
-          setState(() {
-            currentPage = Global.controller.page!;
-          });
-        });
+        Global.controller.addListener(_handleChange);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    Global.controller.removeListener(_handleChange);
+    super.dispose();
   }
 
   /// This allows a value of type T or T?
