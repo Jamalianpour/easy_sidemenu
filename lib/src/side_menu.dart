@@ -27,6 +27,10 @@ class SideMenu extends StatefulWidget {
   /// If the display mode is auto, this button will not be displayed
   final bool? showToggle;
 
+  /// By default footer only shown when display mode is open
+  /// If you want always shown footer set it to true
+  final bool? alwaysShowFooter;
+
   /// Notify when [SideMenuDisplayMode] changed
   final ValueChanged<SideMenuDisplayMode>? onDisplayModeChanged;
 
@@ -44,9 +48,10 @@ class SideMenu extends StatefulWidget {
     this.title,
     this.footer,
     this.style,
-    this.showToggle,
+    this.showToggle = false,
     this.onDisplayModeChanged,
     this.displayModeToggleDuration,
+    this.alwaysShowFooter = false,
   }) : super(key: key);
 
   @override
@@ -56,11 +61,20 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   double _currentWidth = 0;
   late bool showToggle;
+  late bool alwaysShowFooter;
 
   @override
   void initState() {
     super.initState();
     showToggle = widget.showToggle ?? false;
+    alwaysShowFooter = widget.alwaysShowFooter ?? false;
+  }
+
+  @override
+  void didUpdateWidget(covariant SideMenu oldWidget) {
+    showToggle = widget.showToggle ?? false;
+    alwaysShowFooter = widget.alwaysShowFooter ?? false;
+    super.didUpdateWidget(oldWidget);
   }
 
   void _notifyParent() {
@@ -72,19 +86,13 @@ class _SideMenuState extends State<SideMenu> {
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
-      if (MediaQuery
-          .of(context)
-          .size
-          .width > 600 &&
+      if (MediaQuery.of(context).size.width > 600 &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
         _notifyParent();
         return Global.style.openSideMenuWidth ?? 300;
       }
-      if (MediaQuery
-          .of(context)
-          .size
-          .width <= 600 &&
+      if (MediaQuery.of(context).size.width <= 600 &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
@@ -136,10 +144,7 @@ class _SideMenuState extends State<SideMenu> {
     return AnimatedContainer(
       duration: _toggleDuration(),
       width: _currentWidth,
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
+      height: MediaQuery.of(context).size.height,
       decoration: _decoration(widget.style),
       child: Stack(
         children: [
@@ -156,17 +161,19 @@ class _SideMenuState extends State<SideMenu> {
               ],
             ),
           ),
-          if (widget.footer != null &&
-              Global.displayModeState.value != SideMenuDisplayMode.compact)
+          if ((widget.footer != null &&
+                  Global.displayModeState.value !=
+                      SideMenuDisplayMode.compact) ||
+              (widget.footer != null && alwaysShowFooter))
             Align(alignment: Alignment.bottomCenter, child: widget.footer!),
           if (Global.style.displayMode != SideMenuDisplayMode.auto &&
               showToggle)
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal:
-                  Global.displayModeState.value == SideMenuDisplayMode.open
-                      ? 0
-                      : 4,
+                      Global.displayModeState.value == SideMenuDisplayMode.open
+                          ? 0
+                          : 4,
                   vertical: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

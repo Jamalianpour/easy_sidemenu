@@ -1,3 +1,11 @@
+## [0.3.2]
+* Fix delete menu from widget tree - [#15](https://github.com/Jamalianpour/easy_sidemenu/pull/15)
+* Add alwaysShowFooter
+
+## [0.3.1]
+* Fix null exception on `onDisplayModeChanged`
+* Fix `WidgetsBinding.instance` null checker in flutter 3
+
 ## [0.3.0]
 * Add listener to `SideMenuDisplayMode` changed
 * Add toggle button to open and compact sidemenu
