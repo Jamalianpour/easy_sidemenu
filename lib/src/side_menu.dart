@@ -38,7 +38,7 @@ class SideMenu extends StatefulWidget {
   final Duration? displayModeToggleDuration;
 
   /// Width when will our open menu collapse into the compact one
-  final int? sideMenuBreakpoint;
+  final int? collapseWidth;
 
   /// ### Easy Sidemenu widget
   ///
@@ -55,7 +55,7 @@ class SideMenu extends StatefulWidget {
     this.onDisplayModeChanged,
     this.displayModeToggleDuration,
     this.alwaysShowFooter = false,
-    this.sideMenuBreakpoint = 600,
+    this.collapseWidth = 600,
   }) : super(key: key);
 
   @override
@@ -66,21 +66,21 @@ class _SideMenuState extends State<SideMenu> {
   double _currentWidth = 0;
   late bool showToggle;
   late bool alwaysShowFooter;
-  late int sideMenuBreakpoint;
+  late int collapseWidth;
 
   @override
   void initState() {
     super.initState();
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
-    sideMenuBreakpoint = widget.sideMenuBreakpoint ?? 600;
+    collapseWidth = widget.collapseWidth ?? 600;
   }
 
   @override
   void didUpdateWidget(covariant SideMenu oldWidget) {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
-    sideMenuBreakpoint = widget.sideMenuBreakpoint ?? 600;
+    collapseWidth = widget.collapseWidth ?? 600;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -93,13 +93,13 @@ class _SideMenuState extends State<SideMenu> {
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
-      if (MediaQuery.of(context).size.width > sideMenuBreakpoint &&
+      if (MediaQuery.of(context).size.width > collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
         _notifyParent();
         return Global.style.openSideMenuWidth ?? 300;
       }
-      if (MediaQuery.of(context).size.width <= sideMenuBreakpoint &&
+      if (MediaQuery.of(context).size.width <= collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
