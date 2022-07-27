@@ -37,6 +37,9 @@ class SideMenu extends StatefulWidget {
   /// Duration of [displayMode] toggling duration
   final Duration? displayModeToggleDuration;
 
+  /// Width when will our open menu collapse into the compact one
+  final int? collapseWidth;
+
   /// ### Easy Sidemenu widget
   ///
   /// Sidemenu is a menu that is usually located
@@ -52,6 +55,7 @@ class SideMenu extends StatefulWidget {
     this.onDisplayModeChanged,
     this.displayModeToggleDuration,
     this.alwaysShowFooter = false,
+    this.collapseWidth = 600,
   }) : super(key: key);
 
   @override
@@ -62,18 +66,21 @@ class _SideMenuState extends State<SideMenu> {
   double _currentWidth = 0;
   late bool showToggle;
   late bool alwaysShowFooter;
+  late int collapseWidth;
 
   @override
   void initState() {
     super.initState();
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
+    collapseWidth = widget.collapseWidth ?? 600;
   }
 
   @override
   void didUpdateWidget(covariant SideMenu oldWidget) {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
+    collapseWidth = widget.collapseWidth ?? 600;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -86,13 +93,13 @@ class _SideMenuState extends State<SideMenu> {
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
-      if (MediaQuery.of(context).size.width > 600 &&
+      if (MediaQuery.of(context).size.width > collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
         _notifyParent();
         return Global.style.openSideMenuWidth ?? 300;
       }
-      if (MediaQuery.of(context).size.width <= 600 &&
+      if (MediaQuery.of(context).size.width <= collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
