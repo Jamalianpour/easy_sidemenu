@@ -42,6 +42,18 @@ class SideMenuStyle {
   /// Color of toggle button
   Color? toggleColor;
 
+  /// Outer spacing of menu item
+  double itemOuterSpacing;
+
+  /// Inner spacing of menu item
+  double itemInnerSpacing;
+
+  /// Height of menu item
+  double itemHeight;
+
+  /// Border Radius of menu item
+  double itemBorRadius;
+
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
@@ -57,5 +69,9 @@ class SideMenuStyle {
     this.iconSize = 24,
     this.decoration,
     this.toggleColor = Colors.black54,
+    this.itemOuterSpacing = 5.0,
+    this.itemInnerSpacing = 8.0,
+    this.itemHeight = 50.0,
+    this.itemBorRadius = 5.0,
   });
 }
