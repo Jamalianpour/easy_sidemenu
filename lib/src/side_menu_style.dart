@@ -52,7 +52,7 @@ class SideMenuStyle {
   double itemHeight;
 
   /// Border Radius of menu item
-  double itemBorRadius;
+  double itemBorderRadius;
 
   /// Style class to configure [SideMenu]
   SideMenuStyle({
@@ -72,6 +72,6 @@ class SideMenuStyle {
     this.itemOuterSpacing = 5.0,
     this.itemInnerSpacing = 8.0,
     this.itemHeight = 50.0,
-    this.itemBorRadius = 5.0,
+    this.itemBorderRadius = 5.0,
   });
 }

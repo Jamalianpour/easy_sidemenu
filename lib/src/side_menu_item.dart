@@ -132,7 +132,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
           decoration: BoxDecoration(
             color: _setColor(),
             borderRadius: BorderRadius.all(
-                Radius.circular(Global.style.itemBorRadius),
+                Radius.circular(Global.style.itemBorderRadius),
             ),
           ),
           child: ValueListenableBuilder(
