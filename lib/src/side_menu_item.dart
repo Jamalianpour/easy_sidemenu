@@ -123,17 +123,13 @@ class _SideMenuItemState extends State<SideMenuItem> {
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: Global.style.itemOuterSpacing,
-        ),
+        padding: Global.style.itemOuterPadding,
         child: Container(
           height: Global.style.itemHeight,
           width: double.infinity,
           decoration: BoxDecoration(
             color: _setColor(),
-            borderRadius: BorderRadius.all(
-                Radius.circular(Global.style.itemBorderRadius),
-            ),
+            borderRadius: Global.style.itemBorderRadius,
           ),
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
