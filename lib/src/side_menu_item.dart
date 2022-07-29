@@ -38,7 +38,7 @@ class SideMenuItem extends StatefulWidget {
   /// By default this is null
   final Widget? badgeContent;
 
-  // Background color for badge
+  /// Background color for badge
   final Color? badgeColor;
 
   @override
@@ -123,13 +123,13 @@ class _SideMenuItemState extends State<SideMenuItem> {
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        padding: Global.style.itemOuterPadding,
         child: Container(
-          height: 50,
+          height: Global.style.itemHeight,
           width: double.infinity,
           decoration: BoxDecoration(
             color: _setColor(),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            borderRadius: Global.style.itemBorderRadius,
           ),
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
@@ -140,8 +140,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      width: 8,
+                    SizedBox(
+                      width: Global.style.itemInnerSpacing,
                     ),
                     _generateIcon(widget.icon),
                     const SizedBox(
