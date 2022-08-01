@@ -144,8 +144,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
                       width: Global.style.itemInnerSpacing,
                     ),
                     _generateIcon(widget.icon),
-                    const SizedBox(
-                      width: 8.0,
+                    SizedBox(
+                      width: Global.style.itemInnerSpacing,
                     ),
                     if (value == SideMenuDisplayMode.open)
                       Expanded(
