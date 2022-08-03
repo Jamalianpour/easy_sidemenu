@@ -16,6 +16,7 @@ class SideMenuItem extends StatefulWidget {
     required this.priority,
     this.badgeContent,
     this.badgeColor,
+    this.tooltipContent,
   }) : super(key: key);
 
   /// A function that call when tap on [SideMenuItem]
@@ -40,6 +41,10 @@ class SideMenuItem extends StatefulWidget {
 
   /// Background color for badge
   final Color? badgeColor;
+
+  /// Content of the tooltip - if not filled, the [title] will
+  /// be used. [showTooltipOverItemsName] must be set to true.
+  final String? tooltipContent;
 
   @override
   _SideMenuItemState createState() => _SideMenuItemState();
@@ -137,7 +142,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
               return Tooltip(
                 message: (value == SideMenuDisplayMode.compact
                     && Global.style.showTooltipOverItemsName)
-                    ? widget.title
+                    ? widget.tooltipContent ?? widget.title
                     : "",
                 child: Padding(
                   padding: EdgeInsets.symmetric(

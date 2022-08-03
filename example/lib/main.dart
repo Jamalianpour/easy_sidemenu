@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   '3',
                   style: TextStyle(color: Colors.white),
                 ),
+                // tooltipContent: "Home",
               ),
               SideMenuItem(
                 priority: 1,
