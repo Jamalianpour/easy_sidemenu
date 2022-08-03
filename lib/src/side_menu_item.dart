@@ -134,33 +134,39 @@ class _SideMenuItemState extends State<SideMenuItem> {
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
             builder: (context, value, child) {
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: Global.style.itemInnerSpacing,
-                    ),
-                    _generateIcon(widget.icon),
-                    SizedBox(
-                      width: Global.style.itemInnerSpacing,
-                    ),
-                    if (value == SideMenuDisplayMode.open)
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          style: widget.priority == currentPage.ceil()
-                              ? const TextStyle(
-                                      fontSize: 17, color: Colors.black)
-                                  .merge(Global.style.selectedTitleTextStyle)
-                              : const TextStyle(
-                                      fontSize: 17, color: Colors.black54)
-                                  .merge(Global.style.unselectedTitleTextStyle),
-                        ),
+              return Tooltip(
+                message: (value == SideMenuDisplayMode.compact
+                    && Global.style.showTooltipOverItemsName)
+                    ? widget.title
+                    : "",
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: Global.style.itemInnerSpacing,
                       ),
-                  ],
+                      _generateIcon(widget.icon),
+                      SizedBox(
+                        width: Global.style.itemInnerSpacing,
+                      ),
+                      if (value == SideMenuDisplayMode.open)
+                        Expanded(
+                          child: Text(
+                            widget.title,
+                            style: widget.priority == currentPage.ceil()
+                                ? const TextStyle(
+                                        fontSize: 17, color: Colors.black)
+                                    .merge(Global.style.selectedTitleTextStyle)
+                                : const TextStyle(
+                                        fontSize: 17, color: Colors.black54)
+                                    .merge(Global.style.unselectedTitleTextStyle),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               );
             },
