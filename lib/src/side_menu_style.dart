@@ -54,6 +54,12 @@ class SideMenuStyle {
   /// Border Radius of menu item
   BorderRadius itemBorderRadius;
 
+  /// Property that will show user itemName in
+  /// Tooltip when they'll hover over the item
+  /// This property will only work if current
+  /// [SideMenuDisplayMode] is set compact
+  bool showTooltipOverItemsName;
+
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
@@ -75,5 +81,6 @@ class SideMenuStyle {
     this.itemBorderRadius = const BorderRadius.all(
       Radius.circular(5.0),
     ),
+    this.showTooltipOverItemsName = false,
   });
 }

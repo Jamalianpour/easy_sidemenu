@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   print(mode);
             // },
             style: SideMenuStyle(
+              // showTooltipOverItemsName: true,
               displayMode: SideMenuDisplayMode.auto,
               hoverColor: Colors.blue[100],
               selectedColor: Colors.lightBlue,
@@ -95,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   '3',
                   style: TextStyle(color: Colors.white),
                 ),
+                // tooltipContent: "Home",
               ),
               SideMenuItem(
                 priority: 1,

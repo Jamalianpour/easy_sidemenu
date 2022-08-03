@@ -16,6 +16,7 @@ class SideMenuItem extends StatefulWidget {
     required this.priority,
     this.badgeContent,
     this.badgeColor,
+    this.tooltipContent,
   }) : super(key: key);
 
   /// A function that call when tap on [SideMenuItem]
@@ -40,6 +41,10 @@ class SideMenuItem extends StatefulWidget {
 
   /// Background color for badge
   final Color? badgeColor;
+
+  /// Content of the tooltip - if not filled, the [title] will
+  /// be used. [showTooltipOverItemsName] must be set to true.
+  final String? tooltipContent;
 
   @override
   _SideMenuItemState createState() => _SideMenuItemState();
@@ -134,33 +139,39 @@ class _SideMenuItemState extends State<SideMenuItem> {
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
             builder: (context, value, child) {
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: Global.style.itemInnerSpacing,
-                    ),
-                    _generateIcon(widget.icon),
-                    SizedBox(
-                      width: Global.style.itemInnerSpacing,
-                    ),
-                    if (value == SideMenuDisplayMode.open)
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          style: widget.priority == currentPage.ceil()
-                              ? const TextStyle(
-                                      fontSize: 17, color: Colors.black)
-                                  .merge(Global.style.selectedTitleTextStyle)
-                              : const TextStyle(
-                                      fontSize: 17, color: Colors.black54)
-                                  .merge(Global.style.unselectedTitleTextStyle),
-                        ),
+              return Tooltip(
+                message: (value == SideMenuDisplayMode.compact
+                    && Global.style.showTooltipOverItemsName)
+                    ? widget.tooltipContent ?? widget.title
+                    : "",
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: Global.style.itemInnerSpacing,
                       ),
-                  ],
+                      _generateIcon(widget.icon),
+                      SizedBox(
+                        width: Global.style.itemInnerSpacing,
+                      ),
+                      if (value == SideMenuDisplayMode.open)
+                        Expanded(
+                          child: Text(
+                            widget.title,
+                            style: widget.priority == currentPage.ceil()
+                                ? const TextStyle(
+                                        fontSize: 17, color: Colors.black)
+                                    .merge(Global.style.selectedTitleTextStyle)
+                                : const TextStyle(
+                                        fontSize: 17, color: Colors.black54)
+                                    .merge(Global.style.unselectedTitleTextStyle),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               );
             },
