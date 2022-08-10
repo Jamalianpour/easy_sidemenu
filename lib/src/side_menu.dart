@@ -13,12 +13,23 @@ class SideMenu extends StatefulWidget {
   final List<SideMenuItem> items;
 
   /// Title widget will shows on top of all items,
+  /// when [displayMode] was SideMenuDisplayMode.open
   /// it can be a logo or a Title text
   final Widget? title;
+
+  /// Title widget will shows on top of all items,
+  /// when [displayMode] was SideMenuDisplayMode.compact
+  /// if not filled, the title widget will be used
+  final Widget? titleCompact;
 
   /// Footer widget will show on bottom of [SideMenu]
   /// when [displayMode] was SideMenuDisplayMode.open
   final Widget? footer;
+
+  /// Footer widget will show on bottom of [SideMenu]
+  /// when [displayMode] was SideMenuDisplayMode.compact
+  /// if not filled, the footer widget will be used
+  final Widget? footerCompact;
 
   /// [SideMenu] can be configured by this
   final SideMenuStyle? style;
@@ -49,7 +60,9 @@ class SideMenu extends StatefulWidget {
     required this.items,
     required this.controller,
     this.title,
+    this.titleCompact,
     this.footer,
+    this.footerCompact,
     this.style,
     this.showToggle = false,
     this.onDisplayModeChanged,
@@ -163,15 +176,29 @@ class _SideMenuState extends State<SideMenu> {
                   const SizedBox(
                     height: 42,
                   ),
-                if (widget.title != null) widget.title!,
+                if (widget.title != null && Global.displayModeState.value !=
+                        SideMenuDisplayMode.compact) widget.title!,
+                if (widget.titleCompact != null &&
+                        Global.displayModeState.value !=
+                            SideMenuDisplayMode.open) widget.titleCompact!
+                else if (widget.title != null &&
+                        Global.displayModeState.value !=
+                            SideMenuDisplayMode.open) widget.title!,
                 ...widget.items,
               ],
             ),
           ),
-          if ((widget.footer != null &&
+          if (widget.footer != null &&
                   Global.displayModeState.value !=
-                      SideMenuDisplayMode.compact) ||
-              (widget.footer != null && alwaysShowFooter))
+                      SideMenuDisplayMode.compact)
+            Align(alignment: Alignment.bottomCenter, child: widget.footer!),
+          if (widget.footerCompact != null &&
+                  alwaysShowFooter && Global.displayModeState.value !=
+                      SideMenuDisplayMode.open)
+            Align(alignment: Alignment.bottomCenter, child: widget.footerCompact!)
+          else if (widget.footer != null &&
+                      alwaysShowFooter && Global.displayModeState.value !=
+                          SideMenuDisplayMode.open)
             Align(alignment: Alignment.bottomCenter, child: widget.footer!),
           if (Global.style.displayMode != SideMenuDisplayMode.auto &&
               showToggle)
