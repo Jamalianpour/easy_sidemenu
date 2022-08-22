@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -131,10 +131,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(Icons.settings),
               ),
               SideMenuItem(
+                priority: 5,
+                title: 'Only Title',
+                onTap: () {
+                  page.jumpToPage(5);
+                },
+              ),
+              SideMenuItem(
                 priority: 6,
+                onTap: () {
+                  page.jumpToPage(6);
+                },
+                icon: const Icon(Icons.smart_button_sharp),
+              ),
+              const SideMenuItem(
+                priority: 7,
                 title: 'Exit',
-                onTap: () async {},
-                icon: const Icon(Icons.exit_to_app),
+                icon: Icon(Icons.exit_to_app),
               ),
             ],
           ),
@@ -183,6 +196,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Center(
                     child: Text(
                       'Settings',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Only Title',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Only Icon',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
