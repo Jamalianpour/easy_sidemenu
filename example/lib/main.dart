@@ -144,10 +144,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 icon: const Icon(Icons.smart_button_sharp),
               ),
-              SideMenuItem(
+              const SideMenuItem(
                 priority: 7,
                 title: 'Exit',
-                icon: const Icon(Icons.exit_to_app),
+                icon: Icon(Icons.exit_to_app),
               ),
             ],
           ),

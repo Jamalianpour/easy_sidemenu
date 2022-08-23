@@ -17,7 +17,7 @@ class SideMenuItem extends StatefulWidget {
     this.badgeContent,
     this.badgeColor,
     this.tooltipContent,
-  })  : assert(title == null && icon == null,
+  })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
         super(key: key);
 
