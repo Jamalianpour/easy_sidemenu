@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
 
-import 'global/Global.dart';
+import 'global/global.dart';
 
 class SideMenuItem extends StatefulWidget {
   /// #### Side Menu Item
@@ -17,7 +17,9 @@ class SideMenuItem extends StatefulWidget {
     this.badgeContent,
     this.badgeColor,
     this.tooltipContent,
-  }) : super(key: key);
+  })  : assert(title == null && icon == null,
+            'Title and icon should not be empty at the same time'),
+        super(key: key);
 
   /// A function that call when tap on [SideMenuItem]
   final Function? onTap;

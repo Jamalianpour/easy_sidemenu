@@ -1,7 +1,7 @@
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
 
-import 'global/Global.dart';
+import 'global/global.dart';
 
 class SideMenuToggle extends StatefulWidget {
   final Function? onTap;

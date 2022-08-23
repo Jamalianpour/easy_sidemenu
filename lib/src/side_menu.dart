@@ -4,7 +4,7 @@ import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_toggle.dart';
 import 'package:flutter/material.dart';
 
-import 'global/Global.dart';
+import 'global/global.dart';
 
 class SideMenu extends StatefulWidget {
   /// Page controller to control [PageView] widget
