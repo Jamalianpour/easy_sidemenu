@@ -1,8 +1,8 @@
 import 'package:badges/badges.dart';
-import 'package:easy_sidemenu/src/global/global.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
-
 import 'package:flutter/material.dart';
+
+import 'global/global.dart';
 
 class SideMenuItem extends StatefulWidget {
   /// #### Side Menu Item
@@ -10,23 +10,25 @@ class SideMenuItem extends StatefulWidget {
   /// This is a widget as [SideMenu] items with text and icon
   const SideMenuItem({
     Key? key,
-    required this.onTap,
-    required this.title,
-    required this.icon,
+    this.onTap,
+    this.title,
+    this.icon,
     required this.priority,
     this.badgeContent,
     this.badgeColor,
     this.tooltipContent,
-  }) : super(key: key);
+  })  : assert(title != null || icon != null,
+            'Title and icon should not be empty at the same time'),
+        super(key: key);
 
   /// A function that call when tap on [SideMenuItem]
-  final Function onTap;
+  final Function? onTap;
 
   /// Title text
-  final String title;
+  final String? title;
 
   /// A Icon to display before [title]
-  final Icon icon;
+  final Icon? icon;
 
   /// Priority of item to show on [SideMenu], lower value is displayed at the top
   ///
@@ -103,7 +105,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
   }
 
   /// Set icon for of [SideMenuItem]
-  Widget _generateIcon(Icon mainIcon) {
+  Widget _generateIcon(Icon? mainIcon) {
+    if (mainIcon == null) return const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
       color: widget.priority == currentPage.ceil()
@@ -140,8 +143,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
             valueListenable: Global.displayModeState,
             builder: (context, value, child) {
               return Tooltip(
-                message: (value == SideMenuDisplayMode.compact
-                    && Global.style.showTooltipOverItemsName)
+                message: (value == SideMenuDisplayMode.compact &&
+                        Global.style.showTooltipOverItemsName)
                     ? widget.tooltipContent ?? widget.title
                     : "",
                 child: Padding(
@@ -160,14 +163,15 @@ class _SideMenuItemState extends State<SideMenuItem> {
                       if (value == SideMenuDisplayMode.open)
                         Expanded(
                           child: Text(
-                            widget.title,
+                            widget.title ?? '',
                             style: widget.priority == currentPage.ceil()
                                 ? const TextStyle(
                                         fontSize: 17, color: Colors.black)
                                     .merge(Global.style.selectedTitleTextStyle)
                                 : const TextStyle(
                                         fontSize: 17, color: Colors.black54)
-                                    .merge(Global.style.unselectedTitleTextStyle),
+                                    .merge(
+                                        Global.style.unselectedTitleTextStyle),
                           ),
                         ),
                     ],
@@ -178,7 +182,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
           ),
         ),
       ),
-      onTap: () => widget.onTap(),
+      onTap: () => widget.onTap!(),
       onHover: (value) {
         setState(() {
           isHovered = value;
