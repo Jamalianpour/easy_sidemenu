@@ -45,11 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           SideMenu(
             controller: page,
-            // onDisplayModeChanged: (mode) {
-            //   print(mode);
-            // },
             style: SideMenuStyle(
-              // showTooltipOverItemsName: true,
+              // showTooltip: false,
               displayMode: SideMenuDisplayMode.auto,
               hoverColor: Colors.blue[100],
               selectedColor: Colors.lightBlue,
@@ -96,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   '3',
                   style: TextStyle(color: Colors.white),
                 ),
-                // tooltipContent: "Home",
+                tooltipContent: "This is a tooltip for Dashboard item",
               ),
               SideMenuItem(
                 priority: 1,
@@ -113,6 +110,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   page.jumpToPage(2);
                 },
                 icon: const Icon(Icons.file_copy_rounded),
+                trailing: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(Radius.circular(6))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0, vertical: 3),
+                      child: Text(
+                        'New',
+                        style: TextStyle(fontSize: 11, color: Colors.grey[800]),
+                      ),
+                    )),
               ),
               SideMenuItem(
                 priority: 3,
@@ -130,20 +139,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 icon: const Icon(Icons.settings),
               ),
-              SideMenuItem(
-                priority: 5,
-                title: 'Only Title',
-                onTap: () {
-                  page.jumpToPage(5);
-                },
-              ),
-              SideMenuItem(
-                priority: 6,
-                onTap: () {
-                  page.jumpToPage(6);
-                },
-                icon: const Icon(Icons.smart_button_sharp),
-              ),
+              // SideMenuItem(
+              //   priority: 5,
+              //   onTap: () {
+              //     page.jumpToPage(5);
+              //   },
+              //   icon: const Icon(Icons.image_rounded),
+              // ),
+              // SideMenuItem(
+              //   priority: 6,
+              //   title: 'Only Title',
+              //   onTap: () {
+              //     page.jumpToPage(6);
+              //   },
+              // ),
               const SideMenuItem(
                 priority: 7,
                 title: 'Exit',

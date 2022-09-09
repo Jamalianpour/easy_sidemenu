@@ -98,18 +98,31 @@ class _SideMenuState extends State<SideMenu> {
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
         _notifyParent();
+        Future.delayed(_toggleDuration(), () {
+          Global.showTrailing = true;
+          for (var update in Global.itemsUpdate) {
+            update();
+          }
+        });
         return Global.style.openSideMenuWidth ?? 300;
       }
       if (MediaQuery.of(context).size.width <= collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
+        Global.showTrailing = false;
         return Global.style.compactSideMenuWidth ?? 50;
       }
       return _currentWidth;
     } else if (mode == SideMenuDisplayMode.open &&
         Global.displayModeState.value != SideMenuDisplayMode.open) {
       Global.displayModeState.change(SideMenuDisplayMode.open);
+      Future.delayed(_toggleDuration(), () {
+        Global.showTrailing = true;
+        for (var update in Global.itemsUpdate) {
+          update();
+        }
+      });
       _notifyParent();
       return Global.style.openSideMenuWidth ?? 300;
     }
@@ -117,6 +130,7 @@ class _SideMenuState extends State<SideMenu> {
         Global.displayModeState.value != SideMenuDisplayMode.compact) {
       Global.displayModeState.change(SideMenuDisplayMode.compact);
       _notifyParent();
+      Global.showTrailing = false;
       return Global.style.compactSideMenuWidth ?? 50;
     }
     return _currentWidth;

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:badges/badges.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class SideMenuItem extends StatefulWidget {
     this.badgeContent,
     this.badgeColor,
     this.tooltipContent,
+    this.trailing,
   })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
         super(key: key);
@@ -48,6 +51,17 @@ class SideMenuItem extends StatefulWidget {
   /// be used. [showTooltipOverItemsName] must be set to true.
   final String? tooltipContent;
 
+  /// A widget to display after the title.
+  ///
+  /// Typically an [Icon] widget.
+  ///
+  /// To show right-aligned metadata (assuming left-to-right reading order;
+  /// left-aligned for right-to-left reading order), consider using a [Row] with
+  /// [CrossAxisAlignment.baseline] alignment whose first item is [Expanded] and
+  /// whose second child is the metadata text, instead of using the [trailing]
+  /// property.
+  final Widget? trailing;
+
   @override
   _SideMenuItemState createState() => _SideMenuItemState();
 }
@@ -76,6 +90,11 @@ class _SideMenuItemState extends State<SideMenuItem> {
         Global.controller.addListener(_handleChange);
       }
     });
+    Global.itemsUpdate.add(update);
+  }
+
+  void update() {
+    setState(() {});
   }
 
   @override
@@ -144,8 +163,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
             builder: (context, value, child) {
               return Tooltip(
                 message: (value == SideMenuDisplayMode.compact &&
-                        Global.style.showTooltipOverItemsName)
-                    ? widget.tooltipContent ?? widget.title
+                        Global.style.showTooltip)
+                    ? widget.tooltipContent ?? widget.title ?? ""
                     : "",
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -160,7 +179,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
                       SizedBox(
                         width: Global.style.itemInnerSpacing,
                       ),
-                      if (value == SideMenuDisplayMode.open)
+                      if (value == SideMenuDisplayMode.open) ...[
                         Expanded(
                           child: Text(
                             widget.title ?? '',
@@ -174,6 +193,13 @@ class _SideMenuItemState extends State<SideMenuItem> {
                                         Global.style.unselectedTitleTextStyle),
                           ),
                         ),
+                        if (widget.trailing != null && Global.showTrailing) ...[
+                          widget.trailing!,
+                          SizedBox(
+                            width: Global.style.itemInnerSpacing,
+                          ),
+                        ],
+                      ],
                     ],
                   ),
                 ),

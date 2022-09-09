@@ -31,7 +31,8 @@
 build/
 example/build/
 example/windows/
-example/web/
+# example/macos/
+# example/web/
 
 # Android related
 **/android/**/gradle-wrapper.jar

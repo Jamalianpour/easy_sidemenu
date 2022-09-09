@@ -58,7 +58,7 @@ class SideMenuStyle {
   /// Tooltip when they'll hover over the item
   /// This property will only work if current
   /// [SideMenuDisplayMode] is set compact
-  bool showTooltipOverItemsName;
+  bool showTooltip;
 
   /// Style class to configure [SideMenu]
   SideMenuStyle({
@@ -81,6 +81,6 @@ class SideMenuStyle {
     this.itemBorderRadius = const BorderRadius.all(
       Radius.circular(5.0),
     ),
-    this.showTooltipOverItemsName = false,
+    this.showTooltip = true,
   });
 }

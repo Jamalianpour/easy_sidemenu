@@ -7,6 +7,8 @@ class Global {
   static late SideMenuStyle style;
   static DisplayModeNotifier displayModeState =
       DisplayModeNotifier(SideMenuDisplayMode.auto);
+  static bool showTrailing = true;
+  static List<Function> itemsUpdate = [];
 }
 
 class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
