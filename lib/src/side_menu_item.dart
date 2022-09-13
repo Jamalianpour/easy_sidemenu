@@ -94,7 +94,9 @@ class _SideMenuItemState extends State<SideMenuItem> {
   }
 
   void update() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
