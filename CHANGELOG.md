@@ -1,3 +1,10 @@
+## [0.4.0]
+* Custom collapse breakpoint feature  - [#17](https://github.com/Jamalianpour/easy_sidemenu/pull/17)
+* Add tooltip to `SideMenuItem` - [#20](https://github.com/Jamalianpour/easy_sidemenu/pull/20)
+* Change `SideMenuItem` title to optional - [#24](https://github.com/Jamalianpour/easy_sidemenu/pull/24)
+* Fix issue SideMenu doesn't show when navigation back and forth - [#27](https://github.com/Jamalianpour/easy_sidemenu/pull/27)
+* Add trailing widget to `SideMenuItem`
+
 ## [0.3.2]
 * Fix delete menu from widget tree - [#15](https://github.com/Jamalianpour/easy_sidemenu/pull/15)
 * Add alwaysShowFooter

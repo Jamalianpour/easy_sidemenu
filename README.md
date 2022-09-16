@@ -22,7 +22,7 @@ Sidemenu is similar to bottom navigation bar but in the side of screen and usual
 
 | Open                             | Compact                             |
 | -------------------------------- | ----------------------------------- |
-| ![Open](images/Screenshot_1.png) | ![Compact](images/Screenshot_2.png) |
+| ![Open](images/Screenshot_1.jpeg) | ![Compact](images/Screenshot_2.jpeg) |
 
 | Auto                              |
 | --------------------------------- |
@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.3.1
+  easy_sidemenu: ^0.4.0
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -148,10 +148,18 @@ style: SideMenuStyle(
   selectedTitleTextStyle: TextStyle(color: Colors.white),
   unselectedTitleTextStyle: TextStyle(color: Colors.black54),
   iconSize: 20,
+  itemBorderRadius: const BorderRadius.all(
+      Radius.circular(5.0),
+  ),
+  showTooltip: true,
+  itemHeight: 50.0,
+  itemInnerSpacing: 8.0,
+  itemOuterPadding: const EdgeInsets.symmetric(horizontal: 5.0),
+  toggleColor: Colors.black54
 ),
 ```
 
-#### Example style
+#### Style Example
 
 <details>
 <summary>Code</summary>
@@ -201,6 +209,11 @@ style: SideMenuStyle(
 | unselectedTitleTextStyle |      `TextStyle?`      |                  Style of `title` text when item is unselected                  |
 | iconSize                 |       `double?`        |                         Size of icon on `SideMenuItem`                          |
 | toggleColor              |        `Color?`        |                             Color of toggle button                              |
+| itemBorderRadius         |     `BorderRadius`     |                           Border Radius of menu item                            |
+| showTooltip              |         `bool`         |Property that will show user itemName in Tooltip when they'll hover over the item|
+| itemInnerSpacing         |        `double`        |                           Inner spacing of menu item                            |
+| itemOuterPadding         |  `EdgeInsetsGeometry`  |                           Outer padding of menu item                            |
+| itemHeight               |        `double`        |                              Height of menu item                                |
 
 ---
 

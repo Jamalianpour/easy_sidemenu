@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:badges/badges.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
