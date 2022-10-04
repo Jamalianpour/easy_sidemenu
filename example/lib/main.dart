@@ -32,6 +32,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController page = PageController();
+  SideMenuController sideMenu = SideMenuController();
+  @override
+  void initState() {
+    sideMenu.addListener((p0) {
+      sideMenu.changePage(p0);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SideMenu(
-            controller: page,
+            controller: sideMenu,
             style: SideMenuStyle(
               // showTooltip: false,
               displayMode: SideMenuDisplayMode.auto,
@@ -85,8 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 0,
                 title: 'Dashboard',
-                onTap: () {
-                  page.jumpToPage(0);
+                onTap: (page) {
+                  sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.home),
                 badgeContent: const Text(
@@ -98,16 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 1,
                 title: 'Users',
-                onTap: () {
-                  page.jumpToPage(1);
+                onTap: (page) {
+                  sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.supervisor_account),
               ),
               SideMenuItem(
                 priority: 2,
                 title: 'Files',
-                onTap: () {
-                  page.jumpToPage(2);
+                onTap: (page) {
+                  sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.file_copy_rounded),
                 trailing: Container(
@@ -126,31 +134,31 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 3,
                 title: 'Download',
-                onTap: () {
-                  page.jumpToPage(3);
+                onTap: (page) {
+                  sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.download),
               ),
               SideMenuItem(
                 priority: 4,
                 title: 'Settings',
-                onTap: () {
-                  page.jumpToPage(4);
+                onTap: (page) {
+                  sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.settings),
               ),
               // SideMenuItem(
               //   priority: 5,
-              //   onTap: () {
-              //     page.jumpToPage(5);
+              //   onTap:(page){
+              //     sideMenu.changePage(5);
               //   },
               //   icon: const Icon(Icons.image_rounded),
               // ),
               // SideMenuItem(
               //   priority: 6,
               //   title: 'Only Title',
-              //   onTap: () {
-              //     page.jumpToPage(6);
+              //   onTap:(page){
+              //     sideMenu.changePage(6);
               //   },
               // ),
               const SideMenuItem(
