@@ -27,7 +27,7 @@ class SideMenuItem extends StatefulWidget {
   final Color? hoverColor;
 
   /// A function that call when tap on [SideMenuItem]
-  final void Function(int)? onTap;
+  final void Function(int, SideMenuController)? onTap;
 
   /// Title text
   final String? title;
@@ -212,7 +212,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
           ),
         ),
       ),
-      onTap: () => widget.onTap?.call(widget.priority),
+      onTap: () => widget.onTap?.call(widget.priority, Global.controller),
       onHover: (value) {
         setState(() {
           isHovered = value;

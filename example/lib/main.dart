@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 0,
                 title: 'Dashboard',
-                onTap: (page) {
+                onTap: (page, _) {
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.home),
@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 1,
                 title: 'Users',
-                onTap: (page) {
+                onTap: (page, _) {
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.supervisor_account),
@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 2,
                 title: 'Files',
-                onTap: (page) {
+                onTap: (page, _) {
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.file_copy_rounded),
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 3,
                 title: 'Download',
-                onTap: (page) {
+                onTap: (page, _) {
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.download),
@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 4,
                 title: 'Settings',
-                onTap: (page) {
+                onTap: (page, _) {
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.settings),
