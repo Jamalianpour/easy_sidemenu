@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     sideMenu.addListener((p0) {
-      sideMenu.changePage(p0);
+      page.jumpToPage(p0);
     });
     super.initState();
   }
