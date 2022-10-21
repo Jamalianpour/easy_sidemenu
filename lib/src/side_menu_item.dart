@@ -1,8 +1,11 @@
 import 'package:badges/badges.dart';
-import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 
 import 'global/global.dart';
+
+typedef SideMenuItemBuilder = Widget Function(
+    BuildContext context, SideMenuDisplayMode displayMode);
 
 class SideMenuItem extends StatefulWidget {
   /// #### Side Menu Item
@@ -18,6 +21,7 @@ class SideMenuItem extends StatefulWidget {
     this.badgeColor,
     this.tooltipContent,
     this.trailing,
+    this.builder,
   })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
         super(key: key);
@@ -59,6 +63,11 @@ class SideMenuItem extends StatefulWidget {
   /// whose second child is the metadata text, instead of using the [trailing]
   /// property.
   final Widget? trailing;
+
+  /// Create custom sideMenuItem widget with builder
+  ///
+  /// Builder has `(BuildContext context, SideMenuDisplayMode displayMode)`
+  final SideMenuItemBuilder? builder;
 
   @override
   _SideMenuItemState createState() => _SideMenuItemState();
@@ -161,54 +170,64 @@ class _SideMenuItemState extends State<SideMenuItem> {
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
             builder: (context, value, child) {
-              return Tooltip(
-                message: (value == SideMenuDisplayMode.compact &&
-                        Global.style.showTooltip)
-                    ? widget.tooltipContent ?? widget.title ?? ""
-                    : "",
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: Global.style.itemInnerSpacing,
-                      ),
-                      _generateIcon(widget.icon),
-                      SizedBox(
-                        width: Global.style.itemInnerSpacing,
-                      ),
-                      if (value == SideMenuDisplayMode.open) ...[
-                        Expanded(
-                          child: Text(
-                            widget.title ?? '',
-                            style: widget.priority == currentPage.ceil()
-                                ? const TextStyle(
-                                        fontSize: 17, color: Colors.black)
-                                    .merge(Global.style.selectedTitleTextStyle)
-                                : const TextStyle(
-                                        fontSize: 17, color: Colors.black54)
-                                    .merge(
-                                        Global.style.unselectedTitleTextStyle),
-                          ),
+              if (widget.builder == null) {
+                return Tooltip(
+                  message: (value == SideMenuDisplayMode.compact &&
+                          Global.style.showTooltip)
+                      ? widget.tooltipContent ?? widget.title ?? ""
+                      : "",
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: Global.style.itemInnerSpacing,
                         ),
-                        if (widget.trailing != null && Global.showTrailing) ...[
-                          widget.trailing!,
-                          SizedBox(
-                            width: Global.style.itemInnerSpacing,
+                        _generateIcon(widget.icon),
+                        SizedBox(
+                          width: Global.style.itemInnerSpacing,
+                        ),
+                        if (value == SideMenuDisplayMode.open) ...[
+                          Expanded(
+                            child: Text(
+                              widget.title ?? '',
+                              style: widget.priority == currentPage.ceil()
+                                  ? const TextStyle(
+                                          fontSize: 17, color: Colors.black)
+                                      .merge(
+                                          Global.style.selectedTitleTextStyle)
+                                  : const TextStyle(
+                                          fontSize: 17, color: Colors.black54)
+                                      .merge(Global
+                                          .style.unselectedTitleTextStyle),
+                            ),
                           ),
+                          if (widget.trailing != null &&
+                              Global.showTrailing) ...[
+                            widget.trailing!,
+                            SizedBox(
+                              width: Global.style.itemInnerSpacing,
+                            ),
+                          ],
                         ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                return widget.builder!(context, value as SideMenuDisplayMode);
+              }
             },
           ),
         ),
       ),
-      onTap: () => widget.onTap!(),
+      onTap: () {
+        if (widget.onTap != null) {
+          widget.onTap!();
+        }
+      },
       onHover: (value) {
         setState(() {
           isHovered = value;
