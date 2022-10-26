@@ -1,3 +1,7 @@
+## [0.4.1]
+* Custom builder available for `SideMenuItem`
+* Fix SideMenu dispose - [#29](https://github.com/Jamalianpour/easy_sidemenu/issues/29)
+
 ## [0.4.0]
 * Custom collapse breakpoint feature  - [#17](https://github.com/Jamalianpour/easy_sidemenu/pull/17)
 * Add tooltip to `SideMenuItem` - [#20](https://github.com/Jamalianpour/easy_sidemenu/pull/20)

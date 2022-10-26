@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.4.0
+  easy_sidemenu: ^0.4.1
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -87,6 +87,20 @@ List<SideMenuItem> items = [
 
 - Priority should start from 0
 - Priority value should be unique
+
+###### custom builder:
+
+Instead of `title` and `icon` in `SideMenuItem` can use `builder` to create your customize items:
+
+```dart
+SideMenuItem(
+  priority: 2,
+  builder: (context, displayMode) {
+    return Container();
+  },
+  onTap: () {},
+),
+```
 
 After that you need to warp your main page to a `row` and then add `SideMenu` as first child of that, like below:
 
