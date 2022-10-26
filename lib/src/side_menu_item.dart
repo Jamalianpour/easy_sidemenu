@@ -26,9 +26,6 @@ class SideMenuItem extends StatefulWidget {
             'Title and icon should not be empty at the same time'),
         super(key: key);
 
-  /// A color to use when mouce over on item
-  final Color? hoverColor;
-
   /// A function that call when tap on [SideMenuItem]
   final void Function(int, SideMenuController)? onTap;
 
@@ -129,7 +126,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
     if (widget.priority == currentPage) {
       return Global.style.selectedColor ?? Theme.of(context).highlightColor;
     } else if (isHovered) {
-      return widget.hoverColor ?? Global.style.hoverColor ?? Colors.transparent;
+      return Global.style.hoverColor ?? Colors.transparent;
     } else {
       return Colors.transparent;
     }

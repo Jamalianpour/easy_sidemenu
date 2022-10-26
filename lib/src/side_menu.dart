@@ -68,7 +68,6 @@ class _SideMenuState extends State<SideMenu> {
   late bool showToggle;
   late bool alwaysShowFooter;
   late int collapseWidth;
-  late SideMenuDisplayMode _mode;
 
   @override
   void initState() {
@@ -94,7 +93,6 @@ class _SideMenuState extends State<SideMenu> {
 
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
-    _mode = mode;
     if (mode == SideMenuDisplayMode.auto) {
       if (MediaQuery.of(context).size.width > collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
@@ -228,9 +226,9 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   void dispose() {
-    super.dispose();
     Future.delayed(Duration.zero, () {
-      Global.displayModeState.change(_mode);
+      Global.displayModeState.change(Global.displayModeState.value);
     });
+    super.dispose();
   }
 }
