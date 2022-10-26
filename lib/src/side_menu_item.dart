@@ -26,8 +26,11 @@ class SideMenuItem extends StatefulWidget {
             'Title and icon should not be empty at the same time'),
         super(key: key);
 
+  /// A color to use when mouce over on item
+  final Color? hoverColor;
+
   /// A function that call when tap on [SideMenuItem]
-  final Function? onTap;
+  final void Function(int, SideMenuController)? onTap;
 
   /// Title text
   final String? title;
@@ -74,12 +77,12 @@ class SideMenuItem extends StatefulWidget {
 }
 
 class _SideMenuItemState extends State<SideMenuItem> {
-  double currentPage = 0;
+  late int currentPage = Global.controller.currentPage;
   bool isHovered = false;
 
-  void _handleChange() {
+  void _handleChange(int page) {
     setState(() {
-      currentPage = Global.controller.page!;
+      currentPage = page;
     });
   }
 
@@ -90,7 +93,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
         .addPostFrameCallback((timeStamp) {
       // set initialPage
       setState(() {
-        currentPage = Global.controller.initialPage.toDouble();
+        currentPage = Global.controller.currentPage;
       });
       if (mounted) {
         // set controller SideMenuItem page controller callback
@@ -126,7 +129,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
     if (widget.priority == currentPage) {
       return Global.style.selectedColor ?? Theme.of(context).highlightColor;
     } else if (isHovered) {
-      return Global.style.hoverColor ?? Colors.transparent;
+      return widget.hoverColor ?? Global.style.hoverColor ?? Colors.transparent;
     } else {
       return Colors.transparent;
     }
@@ -137,7 +140,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
     if (mainIcon == null) return const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color: widget.priority == currentPage.ceil()
+      color: widget.priority == currentPage
           ? Global.style.selectedIconColor ?? Colors.black
           : Global.style.unselectedIconColor ?? Colors.black54,
       size: Global.style.iconSize ?? 24,
@@ -223,11 +226,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
           ),
         ),
       ),
-      onTap: () {
-        if (widget.onTap != null) {
-          widget.onTap!();
-        }
-      },
+      onTap: () => widget.onTap?.call(widget.priority, Global.controller),
       onHover: (value) {
         setState(() {
           isHovered = value;

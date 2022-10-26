@@ -8,7 +8,7 @@ import 'global/global.dart';
 
 class SideMenu extends StatefulWidget {
   /// Page controller to control [PageView] widget
-  final PageController controller;
+  final SideMenuController controller;
 
   /// List of [SideMenuItem] to show them on [SideMenu]
   final List<SideMenuItem> items;
