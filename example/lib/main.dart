@@ -43,6 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<SideMenuFolder> fList = [];
+    fList.add(const SideMenuFolder(
+        foldTitle: "Cucina", priority: 0, icon: Icon(Icons.kitchen)));
+
+    fList.add(const SideMenuFolder(
+        foldTitle: "Admin",
+        priority: 1,
+        icon: Icon(Icons.admin_panel_settings)));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -89,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 15),
               ),
             ),
+            folders: fList,
             items: [
               SideMenuItem(
                 priority: 0,
@@ -105,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SideMenuItem(
                 priority: 1,
+                folder: fList[0],
                 title: 'Users',
                 onTap: (page, _) {
                   sideMenu.changePage(page);
@@ -113,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SideMenuItem(
                 priority: 2,
+                folder: fList[0],
                 title: 'Files',
                 onTap: (page, _) {
                   sideMenu.changePage(page);
@@ -133,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SideMenuItem(
                 priority: 3,
+                folder: fList[1],
                 title: 'Download',
                 onTap: (page, _) {
                   sideMenu.changePage(page);
@@ -141,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SideMenuItem(
                 priority: 4,
+                folder: fList[1],
                 title: 'Settings',
                 onTap: (page, _) {
                   sideMenu.changePage(page);

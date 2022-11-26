@@ -63,7 +63,7 @@ class SideMenuStyle {
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
-    this.compactSideMenuWidth = 50,
+    this.compactSideMenuWidth = 70,
     this.backgroundColor,
     this.selectedColor,
     this.hoverColor = Colors.transparent,

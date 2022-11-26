@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:easy_sidemenu/src/side_menu_folder.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 
@@ -13,6 +14,7 @@ class SideMenuItem extends StatefulWidget {
   /// This is a widget as [SideMenu] items with text and icon
   const SideMenuItem({
     Key? key,
+    this.folder,
     this.onTap,
     this.title,
     this.icon,
@@ -26,6 +28,9 @@ class SideMenuItem extends StatefulWidget {
   })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
         super(key: key);
+
+  /// Fold name
+  final SideMenuFolder? folder;
 
   /// A function that call when tap on [SideMenuItem]
   final void Function(int, SideMenuController)? onTap;
@@ -82,15 +87,18 @@ class _SideMenuItemState extends State<SideMenuItem> {
   bool isHovered = false;
 
   void _handleChange(int page) {
-    setState(() {
-      currentPage = page;
-    });
+    if (mounted) {
+      setState(() {
+        currentPage = page;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _nonNullableWrap(WidgetsBinding.instance)!.addPostFrameCallback((timeStamp) {
+    _nonNullableWrap(WidgetsBinding.instance)!
+        .addPostFrameCallback((timeStamp) {
       // set initialPage
       setState(() {
         currentPage = Global.controller.currentPage;
@@ -175,7 +183,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
             builder: (context, value, child) {
               if (widget.builder == null) {
                 return Tooltip(
-                  message: (value == SideMenuDisplayMode.compact && Global.style.showTooltip)
+                  message: (value == SideMenuDisplayMode.compact &&
+                          Global.style.showTooltip)
                       ? widget.tooltipContent ?? widget.title ?? ""
                       : "",
                   child: Padding(
@@ -196,13 +205,18 @@ class _SideMenuItemState extends State<SideMenuItem> {
                             child: Text(
                               widget.title ?? '',
                               style: widget.priority == currentPage.ceil()
-                                  ? const TextStyle(fontSize: 17, color: Colors.black)
-                                      .merge(Global.style.selectedTitleTextStyle)
-                                  : const TextStyle(fontSize: 17, color: Colors.black54)
-                                      .merge(Global.style.unselectedTitleTextStyle),
+                                  ? const TextStyle(
+                                          fontSize: 17, color: Colors.black)
+                                      .merge(
+                                          Global.style.selectedTitleTextStyle)
+                                  : const TextStyle(
+                                          fontSize: 17, color: Colors.black54)
+                                      .merge(Global
+                                          .style.unselectedTitleTextStyle),
                             ),
                           ),
-                          if (widget.trailing != null && Global.showTrailing) ...[
+                          if (widget.trailing != null &&
+                              Global.showTrailing) ...[
                             widget.trailing!,
                             SizedBox(
                               width: Global.style.itemInnerSpacing,
