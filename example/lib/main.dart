@@ -43,14 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<SideMenuFolder> fList = [];
-    fList.add(const SideMenuFolder(
-        foldTitle: "Cucina", priority: 0, icon: Icon(Icons.kitchen)));
-
-    fList.add(const SideMenuFolder(
-        foldTitle: "Admin",
-        priority: 1,
-        icon: Icon(Icons.admin_panel_settings)));
 
     return Scaffold(
       appBar: AppBar(
@@ -98,65 +90,127 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 15),
               ),
             ),
-            folders: fList,
+            //folders: fList,
             items: [
-              SideMenuItem(
-                priority: 0,
-                title: 'Dashboard',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
-                },
-                icon: const Icon(Icons.home),
-                badgeContent: const Text(
-                  '3',
-                  style: TextStyle(color: Colors.white),
-                ),
-                tooltipContent: "This is a tooltip for Dashboard item",
-              ),
-              SideMenuItem(
-                priority: 1,
-                folder: fList[0],
-                title: 'Users',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
-                },
-                icon: const Icon(Icons.supervisor_account),
-              ),
+              SideMenuFolder(
+                  title: "First folder",
+                  priority: 1,
+                  icon: Icon(Icons.kitchen),
+                  children: [
+                    SideMenuItem(
+                      priority: 0,
+                      title: 'Dashboard 1',
+                      onTap: (priority, _) {
+                        int page=0;
+                        sideMenu.changePage(page);
+                      },
+                      icon: const Icon(Icons.home),
+                      badgeContent: const Text(
+                        '5',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      tooltipContent: "This is a tooltip for Dashboard item",
+                    ),
+                    SideMenuItem(
+                      priority: 2,
+                      title: 'Users',
+                      onTap: (priority, _) {
+                        int page=1;
+                        sideMenu.changePage(page);
+                      },
+                      icon: const Icon(Icons.supervisor_account),
+                    ),
+                    SideMenuItem(
+                      priority: 3,
+                      title: 'Files',
+                      onTap: (priority, _) {
+                        int page=2;
+                        sideMenu.changePage(page);
+                      },
+                      icon: const Icon(Icons.file_copy_rounded),
+                      trailing: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(6))),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6.0, vertical: 3),
+                            child: Text(
+                              'New',
+                              style: TextStyle(
+                                  fontSize: 11, color: Colors.grey[800]),
+                            ),
+                          )),
+                    )
+                  ]),
+
+              SideMenuFolder(
+                  title: "Second folder",
+                  priority: 1,
+                  icon: Icon(Icons.kitchen),
+                  children: [
+                    SideMenuItem(
+                      priority: 2,
+                      title: 'Dashboard',
+                      onTap: (priority, _) {
+                        int page=3;
+                        sideMenu.changePage(page);
+                      },
+                      icon: const Icon(Icons.home),
+                      badgeContent: const Text(
+                        '3',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      tooltipContent: "This is a tooltip for Dashboard item",
+                    ),
+                    SideMenuItem(
+                      priority: 1,
+                      title: 'Users',
+                      onTap: (priority, _) {
+                        int page=4;
+                        sideMenu.changePage(page);
+                      },
+                      icon: const Icon(Icons.supervisor_account),
+                    ),
+                    SideMenuItem(
+                      priority: 3,
+                      title: 'Files',
+                      onTap: (priority, _) {
+                        int page=priority;
+                        sideMenu.changePage(page);
+                      },
+                      icon: const Icon(Icons.file_copy_rounded),
+                      trailing: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(6))),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6.0, vertical: 3),
+                            child: Text(
+                              'New',
+                              style: TextStyle(
+                                  fontSize: 11, color: Colors.grey[800]),
+                            ),
+                          )),
+                    )
+                  ]),
               SideMenuItem(
                 priority: 2,
-                folder: fList[0],
-                title: 'Files',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
-                },
-                icon: const Icon(Icons.file_copy_rounded),
-                trailing: Container(
-                    decoration: const BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(6))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0, vertical: 3),
-                      child: Text(
-                        'New',
-                        style: TextStyle(fontSize: 11, color: Colors.grey[800]),
-                      ),
-                    )),
-              ),
-              SideMenuItem(
-                priority: 3,
-                folder: fList[1],
                 title: 'Download',
-                onTap: (page, _) {
+                onTap: (priority, _) {
+                  int page=5;
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.download),
               ),
               SideMenuItem(
-                priority: 4,
-                folder: fList[1],
+                priority: 3,
                 title: 'Settings',
-                onTap: (page, _) {
+                onTap: (priority, _) {
+                  int page=priority;
                   sideMenu.changePage(page);
                 },
                 icon: const Icon(Icons.settings),
@@ -175,8 +229,8 @@ class _MyHomePageState extends State<MyHomePage> {
               //     sideMenu.changePage(6);
               //   },
               // ),
-              const SideMenuItem(
-                priority: 7,
+               SideMenuItem(
+                priority: 4,
                 title: 'Exit',
                 icon: Icon(Icons.exit_to_app),
               ),

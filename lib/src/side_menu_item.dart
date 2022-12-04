@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
-import 'package:easy_sidemenu/src/side_menu_folder.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'global/global.dart';
 
@@ -11,9 +10,8 @@ class SideMenuItem extends StatefulWidget {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
-  const SideMenuItem({
+  SideMenuItem({
     Key? key,
-    this.folder,
     this.onTap,
     this.title,
     this.icon,
@@ -28,8 +26,6 @@ class SideMenuItem extends StatefulWidget {
             'Title and icon should not be empty at the same time'),
         super(key: key);
 
-  /// Fold name
-  final SideMenuFolder? folder;
 
   /// A function that call when tap on [SideMenuItem]
   final void Function(int, SideMenuController)? onTap;
@@ -43,12 +39,13 @@ class SideMenuItem extends StatefulWidget {
   /// This is displayed instead if [icon] is null
   final Widget? iconWidget;
 
+  bool isIndented=false;
   /// Priority of item to show on [SideMenu], lower value is displayed at the top
   ///
   /// * Start from 0
   /// * This value should be unique
   /// * This value used for page controller index
-  final int priority;
+   int priority;
 
   /// Text show next to the icon as badge
   /// By default this is null
@@ -180,26 +177,30 @@ class _SideMenuItemState extends State<SideMenuItem> {
           child: ValueListenableBuilder(
             valueListenable: Global.displayModeState,
             builder: (context, value, child) {
+
+
               if (widget.builder == null) {
                 return Tooltip(
                   message: (value == SideMenuDisplayMode.compact &&
                           Global.style.showTooltip)
                       ? widget.tooltipContent ?? widget.title ?? ""
                       : "",
-                  child: Padding(
+                  child:
+
+                  Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: value == SideMenuDisplayMode.compact
-                            ? widget.folder != null
+                            ? widget.isIndented
                                 ? Global.style.itemInnerSpacing
                                 : 0
-                            : widget.folder != null
+                            : widget.isIndented
                                 ? Global.style.itemInnerSpacing * 2
                                 : Global.style.itemInnerSpacing),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: widget.folder != null
+                          width: widget.isIndented
                               ? Global.style.itemInnerSpacing * 2
                               : Global.style.itemInnerSpacing,
                         ),

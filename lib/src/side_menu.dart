@@ -11,11 +11,8 @@ class SideMenu extends StatefulWidget {
   /// Page controller to control [PageView] widget
   final SideMenuController controller;
 
-  /// List of [SideMenuItem] to show them on [SideMenu]
-  final List<SideMenuItem> items;
-
-  /// List of [SideMenuFolder] to show them on [SideMenu]
-  final List<SideMenuFolder>? folders;
+  /// List of [SideMenuItem or SideMenuFolder] to show them on [SideMenu]
+  final List items;
 
   /// Title widget will shows on top of all items,
   /// it can be a logo or a Title text
@@ -52,7 +49,7 @@ class SideMenu extends StatefulWidget {
   const SideMenu({
     Key? key,
     required this.items,
-    this.folders,
+    //this.folders,
     required this.controller,
     this.title,
     this.footer,
@@ -74,8 +71,6 @@ class _SideMenuState extends State<SideMenu> {
   late bool alwaysShowFooter;
   late int collapseWidth;
   late Set foldSet;
-  List<SideMenuFolder> finalFolders = [];
-  late List<SideMenuItem> nonFolded;
 
   @override
   void initState() {
@@ -83,34 +78,6 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
-
-    foldSet = widget.items
-        .where((element) => element.folder != null)
-        .map((e) => (e.folder!.foldTitle))
-        .toSet();
-
-    if (widget.folders != null) {
-      for (SideMenuFolder ss in widget.folders!) {
-        finalFolders.add(SideMenuFolder(
-            foldTitle: ss.foldTitle,
-            priority: ss.priority,
-            icon: ss.icon,
-            iconWidget: ss.iconWidget,
-            items: widget.items
-                .where((element) =>
-                    (element.folder != null) &&
-                    (element.folder!.foldTitle.compareTo(ss.foldTitle) == 0))
-                .toList()));
-      }
-
-    }
-
-    finalFolders.sort((e1, e2) {
-      return e1.priority.compareTo(e2.priority);
-    });
-
-    nonFolded =
-        widget.items.where((element) => element.folder == null).toList();
   }
 
   @override
@@ -215,8 +182,7 @@ class _SideMenuState extends State<SideMenu> {
                     height: 42,
                   ),
                 if (widget.title != null) widget.title!,
-                ...finalFolders,
-                ...nonFolded,
+                ...widget.items
               ],
             ),
           ),

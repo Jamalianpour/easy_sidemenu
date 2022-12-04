@@ -9,18 +9,18 @@ class SideMenuFolder extends StatefulWidget {
   /// This is a widget as [SideMenu] items with text and icon
   const SideMenuFolder(
       {Key? key,
-      required this.foldTitle,
+      this.title,
       this.icon,
       this.iconWidget,
       required this.priority,
-      this.items,
+      required this.children,
       this.builder})
-      : assert(foldTitle != null || icon != null,
+      : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
         super(key: key);
 
   /// Fold name
-  final String foldTitle;
+  final String? title;
 
   /// A Icon to display before [title]
   final Icon? icon;
@@ -35,7 +35,7 @@ class SideMenuFolder extends StatefulWidget {
   /// * This value used for page controller index
   final int priority;
 
-  final List<SideMenuItem>? items;
+  final List<SideMenuItem> children;
 
   /// Create custom sideMenuItem widget with builder
   ///
@@ -66,26 +66,30 @@ class _SideMenuFolderState extends State<SideMenuFolder> {
 
   @override
   Widget build(BuildContext context) {
+    widget.children.sort((a, b) => a.priority.compareTo(b.priority));
     return ValueListenableBuilder(
         valueListenable: Global.displayModeState,
         builder: (context, value, child) {
-          return (widget.items != null)
-              ? ListTileTheme(
-                  contentPadding: EdgeInsets.symmetric(
-                      horizontal: value == SideMenuDisplayMode.compact
-                          ? Global.style.itemInnerSpacing
-                          : Global.style.itemInnerSpacing + 5),
-                  horizontalTitleGap: 0,
-                  child: ExpansionTile(
-                      //trailing:  (value==SideMenuDisplayMode.open)?null:const SizedBox.shrink(),
+          return ListTileTheme(
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: value == SideMenuDisplayMode.compact
+                      ? Global.style.itemInnerSpacing
+                      : Global.style.itemInnerSpacing + 5),
+              horizontalTitleGap: 0,
+              child: ExpansionTile(
+                  //trailing:  (value==SideMenuDisplayMode.open)?null:const SizedBox.shrink(),
 
-                      leading: _generateIcon(widget.icon, widget.iconWidget),
-                      //leading: (value==SideMenuDisplayMode.open)?Container():widget.icon,
-                      title: (value == SideMenuDisplayMode.open)
-                          ? Text(widget.foldTitle)
-                          : Container(),
-                      children: widget.items!))
-              : Container();
+                  leading: _generateIcon(widget.icon, widget.iconWidget),
+                  //leading: (value==SideMenuDisplayMode.open)?Container():widget.icon,
+                  title: (value == SideMenuDisplayMode.open)
+                      ? Text(
+                          widget.title ?? '',
+                        )
+                      : Container(),
+                  children: widget.children.map((item) {
+                    item.isIndented=true;
+                    return item;
+                  }).toList()));
         });
   }
 }
