@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as bdg;
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 
@@ -148,11 +148,11 @@ class _SideMenuItemState extends State<SideMenuItem> {
     if (widget.badgeContent == null) {
       return icon;
     } else {
-      return Badge(
+      return bdg.Badge(
         badgeContent: widget.badgeContent!,
         badgeColor: widget.badgeColor ?? Colors.red,
         alignment: Alignment.bottomRight,
-        position: const BadgePosition(top: -13, end: -7),
+        position: const bdg.BadgePosition(top: -13, end: -7),
         child: icon,
       );
     }
