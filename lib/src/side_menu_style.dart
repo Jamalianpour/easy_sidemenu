@@ -17,6 +17,9 @@ class SideMenuStyle {
   /// Color of [SideMenuItem] when mouse hover on that
   Color? hoverColor;
 
+  /// Color of [SideMenuItem] when mouse hover on that an it is selected
+  Color? selectedHoverColor;
+
   /// You can use the [displayMode] property to configure different
   /// display modes for the [SideMenu]
   SideMenuDisplayMode? displayMode;
@@ -67,6 +70,7 @@ class SideMenuStyle {
     this.backgroundColor,
     this.selectedColor,
     this.hoverColor = Colors.transparent,
+    this.selectedHoverColor,
     this.displayMode = SideMenuDisplayMode.auto,
     this.selectedTitleTextStyle,
     this.unselectedTitleTextStyle,
