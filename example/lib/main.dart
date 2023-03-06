@@ -57,6 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
               // showTooltip: false,
               displayMode: SideMenuDisplayMode.auto,
               hoverColor: Colors.blue[100],
+              selectedHoverColor: Color.alphaBlend(
+                  Color.fromRGBO(
+                      Theme.of(context).colorScheme.surfaceTint.red,
+                      Theme.of(context).colorScheme.surfaceTint.green,
+                      Theme.of(context).colorScheme.surfaceTint.blue,
+                      0.08),
+                  Colors.blue[100]!),
               selectedColor: Colors.lightBlue,
               selectedTitleTextStyle: const TextStyle(color: Colors.white),
               selectedIconColor: Colors.white,
