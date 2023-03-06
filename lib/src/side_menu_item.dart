@@ -156,9 +156,10 @@ class _SideMenuItemState extends State<SideMenuItem> {
     } else {
       return bdg.Badge(
         badgeContent: widget.badgeContent!,
-        badgeColor: widget.badgeColor ?? Colors.red,
-        alignment: Alignment.bottomRight,
-        position: const bdg.BadgePosition(top: -13, end: -7),
+        badgeStyle: bdg.BadgeStyle(
+          badgeColor: widget.badgeColor ?? Colors.red,
+        ),
+        position: bdg.BadgePosition.topEnd(top: -13, end: -7),
         child: icon,
       );
     }
