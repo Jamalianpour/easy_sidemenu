@@ -199,13 +199,17 @@ class _SideMenuItemState extends State<SideMenuItem> {
                         ),
                         if (value == SideMenuDisplayMode.open) ...[
                           Expanded(
-                            child: Text(
-                              widget.title ?? '',
-                              style: widget.priority == currentPage.ceil()
-                                  ? const TextStyle(fontSize: 17, color: Colors.black)
-                                      .merge(Global.style.selectedTitleTextStyle)
-                                  : const TextStyle(fontSize: 17, color: Colors.black54)
-                                      .merge(Global.style.unselectedTitleTextStyle),
+                            child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                widget.title ?? '',
+                                style: widget.priority == currentPage.ceil()
+                                    ? const TextStyle(fontSize: 17, color: Colors.black)
+                                        .merge(Global.style.selectedTitleTextStyle)
+                                    : const TextStyle(fontSize: 17, color: Colors.black54)
+                                        .merge(Global.style.unselectedTitleTextStyle),
+                              ),
                             ),
                           ),
                           if (widget.trailing != null && Global.showTrailing) ...[
