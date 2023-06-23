@@ -126,13 +126,17 @@ class _SideMenuState extends State<SideMenu> {
       _notifyParent();
       return Global.style.openSideMenuWidth ?? 300;
     }
-    if (mode == SideMenuDisplayMode.compact &&
-        Global.displayModeState.value != SideMenuDisplayMode.compact) {
-      Global.displayModeState.change(SideMenuDisplayMode.compact);
-      _notifyParent();
-      Global.showTrailing = false;
+    
+    if (mode == SideMenuDisplayMode.compact) {
+      if (Global.displayModeState.value != SideMenuDisplayMode.compact) {
+        Global.displayModeState.change(SideMenuDisplayMode.compact);
+        _notifyParent();
+        Global.showTrailing = false;
+      }
+
       return Global.style.compactSideMenuWidth ?? 50;
     }
+
     return _currentWidth;
   }
 
