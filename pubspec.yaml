@@ -4,14 +4,14 @@ version: 0.4.2
 homepage: https://github.com/Jamalianpour/easy_sidemenu
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  badges: 3.0.2
+  badges: ^3.1.1
 
 dev_dependencies:
   flutter_test:

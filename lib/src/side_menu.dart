@@ -126,7 +126,7 @@ class _SideMenuState extends State<SideMenu> {
       _notifyParent();
       return Global.style.openSideMenuWidth ?? 300;
     }
-    
+
     if (mode == SideMenuDisplayMode.compact) {
       if (Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);

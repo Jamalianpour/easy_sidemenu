@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.4.1
+  easy_sidemenu: ^0.4.2
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -61,7 +61,9 @@ List<SideMenuItem> items = [
     // Priority of item to show on SideMenu, lower value is displayed at the top
     priority: 0,
     title: 'Dashboard',
-    onTap: () => page.jumpToPage(0),
+    onTap: (index, _) {
+      sideMenu.changePage(index);
+    },
     icon: Icon(Icons.home),
     badgeContent: Text(
       '3',
@@ -71,7 +73,9 @@ List<SideMenuItem> items = [
   SideMenuItem(
     priority: 1,
     title: 'Settings',
-    onTap: () => page.jumpToPage(1),
+    onTap: (index, _) {
+      sideMenu.changePage(index);
+    },
     icon: Icon(Icons.settings),
   ),
   SideMenuItem(
@@ -105,43 +109,57 @@ SideMenuItem(
 After that you need to warp your main page to a `row` and then add `SideMenu` as first child of that, like below:
 
 ```dart
-PageController page = PageController();
-Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: [
-    SideMenu(
-      // Page controller to manage a PageView
-      controller: page,
-      // Will shows on top of all items, it can be a logo or a Title text
-      title: Image.asset('assets/images/easy_sidemenu.png'),
-      // Will show on bottom of SideMenu when displayMode was SideMenuDisplayMode.open
-      footer: Text('demo'),
-      // Notify when display mode changed
-      onDisplayModeChanged: (mode) {
-        print(mode);
-      },
-      // List of SideMenuItem to show them on SideMenu
-      items: items,
-    ),
-    Expanded(
-      child: PageView(
-        controller: page,
-        children: [
-          Container(
-            child: Center(
-              child: Text('Dashboard'),
-            ),
-          ),
-          Container(
-            child: Center(
-              child: Text('Settings'),
-            ),
-          ),
-        ],
+PageController pageController = PageController();
+SideMenuController sideMenu = SideMenuController();
+
+@override
+void initState() {
+  // Connect SideMenuController and PageController together
+  sideMenu.addListener((index) {
+    pageController.jumpToPage(index);
+  });
+  super.initState();
+}
+
+@override
+Widget build(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SideMenu(
+        // Page controller to manage a PageView
+        controller: sideMenu,
+        // Will shows on top of all items, it can be a logo or a Title text
+        title: Image.asset('assets/images/easy_sidemenu.png'),
+        // Will show on bottom of SideMenu when displayMode was SideMenuDisplayMode.open
+        footer: Text('demo'),
+        // Notify when display mode changed
+        onDisplayModeChanged: (mode) {
+          print(mode);
+        },
+        // List of SideMenuItem to show them on SideMenu
+        items: items,
       ),
-    ),
-  ],
-),
+      Expanded(
+        child: PageView(
+          controller: pageController,
+          children: [
+            Container(
+              child: Center(
+                child: Text('Dashboard'),
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text('Settings'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
 ```
 
 ### Style

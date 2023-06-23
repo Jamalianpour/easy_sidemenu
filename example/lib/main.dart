@@ -31,12 +31,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  PageController page = PageController();
+  PageController pageController = PageController();
   SideMenuController sideMenu = SideMenuController();
+
   @override
   void initState() {
-    sideMenu.addListener((p0) {
-      page.jumpToPage(p0);
+    sideMenu.addListener((index) {
+      pageController.jumpToPage(index);
     });
     super.initState();
   }
@@ -100,8 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 0,
                 title: 'Dashboard',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.home),
                 badgeContent: const Text(
@@ -113,16 +114,16 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 1,
                 title: 'Users',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.supervisor_account),
               ),
               SideMenuItem(
                 priority: 2,
                 title: 'Files',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.file_copy_rounded),
                 trailing: Container(
@@ -141,31 +142,31 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 3,
                 title: 'Download',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.download),
               ),
               SideMenuItem(
                 priority: 4,
                 title: 'Settings',
-                onTap: (page, _) {
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.settings),
               ),
               // SideMenuItem(
               //   priority: 5,
-              //   onTap:(page){
-              //     sideMenu.changePage(5);
+              //   onTap:(index, _){
+              //     sideMenu.changePage(index);
               //   },
               //   icon: const Icon(Icons.image_rounded),
               // ),
               // SideMenuItem(
               //   priority: 6,
               //   title: 'Only Title',
-              //   onTap:(page){
-              //     sideMenu.changePage(6);
+              //   onTap:(index, _){
+              //     sideMenu.changePage(index);
               //   },
               // ),
               const SideMenuItem(
@@ -177,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: PageView(
-              controller: page,
+              controller: pageController,
               children: [
                 Container(
                   color: Colors.white,

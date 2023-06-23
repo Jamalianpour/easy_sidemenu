@@ -12,25 +12,25 @@ class SideMenuController {
   SideMenuController({int initialPage = 0}) {
     _currentPage = initialPage;
   }
-  final _streameController = StreamController<int>.broadcast();
+  final _streamController = StreamController<int>.broadcast();
 
-  Stream<int> get stream => _streameController.stream;
+  Stream<int> get stream => _streamController.stream;
 
   void changePage(int index) {
     _currentPage = index;
-    _streameController.sink.add(index);
+    _streamController.sink.add(index);
   }
 
   void dispose() {
-    _streameController.close();
+    _streamController.close();
   }
 
-  void addListener(void Function(int) listener) {
-    _streameController.stream.listen(listener);
+  void addListener(void Function(int index) listener) {
+    _streamController.stream.listen(listener);
   }
 
   void removeListener(void Function(int) listener) {
-    _streameController.stream.listen(listener).cancel();
+    _streamController.stream.listen(listener).cancel();
   }
 }
 

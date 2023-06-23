@@ -1,3 +1,11 @@
+## [0.4.2]
+* Fix issue [#46](https://github.com/Jamalianpour/easy_sidemenu/issues/46): the width is not properly calculated when the widget is drawn a second time - [#58](https://github.com/Jamalianpour/easy_sidemenu/pull/58)
+* Fix error on builder - [#39](https://github.com/Jamalianpour/easy_sidemenu/issues/39)
+* Update readme
+
+## [0.4.1+1]
+* Fix Badge error on flutter 3.7.0
+
 ## [0.4.1]
 * Custom builder available for `SideMenuItem`
 * Fix SideMenu dispose - [#29](https://github.com/Jamalianpour/easy_sidemenu/issues/29)

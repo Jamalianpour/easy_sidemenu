@@ -23,12 +23,12 @@ class SideMenuItem extends StatefulWidget {
     this.tooltipContent,
     this.trailing,
     this.builder,
-  })  : assert(title != null || icon != null,
-            'Title and icon should not be empty at the same time'),
+  })  : assert(title != null || icon != null || builder != null,
+            'Title, icon and builder should not be empty at the same time'),
         super(key: key);
 
   /// A function that call when tap on [SideMenuItem]
-  final void Function(int, SideMenuController)? onTap;
+  final void Function(int index, SideMenuController sideMenuController)? onTap;
 
   /// Title text
   final String? title;
@@ -74,7 +74,7 @@ class SideMenuItem extends StatefulWidget {
   final SideMenuItemBuilder? builder;
 
   @override
-  _SideMenuItemState createState() => _SideMenuItemState();
+  State<SideMenuItem> createState() => _SideMenuItemState();
 }
 
 class _SideMenuItemState extends State<SideMenuItem> {
@@ -90,7 +90,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
   @override
   void initState() {
     super.initState();
-    _nonNullableWrap(WidgetsBinding.instance)!.addPostFrameCallback((timeStamp) {
+    _nonNullableWrap(WidgetsBinding.instance)!
+        .addPostFrameCallback((timeStamp) {
       // set initialPage
       setState(() {
         currentPage = Global.controller.currentPage;
@@ -168,6 +169,16 @@ class _SideMenuItemState extends State<SideMenuItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: () => widget.onTap?.call(widget.priority, Global.controller),
+      onHover: (value) {
+        setState(() {
+          isHovered = value;
+        });
+      },
+      highlightColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent,
       child: Padding(
         padding: Global.style.itemOuterPadding,
         child: Container(
@@ -182,7 +193,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
             builder: (context, value, child) {
               if (widget.builder == null) {
                 return Tooltip(
-                  message: (value == SideMenuDisplayMode.compact && Global.style.showTooltip)
+                  message: (value == SideMenuDisplayMode.compact &&
+                          Global.style.showTooltip)
                       ? widget.tooltipContent ?? widget.title ?? ""
                       : "",
                   child: Padding(
@@ -206,14 +218,19 @@ class _SideMenuItemState extends State<SideMenuItem> {
                               child: Text(
                                 widget.title ?? '',
                                 style: widget.priority == currentPage.ceil()
-                                    ? const TextStyle(fontSize: 17, color: Colors.black)
-                                        .merge(Global.style.selectedTitleTextStyle)
-                                    : const TextStyle(fontSize: 17, color: Colors.black54)
-                                        .merge(Global.style.unselectedTitleTextStyle),
+                                    ? const TextStyle(
+                                            fontSize: 17, color: Colors.black)
+                                        .merge(
+                                            Global.style.selectedTitleTextStyle)
+                                    : const TextStyle(
+                                            fontSize: 17, color: Colors.black54)
+                                        .merge(Global
+                                            .style.unselectedTitleTextStyle),
                               ),
                             ),
                           ),
-                          if (widget.trailing != null && Global.showTrailing) ...[
+                          if (widget.trailing != null &&
+                              Global.showTrailing) ...[
                             widget.trailing!,
                             SizedBox(
                               width: Global.style.itemInnerSpacing,
@@ -231,16 +248,6 @@ class _SideMenuItemState extends State<SideMenuItem> {
           ),
         ),
       ),
-      onTap: () => widget.onTap?.call(widget.priority, Global.controller),
-      onHover: (value) {
-        setState(() {
-          isHovered = value;
-        });
-      },
-      highlightColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
     );
   }
 }
