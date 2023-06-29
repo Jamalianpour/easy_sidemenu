@@ -231,7 +231,8 @@ class _SideMenuState extends State<SideMenu> {
   @override
   void dispose() {
     Future.delayed(Duration.zero, () {
-      Global.displayModeState.change(Global.displayModeState.value);
+      final mode = Global.style.displayMode ?? SideMenuDisplayMode.auto;
+      Global.displayModeState.change(mode);
     });
     super.dispose();
   }
