@@ -17,7 +17,6 @@ class SideMenuItem extends StatefulWidget {
     this.title,
     this.icon,
     this.iconWidget,
-    required this.priority,
     this.badgeContent,
     this.badgeColor,
     this.tooltipContent,
@@ -38,13 +37,6 @@ class SideMenuItem extends StatefulWidget {
 
   /// This is displayed instead if [icon] is null
   final Widget? iconWidget;
-
-  /// Priority of item to show on [SideMenu], lower value is displayed at the top
-  ///
-  /// * Start from 0
-  /// * This value should be unique
-  /// * This value used for page controller index
-  final int priority;
 
   /// Text show next to the icon as badge
   /// By default this is null
@@ -116,6 +108,17 @@ class _SideMenuItemState extends State<SideMenuItem> {
     super.dispose();
   }
 
+  bool isSameWidget(SideMenuItem other) {
+    if (other.icon == widget.icon &&
+        other.title == other.title &&
+        other.builder == widget.builder &&
+        other.trailing == widget.trailing) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /// This allows a value of type T or T?
   /// to be treated as a value of type T?.
   ///
@@ -127,7 +130,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
 
   /// Set background color of [SideMenuItem]
   Color _setColor() {
-    if (widget.priority == currentPage) {
+    if (Global.items.indexWhere((element) => isSameWidget(element)) ==
+        currentPage) {
       if (isHovered) {
         return Global.style.selectedHoverColor ??
             Global.style.selectedColor ??
@@ -147,7 +151,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color: widget.priority == currentPage
+      color: Global.items.indexWhere((element) => isSameWidget(element)) ==
+              currentPage
           ? Global.style.selectedIconColor ?? Colors.black
           : Global.style.unselectedIconColor ?? Colors.black54,
       size: Global.style.iconSize ?? 24,
@@ -168,30 +173,32 @@ class _SideMenuItemState extends State<SideMenuItem> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => widget.onTap?.call(widget.priority, Global.controller),
-      onHover: (value) {
-        setState(() {
-          isHovered = value;
-        });
-      },
-      highlightColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      child: Padding(
-        padding: Global.style.itemOuterPadding,
-        child: Container(
-          height: Global.style.itemHeight,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: _setColor(),
-            borderRadius: Global.style.itemBorderRadius,
-          ),
-          child: ValueListenableBuilder(
-            valueListenable: Global.displayModeState,
-            builder: (context, value, child) {
-              if (widget.builder == null) {
+    if (widget.builder == null) {
+      return InkWell(
+        onTap: () => widget.onTap?.call(
+            Global.items.indexWhere((element) => isSameWidget(element)),
+            Global.controller),
+        onHover: (value) {
+          setState(() {
+            isHovered = value;
+          });
+        },
+        highlightColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        child: Padding(
+          padding: Global.style.itemOuterPadding,
+          child: Container(
+            height: Global.style.itemHeight,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: _setColor(),
+              borderRadius: Global.style.itemBorderRadius,
+            ),
+            child: ValueListenableBuilder(
+              valueListenable: Global.displayModeState,
+              builder: (context, value, child) {
                 return Tooltip(
                   message: (value == SideMenuDisplayMode.compact &&
                           Global.style.showTooltip)
@@ -213,11 +220,16 @@ class _SideMenuItemState extends State<SideMenuItem> {
                         if (value == SideMenuDisplayMode.open) ...[
                           Expanded(
                             child: FittedBox(
-                              alignment: Alignment.centerLeft,
+                              alignment: Directionality.of(context) ==
+                                      TextDirection.ltr
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
                               fit: BoxFit.scaleDown,
                               child: Text(
                                 widget.title ?? '',
-                                style: widget.priority == currentPage.ceil()
+                                style: Global.items.indexWhere((element) =>
+                                            isSameWidget(element)) ==
+                                        currentPage.ceil()
                                     ? const TextStyle(
                                             fontSize: 17, color: Colors.black)
                                         .merge(
@@ -241,13 +253,18 @@ class _SideMenuItemState extends State<SideMenuItem> {
                     ),
                   ),
                 );
-              } else {
-                return widget.builder!(context, value as SideMenuDisplayMode);
-              }
-            },
+              },
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return ValueListenableBuilder(
+        valueListenable: Global.displayModeState,
+        builder: (context, value, child) {
+          return widget.builder!(context, value as SideMenuDisplayMode);
+        },
+      );
+    }
   }
 }

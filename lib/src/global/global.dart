@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
+import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:flutter/widgets.dart';
 
@@ -41,6 +42,7 @@ class Global {
       DisplayModeNotifier(SideMenuDisplayMode.auto);
   static bool showTrailing = true;
   static List<Function> itemsUpdate = [];
+  static List<SideMenuItem> items = [];
 }
 
 class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {

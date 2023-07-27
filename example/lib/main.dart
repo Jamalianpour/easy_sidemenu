@@ -58,13 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // showTooltip: false,
               displayMode: SideMenuDisplayMode.auto,
               hoverColor: Colors.blue[100],
-              selectedHoverColor: Color.alphaBlend(
-                  Color.fromRGBO(
-                      Theme.of(context).colorScheme.surfaceTint.red,
-                      Theme.of(context).colorScheme.surfaceTint.green,
-                      Theme.of(context).colorScheme.surfaceTint.blue,
-                      0.08),
-                  Colors.blue[100]!),
+              selectedHoverColor: Colors.blue[100],
               selectedColor: Colors.lightBlue,
               selectedTitleTextStyle: const TextStyle(color: Colors.white),
               selectedIconColor: Colors.white,
@@ -90,16 +84,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            footer: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'mohada',
-                style: TextStyle(fontSize: 15),
+            footer: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.lightBlue[100],
+                    borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                  child: Text(
+                    'mohada',
+                    style: TextStyle(fontSize: 15, color: Colors.grey[800]),
+                  ),
+                ),
               ),
             ),
             items: [
               SideMenuItem(
-                priority: 0,
                 title: 'Dashboard',
                 onTap: (index, _) {
                   sideMenu.changePage(index);
@@ -112,7 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 tooltipContent: "This is a tooltip for Dashboard item",
               ),
               SideMenuItem(
-                priority: 1,
                 title: 'Users',
                 onTap: (index, _) {
                   sideMenu.changePage(index);
@@ -120,7 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(Icons.supervisor_account),
               ),
               SideMenuItem(
-                priority: 2,
                 title: 'Files',
                 onTap: (index, _) {
                   sideMenu.changePage(index);
@@ -140,7 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     )),
               ),
               SideMenuItem(
-                priority: 3,
                 title: 'Download',
                 onTap: (index, _) {
                   sideMenu.changePage(index);
@@ -148,7 +147,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(Icons.download),
               ),
               SideMenuItem(
-                priority: 4,
+                builder: (context, displayMode) {
+                  return const Divider(
+                    endIndent: 8,
+                    indent: 8,
+                  );
+                },
+              ),
+              SideMenuItem(
                 title: 'Settings',
                 onTap: (index, _) {
                   sideMenu.changePage(index);
@@ -156,21 +162,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(Icons.settings),
               ),
               // SideMenuItem(
-              //   priority: 5,
               //   onTap:(index, _){
               //     sideMenu.changePage(index);
               //   },
               //   icon: const Icon(Icons.image_rounded),
               // ),
               // SideMenuItem(
-              //   priority: 6,
               //   title: 'Only Title',
               //   onTap:(index, _){
               //     sideMenu.changePage(index);
               //   },
               // ),
               const SideMenuItem(
-                priority: 7,
                 title: 'Exit',
                 icon: Icon(Icons.exit_to_app),
               ),

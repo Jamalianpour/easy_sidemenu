@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.4.2
+  easy_sidemenu: ^0.5.0
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -58,8 +58,6 @@ You must first define a list of items to display on `SideMenu`:
 ```dart
 List<SideMenuItem> items = [
   SideMenuItem(
-    // Priority of item to show on SideMenu, lower value is displayed at the top
-    priority: 0,
     title: 'Dashboard',
     onTap: (index, _) {
       sideMenu.changePage(index);
@@ -71,7 +69,6 @@ List<SideMenuItem> items = [
     ),
   ),
   SideMenuItem(
-    priority: 1,
     title: 'Settings',
     onTap: (index, _) {
       sideMenu.changePage(index);
@@ -79,7 +76,6 @@ List<SideMenuItem> items = [
     icon: Icon(Icons.settings),
   ),
   SideMenuItem(
-    priority: 2,
     title: 'Exit',
     onTap: () {},
     icon: Icon(Icons.exit_to_app),
@@ -87,18 +83,12 @@ List<SideMenuItem> items = [
 ];
 ```
 
-###### priority rule:
-
-- Priority should start from 0
-- Priority value should be unique
-
 ###### custom builder:
 
 Instead of `title` and `icon` in `SideMenuItem` can use `builder` to create your customize items:
 
 ```dart
 SideMenuItem(
-  priority: 2,
   builder: (context, displayMode) {
     return Container();
   },

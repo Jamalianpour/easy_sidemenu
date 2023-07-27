@@ -71,6 +71,7 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   void initState() {
+    Global.style = widget.style ?? SideMenuStyle();
     super.initState();
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
@@ -82,7 +83,15 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
+    Global.style = widget.style ?? SideMenuStyle();
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _currentWidth = _widthSize(
+        Global.style.displayMode ?? SideMenuDisplayMode.auto, context);
   }
 
   void _notifyParent() {
@@ -94,7 +103,7 @@ class _SideMenuState extends State<SideMenu> {
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
     if (mode == SideMenuDisplayMode.auto) {
-      if (MediaQuery.of(context).size.width > collapseWidth &&
+      if (MediaQuery.sizeOf(context).width > collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.open) {
         Global.displayModeState.change(SideMenuDisplayMode.open);
         _notifyParent();
@@ -106,7 +115,7 @@ class _SideMenuState extends State<SideMenu> {
         });
         return Global.style.openSideMenuWidth ?? 300;
       }
-      if (MediaQuery.of(context).size.width <= collapseWidth &&
+      if (MediaQuery.sizeOf(context).width <= collapseWidth &&
           Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
@@ -162,20 +171,21 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     Global.controller = widget.controller;
-    widget.items.sort((a, b) => a.priority.compareTo(b.priority));
-    Global.style = widget.style ?? SideMenuStyle();
+    Global.items = widget.items;
+
     _currentWidth = _widthSize(
         Global.style.displayMode ?? SideMenuDisplayMode.auto, context);
 
     return AnimatedContainer(
       duration: _toggleDuration(),
       width: _currentWidth,
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.sizeOf(context).height,
       decoration: _decoration(widget.style),
       child: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (Global.style.displayMode == SideMenuDisplayMode.compact &&
                     showToggle)

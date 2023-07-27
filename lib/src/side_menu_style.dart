@@ -17,7 +17,7 @@ class SideMenuStyle {
   /// Color of [SideMenuItem] when mouse hover on that
   Color? hoverColor;
 
-  /// Color of [SideMenuItem] when mouse hover on that an it is selected
+  /// Color of [SideMenuItem] when mouse hover on that and it was selected
   Color? selectedHoverColor;
 
   /// You can use the [displayMode] property to configure different

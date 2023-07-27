@@ -71,7 +71,7 @@ class FirstPage extends StatelessWidget {
                 controller: controller,
                 items: [
                   SideMenuItem(
-                    priority: 0,
+                    // priority: 0,
                     icon: const Icon(Icons.send),
                     onTap: (_, __) {
                       Navigator.of(context)

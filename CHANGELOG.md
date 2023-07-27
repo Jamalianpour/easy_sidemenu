@@ -1,3 +1,8 @@
+## [0.5.0]
+* **Braking**: priority has been removed from `SideMenuItem`
+* builder has been changed and now can use any widget as `SideMenuItem`
+* Fix some performance issue
+
 ## [0.4.2]
 * Fix issue [#46](https://github.com/Jamalianpour/easy_sidemenu/issues/46): the width is not properly calculated when the widget is drawn a second time - [#58](https://github.com/Jamalianpour/easy_sidemenu/pull/58)
 * Fix error on builder - [#39](https://github.com/Jamalianpour/easy_sidemenu/issues/39)
