@@ -74,9 +74,11 @@ class _SideMenuItemState extends State<SideMenuItem> {
   bool isHovered = false;
 
   void _handleChange(int page) {
-    setState(() {
-      currentPage = page;
-    });
+      if(mounted) {
+        setState(() {
+          currentPage = page;
+        });   
+      }
   }
 
   @override
