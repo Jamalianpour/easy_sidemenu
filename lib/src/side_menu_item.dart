@@ -156,7 +156,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
       color: Global.items.indexWhere((element) => isSameWidget(element)) ==
               currentPage
           ? Global.style.selectedIconColor ?? Colors.black
-          : Global.style.unselectedIconColor ?? mainIcon.color,
+          : mainIcon.color ?? Global.style.unselectedIconColor,
       size: Global.style.iconSize ?? 24,
     );
     if (widget.badgeContent == null) {
