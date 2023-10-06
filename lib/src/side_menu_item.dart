@@ -110,7 +110,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
 
   bool isSameWidget(SideMenuItem other) {
     if (other.icon == widget.icon &&
-        other.title == other.title &&
+        other.title == widget.title &&
         other.builder == widget.builder &&
         other.trailing == widget.trailing) {
       return true;
