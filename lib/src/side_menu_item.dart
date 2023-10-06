@@ -15,6 +15,7 @@ class SideMenuItem extends StatefulWidget {
     Key? key,
     this.onTap,
     this.title,
+    this.titleTextStyle,
     this.icon,
     this.iconWidget,
     this.badgeContent,
@@ -31,6 +32,9 @@ class SideMenuItem extends StatefulWidget {
 
   /// Title text
   final String? title;
+
+  /// Title text styke
+  final TextStyle? titleTextStyle;
 
   /// A Icon to display before [title]
   final Icon? icon;
@@ -238,7 +242,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
                                             Global.style.selectedTitleTextStyle)
                                     : const TextStyle(
                                             fontSize: 17, color: Colors.black54)
-                                        .merge(Global
+                                        .merge(widget.titleTextStyle ?? Global
                                             .style.unselectedTitleTextStyle),
                               ),
                             ),
