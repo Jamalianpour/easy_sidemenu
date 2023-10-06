@@ -116,7 +116,7 @@ class _SideMenuState extends State<SideMenu> {
         }
         return Global.style.openSideMenuWidth ?? 300;
       }
-      if (MediaQuery.sizeOf(context).width <= collapseWidth) {
+      else if (MediaQuery.sizeOf(context).width <= collapseWidth) {
         if (Global.displayModeState.value != SideMenuDisplayMode.compact) {
           Global.displayModeState.change(SideMenuDisplayMode.compact);
           _notifyParent();
@@ -126,20 +126,22 @@ class _SideMenuState extends State<SideMenu> {
         return Global.style.compactSideMenuWidth ?? 50;
       }
       return _currentWidth;
-    } else if (mode == SideMenuDisplayMode.open &&
-        Global.displayModeState.value != SideMenuDisplayMode.open) {
-      Global.displayModeState.change(SideMenuDisplayMode.open);
-      Future.delayed(_toggleDuration(), () {
-        Global.showTrailing = true;
-        for (var update in Global.itemsUpdate) {
-          update();
-        }
-      });
-      _notifyParent();
+    }
+    else if (mode == SideMenuDisplayMode.open) {
+      if (Global.displayModeState.value != SideMenuDisplayMode.open) {
+        Global.displayModeState.change(SideMenuDisplayMode.open);
+        _notifyParent();
+        Future.delayed(_toggleDuration(), () {
+          Global.showTrailing = true;
+          for (var update in Global.itemsUpdate) {
+            update();
+          }
+        });
+      }
       return Global.style.openSideMenuWidth ?? 300;
     }
 
-    if (mode == SideMenuDisplayMode.compact) {
+    else if (mode == SideMenuDisplayMode.compact) {
       if (Global.displayModeState.value != SideMenuDisplayMode.compact) {
         Global.displayModeState.change(SideMenuDisplayMode.compact);
         _notifyParent();
@@ -249,3 +251,4 @@ class _SideMenuState extends State<SideMenu> {
     super.dispose();
   }
 }
+
