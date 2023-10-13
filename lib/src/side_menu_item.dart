@@ -72,24 +72,19 @@ class SideMenuItem extends StatefulWidget {
 class _SideMenuItemState extends State<SideMenuItem> {
   late int currentPage = Global.controller.currentPage;
   bool isHovered = false;
-
-  void _handleChange(int page) {
-    setState(() {
-      currentPage = page;
-    });
-  }
+  bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
     _nonNullableWrap(WidgetsBinding.instance)!
         .addPostFrameCallback((timeStamp) {
-      // set initialPage
-      setState(() {
-        currentPage = Global.controller.currentPage;
-      });
+      // Set initialPage, only if the widget is still mounted
       if (mounted) {
-        // set controller SideMenuItem page controller callback
+        currentPage = Global.controller.currentPage;
+      }
+      if (!isDisposed) {
+        // Set controller SideMenuItem page controller callback
         Global.controller.addListener(_handleChange);
       }
     });
@@ -98,14 +93,32 @@ class _SideMenuItemState extends State<SideMenuItem> {
 
   void update() {
     if (mounted) {
+      // Trigger a build only if the widget is still mounted
       setState(() {});
     }
   }
 
   @override
   void dispose() {
+    isDisposed = true;
     Global.controller.removeListener(_handleChange);
     super.dispose();
+  }
+
+  void _handleChange(int page) {
+    safeSetState(() {
+      currentPage = page;
+    });
+  }
+
+  /// Ensure that safeSetState only calls setState when the widget is still mounted.
+  ///
+  /// When adding changes to this library in future, use this function instead of 
+  /// if (mounted) condition on setState at every place 
+  void safeSetState(VoidCallback fn) {
+    if (mounted) {
+      setState(fn);
+    }
   }
 
   bool isSameWidget(SideMenuItem other) {
@@ -179,7 +192,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
             Global.items.indexWhere((element) => isSameWidget(element)),
             Global.controller),
         onHover: (value) {
-          setState(() {
+          safeSetState(() {
             isHovered = value;
           });
         },

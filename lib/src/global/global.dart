@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/scheduler.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
@@ -49,7 +49,9 @@ class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
   DisplayModeNotifier(SideMenuDisplayMode value) : super(value);
 
   void change(SideMenuDisplayMode mode) {
-    value = mode;
-    notifyListeners();
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      value = mode;
+      notifyListeners();
+    });
   }
 }
