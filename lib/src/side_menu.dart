@@ -63,7 +63,7 @@ class SideMenu extends StatefulWidget {
     this.displayModeToggleDuration,
     this.alwaysShowFooter = false,
     this.collapseWidth = 600,
-  }) : super(key: key){
+  }) : super(key: key) {
     this.global.style = this.style ?? SideMenuStyle();
     this.global.controller = this.controller;
     sidemenuitems = items
@@ -93,6 +93,7 @@ class _SideMenuState extends State<SideMenu> {
   late bool showToggle;
   late bool alwaysShowFooter;
   late int collapseWidth;
+  bool animationInProgress = false;
 
   @override
   void initState() {
@@ -126,6 +127,7 @@ class _SideMenuState extends State<SideMenu> {
 
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
+    animationInProgress = false;
     if (mode == SideMenuDisplayMode.auto) {
       if (MediaQuery.of(context).size.width > collapseWidth) {
         if (widget.global.displayModeState.value != SideMenuDisplayMode.open) {
@@ -136,11 +138,13 @@ class _SideMenuState extends State<SideMenu> {
             for (var update in widget.global.itemsUpdate) {
               update();
             }
+            animationInProgress = false;
           });
         }
         return widget.global.style.openSideMenuWidth ?? 300;
       } else if (MediaQuery.sizeOf(context).width <= collapseWidth) {
-        if (widget.global.displayModeState.value != SideMenuDisplayMode.compact) {
+        if (widget.global.displayModeState.value !=
+            SideMenuDisplayMode.compact) {
           widget.global.displayModeState.change(SideMenuDisplayMode.compact);
           _notifyParent();
           widget.global.showTrailing = false;
@@ -158,6 +162,7 @@ class _SideMenuState extends State<SideMenu> {
           for (var update in widget.global.itemsUpdate) {
             update();
           }
+          animationInProgress = false;
         });
       }
       return widget.global.style.openSideMenuWidth ?? 300;
@@ -212,7 +217,8 @@ class _SideMenuState extends State<SideMenu> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.global.style.displayMode == SideMenuDisplayMode.compact &&
+                if (widget.global.style.displayMode ==
+                        SideMenuDisplayMode.compact &&
                     showToggle)
                   const SizedBox(
                     height: 42,
@@ -231,10 +237,10 @@ class _SideMenuState extends State<SideMenu> {
               showToggle)
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal:
-                      widget.global.displayModeState.value == SideMenuDisplayMode.open
-                          ? 0
-                          : 4,
+                  horizontal: widget.global.displayModeState.value ==
+                          SideMenuDisplayMode.open
+                      ? 0
+                      : 4,
                   vertical: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -242,10 +248,17 @@ class _SideMenuState extends State<SideMenu> {
                   SideMenuToggle(
                     global: widget.global,
                     onTap: () {
+                      if (context
+                              .findAncestorStateOfType<_SideMenuState>()
+                              ?.animationInProgress ??
+                          false) {
+                        return;
+                      }
                       if (widget.global.displayModeState.value ==
                           SideMenuDisplayMode.compact) {
                         setState(() {
-                          widget.global.style.displayMode = SideMenuDisplayMode.open;
+                          widget.global.style.displayMode =
+                              SideMenuDisplayMode.open;
                         });
                       } else if (widget.global.displayModeState.value ==
                           SideMenuDisplayMode.open) {
@@ -267,7 +280,8 @@ class _SideMenuState extends State<SideMenu> {
   @override
   void dispose() {
     Future.delayed(Duration.zero, () {
-      widget.global.displayModeState.change(widget.global.displayModeState.value);
+      widget.global.displayModeState
+          .change(widget.global.displayModeState.value);
     });
     super.dispose();
   }
