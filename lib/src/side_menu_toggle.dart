@@ -1,6 +1,5 @@
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
-
 import 'global/global.dart';
 
 class SideMenuToggle extends StatefulWidget {
@@ -21,11 +20,13 @@ class _SideMenuToggleState extends State<SideMenuToggle> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top:
-              widget.global.displayModeState.value == SideMenuDisplayMode.open ? 4 : 0,
-          right: widget.global.displayModeState.value == SideMenuDisplayMode.open
-              ? 0
-              : 2),
+          top: widget.global.displayModeState.value == SideMenuDisplayMode.open
+              ? 4
+              : 0,
+          right:
+              widget.global.displayModeState.value == SideMenuDisplayMode.open
+                  ? 0
+                  : 2),
       child: IconButton(
         color: widget.global.style.toggleColor,
         icon: AnimatedSwitcher(

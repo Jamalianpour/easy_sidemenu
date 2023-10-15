@@ -117,8 +117,8 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
 
   /// Ensure that safeSetState only calls setState when the widget is still mounted.
   ///
-  /// When adding changes to this library in future, use this function instead of 
-  /// if (mounted) condition on setState at every place 
+  /// When adding changes to this library in future, use this function instead of
+  /// if (mounted) condition on setState at every place
   void safeSetState(VoidCallback fn) {
     if (mounted) {
       setState(fn);
@@ -154,7 +154,8 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
             widget.global.style.selectedColor ??
             Theme.of(context).highlightColor;
       } else {
-        return widget.global.style.selectedColor ?? Theme.of(context).highlightColor;
+        return widget.global.style.selectedColor ??
+            Theme.of(context).highlightColor;
       }
     } else if (isHovered) {
       return widget.global.style.hoverColor ?? Colors.transparent;
@@ -168,10 +169,11 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color: widget.global.items.indexWhere((element) => isSameWidget(element)) ==
-              currentPage
-          ? widget.global.style.selectedIconColor ?? Colors.black
-          : widget.global.style.unselectedIconColor ?? Colors.black54,
+      color:
+          widget.global.items.indexWhere((element) => isSameWidget(element)) ==
+                  currentPage
+              ? widget.global.style.selectedIconColor ?? Colors.black
+              : widget.global.style.unselectedIconColor ?? Colors.black54,
       size: widget.global.style.iconSize ?? 24,
     );
     if (widget.badgeContent == null) {
@@ -244,17 +246,18 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                               fit: BoxFit.scaleDown,
                               child: Text(
                                 widget.title ?? '',
-                                style: widget.global.items.indexWhere((element) =>
-                                            isSameWidget(element)) ==
+                                style: widget.global.items.indexWhere(
+                                            (element) =>
+                                                isSameWidget(element)) ==
                                         currentPage.ceil()
                                     ? const TextStyle(
                                             fontSize: 17, color: Colors.black)
-                                        .merge(
-                                            widget.global.style.selectedTitleTextStyle)
+                                        .merge(widget.global.style
+                                            .selectedTitleTextStyle)
                                     : const TextStyle(
                                             fontSize: 17, color: Colors.black54)
-                                        .merge(widget.global
-                                            .style.unselectedTitleTextStyle),
+                                        .merge(widget.global.style
+                                            .unselectedTitleTextStyle),
                               ),
                             ),
                           ),

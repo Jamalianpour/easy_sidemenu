@@ -7,7 +7,7 @@ class SideMenuItem {
   /// Title text
   final String? title;
 
-  /// A function that will be called when tap on [SideMenuItem] corresponding 
+  /// A function that will be called when tap on [SideMenuItem] corresponding
   /// to this [SideMenuItem]
   final void Function(int index, SideMenuController sideMenuController)? onTap;
 
@@ -23,7 +23,7 @@ class SideMenuItem {
 
   /// Background color for badge
   final Color? badgeColor;
-  
+
   /// Content of the tooltip - if not filled, the [title] will
   /// be used. [showTooltipOverItemsName] must be set to true.
   final String? tooltipContent;
@@ -38,9 +38,10 @@ class SideMenuItem {
   /// whose second child is the metadata text, instead of using the [trailing]
   /// property.
   final Widget? trailing;
-  
+
   /// Create custom sideMenuItem widget with builder
-  final Widget Function(BuildContext context, SideMenuDisplayMode displayMode)? builder;
+  final Widget Function(BuildContext context, SideMenuDisplayMode displayMode)?
+      builder;
 
   const SideMenuItem({
     this.onTap,
@@ -55,5 +56,4 @@ class SideMenuItem {
   })  : assert(title != null || icon != null || builder != null,
             'Title, icon and builder should not be empty at the same time'),
         super();
-    
 }

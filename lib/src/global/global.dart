@@ -15,7 +15,6 @@ class Global {
   List<SideMenuItemWithGlobal> items = [];
 }
 
-
 class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
   DisplayModeNotifier(SideMenuDisplayMode value) : super(value);
 
