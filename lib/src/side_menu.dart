@@ -3,6 +3,7 @@ import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_toggle.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
+import 'package:easy_sidemenu/src/side_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'global/global.dart';
 
