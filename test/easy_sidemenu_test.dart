@@ -5,6 +5,7 @@ import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 
 final controller = SideMenuController();
 
@@ -21,7 +22,7 @@ void main() {
 
     expect(firstWidth, equals(compactWidth));
 
-    await tester.tap(find.byType(SideMenuItem));
+    await tester.tap(find.byType(SideMenuItemWithGlobal));
 
     // Wait for navigation
     await tester.pumpAndSettle();

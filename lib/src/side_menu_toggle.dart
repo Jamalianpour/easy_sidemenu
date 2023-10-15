@@ -5,8 +5,10 @@ import 'global/global.dart';
 
 class SideMenuToggle extends StatefulWidget {
   final Function? onTap;
+  final Global global;
   const SideMenuToggle({
     Key? key,
+    required this.global,
     required this.onTap,
   }) : super(key: key);
 
@@ -20,12 +22,12 @@ class _SideMenuToggleState extends State<SideMenuToggle> {
     return Padding(
       padding: EdgeInsets.only(
           top:
-              Global.displayModeState.value == SideMenuDisplayMode.open ? 4 : 0,
-          right: Global.displayModeState.value == SideMenuDisplayMode.open
+              widget.global.displayModeState.value == SideMenuDisplayMode.open ? 4 : 0,
+          right: widget.global.displayModeState.value == SideMenuDisplayMode.open
               ? 0
               : 2),
       child: IconButton(
-        color: Global.style.toggleColor,
+        color: widget.global.style.toggleColor,
         icon: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, anim) => RotationTransition(
@@ -34,7 +36,7 @@ class _SideMenuToggleState extends State<SideMenuToggle> {
                       : Tween<double>(begin: 0.5, end: 1).animate(anim),
                   child: FadeTransition(opacity: anim, child: child),
                 ),
-            child: Global.style.displayMode == SideMenuDisplayMode.open
+            child: widget.global.style.displayMode == SideMenuDisplayMode.open
                 ? const Icon(
                     Icons.navigate_next,
                     key: ValueKey('Sidemenu_icon1'),

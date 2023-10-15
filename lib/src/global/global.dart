@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/scheduler.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
-import 'package:easy_sidemenu/src/side_menu_item.dart';
+import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:flutter/widgets.dart';
 
@@ -36,14 +36,15 @@ class SideMenuController {
 }
 
 class Global {
-  static late SideMenuController controller;
-  static late SideMenuStyle style;
-  static DisplayModeNotifier displayModeState =
+  late SideMenuController controller;
+  late SideMenuStyle style;
+  DisplayModeNotifier displayModeState =
       DisplayModeNotifier(SideMenuDisplayMode.auto);
-  static bool showTrailing = true;
-  static List<Function> itemsUpdate = [];
-  static List<SideMenuItem> items = [];
+  bool showTrailing = true;
+  List<Function> itemsUpdate = [];
+  List<SideMenuItemWithGlobal> items = [];
 }
+
 
 class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
   DisplayModeNotifier(SideMenuDisplayMode value) : super(value);
