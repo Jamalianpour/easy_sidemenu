@@ -1,48 +1,18 @@
-import 'dart:async';
 import 'package:flutter/scheduler.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
-import 'package:easy_sidemenu/src/side_menu_item.dart';
+import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
+import 'package:easy_sidemenu/src/side_menu_controller.dart';
 import 'package:flutter/widgets.dart';
 
-class SideMenuController {
-  late int _currentPage;
-
-  int get currentPage => _currentPage;
-
-  SideMenuController({int initialPage = 0}) {
-    _currentPage = initialPage;
-  }
-  final _streamController = StreamController<int>.broadcast();
-
-  Stream<int> get stream => _streamController.stream;
-
-  void changePage(int index) {
-    _currentPage = index;
-    _streamController.sink.add(index);
-  }
-
-  void dispose() {
-    _streamController.close();
-  }
-
-  void addListener(void Function(int index) listener) {
-    _streamController.stream.listen(listener);
-  }
-
-  void removeListener(void Function(int) listener) {
-    _streamController.stream.listen(listener).cancel();
-  }
-}
-
 class Global {
-  static late SideMenuController controller;
-  static late SideMenuStyle style;
-  static DisplayModeNotifier displayModeState =
+  late SideMenuController controller;
+  late SideMenuStyle style;
+  DisplayModeNotifier displayModeState =
       DisplayModeNotifier(SideMenuDisplayMode.auto);
-  static bool showTrailing = true;
-  static List<Function> itemsUpdate = [];
-  static List<SideMenuItem> items = [];
+  bool showTrailing = true;
+  List<Function> itemsUpdate = [];
+  List<SideMenuItemWithGlobal> items = [];
 }
 
 class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
