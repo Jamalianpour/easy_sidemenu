@@ -127,7 +127,7 @@ class _SideMenuState extends State<SideMenu> {
 
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
-    animationInProgress = false;
+    animationInProgress = true;
     if (mode == SideMenuDisplayMode.auto) {
       if (MediaQuery.of(context).size.width > collapseWidth) {
         if (widget.global.displayModeState.value != SideMenuDisplayMode.open) {
