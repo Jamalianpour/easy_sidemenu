@@ -70,28 +70,40 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: widget.global.displayModeState,
-        builder: (context, value, child) {
-          return ListTileTheme(
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: value == SideMenuDisplayMode.compact
-                      ? widget.global.style.itemInnerSpacing
-                      : widget.global.style.itemInnerSpacing + 5),
-              horizontalTitleGap: 0,
-              child: ExpansionTile(
-                  //trailing:  (value==SideMenuDisplayMode.open)?null:const SizedBox.shrink(),
-
-                  leading: _generateIcon(widget.icon, widget.iconWidget),
-                  //leading: (value==SideMenuDisplayMode.open)?Container():widget.icon,
-                  title: (value == SideMenuDisplayMode.open)
-                      ? Text(
-                          widget.title ?? '',
-                        )
-                      : Container(),
-                  children: widget.processedChildren.map((item) {
-                    //item.isIndented = true;
-                    return item;
-                  }).toList()));
-        });
+      valueListenable: widget.global.displayModeState,
+      builder: (context, value, child) {
+        return ListTileTheme(
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: value == SideMenuDisplayMode.compact
+                ? widget.global.style.itemInnerSpacing
+                : widget.global.style.itemInnerSpacing + 5,
+          ),
+          horizontalTitleGap: 0,
+          child: ExpansionTile(
+            leading: SizedBox(
+              // Ensures the icon does not take the full tile width
+              width: 40.0, // Adjust size constraints as required
+              child: _generateIcon(widget.icon, widget.iconWidget),
+            ),
+            // The title should only take space when SideMenuDisplayMode is open
+            title: Visibility(
+              visible: value == SideMenuDisplayMode.open,
+              maintainState: true,
+              maintainSize: false,
+              maintainAnimation: true,
+              child: Text(
+                widget.title ?? '',
+              ),
+            ),
+            // Make sure children do not cause overflow
+            children: widget.processedChildren.map((item) {
+              // Ensure child items are properly sized as well
+              item.insideExpansionItem = true;
+              return item;
+            }).toList(),
+          ),
+        );
+      },
+    );
   }
 }

@@ -11,7 +11,7 @@ class SideMenuItemWithGlobal extends StatefulWidget {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
-  const SideMenuItemWithGlobal({
+  SideMenuItemWithGlobal({
     Key? key,
     required this.global,
     this.onTap,
@@ -32,6 +32,9 @@ class SideMenuItemWithGlobal extends StatefulWidget {
 
   /// Global object of [SideMenu]
   final Global global;
+
+  /// If inside [SideMenuExpansionItem]
+  bool insideExpansionItem = false;
 
   /// Title text
   final String? title;
@@ -214,8 +217,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
     if (widget.builder == null) {
       return InkWell(
         onTap: () => widget.onTap?.call(
-            _getIndexofCurrentSideMenuItemWidget(),
-            widget.global.controller),
+            _getIndexofCurrentSideMenuItemWidget(), widget.global.controller),
         onHover: (value) {
           safeSetState(() {
             isHovered = value;
@@ -244,12 +246,16 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                       : "",
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
+                        vertical: value == SideMenuDisplayMode.compact
+                            ? widget.global.style.itemInnerSpacing
+                            : widget.insideExpansionItem
+                                ? widget.global.style.itemInnerSpacing * 2
+                                : widget.global.style.itemInnerSpacing),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: widget.global.style.itemInnerSpacing,
+                          width: widget.global.style.itemInnerSpacing * 2,
                         ),
                         _generateIcon(widget.icon, widget.iconWidget),
                         SizedBox(
