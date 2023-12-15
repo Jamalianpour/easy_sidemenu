@@ -255,22 +255,18 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: widget.global.style.itemInnerSpacing * 2,
-                        ),
+                            width: widget.global.style.itemInnerSpacing * 2),
                         _generateIcon(widget.icon, widget.iconWidget),
-                        SizedBox(
-                          width: widget.global.style.itemInnerSpacing,
-                        ),
+                        SizedBox(width: widget.global.style.itemInnerSpacing),
                         if (value == SideMenuDisplayMode.open) ...[
                           Expanded(
-                            child: FittedBox(
-                              alignment: Directionality.of(context) ==
-                                      TextDirection.ltr
-                                  ? Alignment.centerLeft
-                                  : Alignment.centerRight,
-                              fit: BoxFit.scaleDown,
+                            // Expanded will allow the text to take up all available space
+                            child: Align(
+                              alignment: Alignment.centerLeft,
                               child: Text(
                                 widget.title ?? '',
+                                overflow: TextOverflow
+                                    .ellipsis, // Helps to handle long text
                                 style: _getIndexofCurrentSideMenuItemWidget() ==
                                         currentPage.ceil()
                                     ? const TextStyle(
@@ -284,11 +280,15 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                               ),
                             ),
                           ),
+                          SizedBox.shrink(),
                           if (widget.trailing != null &&
                               widget.global.showTrailing) ...[
-                            widget.trailing!,
-                            SizedBox(
-                              width: widget.global.style.itemInnerSpacing,
+                            // Aligning the trailing widget to the right
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: widget.trailing!,
+                              ),
                             ),
                           ],
                         ],

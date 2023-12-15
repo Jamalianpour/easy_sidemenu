@@ -18,9 +18,9 @@ class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
   DisplayModeNotifier(SideMenuDisplayMode value) : super(value);
 
   void change(SideMenuDisplayMode mode) {
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    if (value != mode) {
       value = mode;
       notifyListeners();
-    });
+    }
   }
 }
