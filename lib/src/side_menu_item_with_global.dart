@@ -11,7 +11,7 @@ class SideMenuItemWithGlobal extends StatefulWidget {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
-  const SideMenuItemWithGlobal({
+  SideMenuItemWithGlobal({
     Key? key,
     required this.global,
     this.onTap,
@@ -32,6 +32,9 @@ class SideMenuItemWithGlobal extends StatefulWidget {
 
   /// Global object of [SideMenu]
   final Global global;
+
+  /// If inside [SideMenuExpansionItem]
+  bool insideExpansionItem = false;
 
   /// Title text
   final String? title;
@@ -145,10 +148,31 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
   /// https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0#your-code
   T? _nonNullableWrap<T>(T? value) => value;
 
+  int _getIndexofCurrentSideMenuItemWidget() {
+    int index = 0;
+    int n = widget.global.items.length;
+    for (int i = 0; i < n; i++) {
+      if (widget.global.items[i] is SideMenuItemWithGlobal) {
+        if (isSameWidget(widget.global.items[i])) {
+          return index;
+        } else
+          index = index + 1;
+      } else {
+        int m = widget.global.items[i].processedChildren.length;
+        for (int j = 0; j < m; j++) {
+          if (isSameWidget(widget.global.items[i].processedChildren[j])) {
+            return index;
+          } else
+            index = index + 1;
+        }
+      }
+    }
+    return -1;
+  }
+
   /// Set background color of [SideMenuItemWithGlobal]
   Color _setColor() {
-    if (widget.global.items.indexWhere((element) => isSameWidget(element)) ==
-        currentPage) {
+    if (_getIndexofCurrentSideMenuItemWidget() == currentPage) {
       if (isHovered) {
         return widget.global.style.selectedHoverColor ??
             widget.global.style.selectedColor ??
@@ -169,11 +193,9 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color:
-          widget.global.items.indexWhere((element) => isSameWidget(element)) ==
-                  currentPage
-              ? widget.global.style.selectedIconColor ?? Colors.black
-              : widget.global.style.unselectedIconColor ?? Colors.black54,
+      color: _getIndexofCurrentSideMenuItemWidget() == currentPage
+          ? widget.global.style.selectedIconColor ?? Colors.black
+          : widget.global.style.unselectedIconColor ?? Colors.black54,
       size: widget.global.style.iconSize ?? 24,
     );
     if (widget.badgeContent == null) {
@@ -195,8 +217,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
     if (widget.builder == null) {
       return InkWell(
         onTap: () => widget.onTap?.call(
-            widget.global.items.indexWhere((element) => isSameWidget(element)),
-            widget.global.controller),
+            _getIndexofCurrentSideMenuItemWidget(), widget.global.controller),
         onHover: (value) {
           safeSetState(() {
             isHovered = value;
@@ -225,30 +246,28 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                       : "",
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: value == SideMenuDisplayMode.compact ? 0 : 8),
+                        vertical: value == SideMenuDisplayMode.compact
+                            ? widget.global.style.itemInnerSpacing
+                            : widget.insideExpansionItem
+                                ? widget.global.style.itemInnerSpacing * 2
+                                : widget.global.style.itemInnerSpacing),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: widget.global.style.itemInnerSpacing,
-                        ),
+                            width: widget.global.style.itemInnerSpacing * 2),
                         _generateIcon(widget.icon, widget.iconWidget),
-                        SizedBox(
-                          width: widget.global.style.itemInnerSpacing,
-                        ),
+                        SizedBox(width: widget.global.style.itemInnerSpacing),
                         if (value == SideMenuDisplayMode.open) ...[
                           Expanded(
-                            child: FittedBox(
-                              alignment: Directionality.of(context) ==
-                                      TextDirection.ltr
-                                  ? Alignment.centerLeft
-                                  : Alignment.centerRight,
-                              fit: BoxFit.scaleDown,
+                            // Expanded will allow the text to take up all available space
+                            child: Align(
+                              alignment: Alignment.centerLeft,
                               child: Text(
                                 widget.title ?? '',
-                                style: widget.global.items.indexWhere(
-                                            (element) =>
-                                                isSameWidget(element)) ==
+                                overflow: TextOverflow
+                                    .ellipsis, // Helps to handle long text
+                                style: _getIndexofCurrentSideMenuItemWidget() ==
                                         currentPage.ceil()
                                     ? const TextStyle(
                                             fontSize: 17, color: Colors.black)
@@ -261,11 +280,15 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                               ),
                             ),
                           ),
+                          SizedBox.shrink(),
                           if (widget.trailing != null &&
                               widget.global.showTrailing) ...[
-                            widget.trailing!,
-                            SizedBox(
-                              width: widget.global.style.itemInnerSpacing,
+                            // Aligning the trailing widget to the right
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: widget.trailing!,
+                              ),
                             ),
                           ],
                         ],

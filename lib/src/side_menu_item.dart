@@ -42,7 +42,6 @@ class SideMenuItem {
   /// Create custom sideMenuItem widget with builder
   final Widget Function(BuildContext context, SideMenuDisplayMode displayMode)?
       builder;
-
   const SideMenuItem({
     this.onTap,
     this.title,

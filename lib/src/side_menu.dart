@@ -3,6 +3,8 @@ import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_toggle.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
+import 'package:easy_sidemenu/src/side_menu_expansion_item.dart';
+import 'package:easy_sidemenu/src/side_menu_expansion_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'global/global.dart';
@@ -12,10 +14,10 @@ class SideMenu extends StatefulWidget {
   final SideMenuController controller;
 
   /// List of [SideMenuItem] on [SideMenu]
-  final List<SideMenuItem> items;
+  final List items;
 
-  /// List of [SideMenuItemWithGlobal] on [SideMenu]
-  List<SideMenuItemWithGlobal> sidemenuitems = [];
+  /// List of [SideMenuItemWithGlobal] or [SideMenuExpansionItemWithGlobal] on [SideMenu]
+  List sidemenuitems = [];
 
   Global global = Global();
 
@@ -66,20 +68,31 @@ class SideMenu extends StatefulWidget {
   }) : super(key: key) {
     this.global.style = this.style ?? SideMenuStyle();
     this.global.controller = this.controller;
-    sidemenuitems = items
-        .map((data) => SideMenuItemWithGlobal(
-              global: this.global,
-              title: data.title ?? null,
-              onTap: data.onTap ?? null,
-              icon: data.icon ?? null,
-              iconWidget: data.iconWidget ?? null,
-              badgeContent: data.badgeContent ?? null,
-              badgeColor: data.badgeColor ?? null,
-              tooltipContent: data.tooltipContent ?? null,
-              trailing: data.trailing ?? null,
-              builder: data.builder ?? null,
-            ))
-        .toList();
+    sidemenuitems = items.map((data) {
+      if (data is SideMenuItem) {
+        return SideMenuItemWithGlobal(
+          global: this.global,
+          title: data.title ?? null,
+          onTap: data.onTap ?? null,
+          icon: data.icon ?? null,
+          iconWidget: data.iconWidget ?? null,
+          badgeContent: data.badgeContent ?? null,
+          badgeColor: data.badgeColor ?? null,
+          tooltipContent: data.tooltipContent ?? null,
+          trailing: data.trailing ?? null,
+          builder: data.builder ?? null,
+        );
+      } else if (data is SideMenuExpansionItem) {
+        // print('Aditya');
+        return SideMenuExpansionItemWithGlobal(
+          global: this.global,
+          children: data.children ?? [],
+          title: data.title ?? null,
+          icon: data.icon ?? null,
+          iconWidget: data.iconWidget ?? null,
+        );
+      }
+    }).toList();
     this.global.items = this.sidemenuitems;
   }
 
@@ -127,7 +140,7 @@ class _SideMenuState extends State<SideMenu> {
 
   /// Set [SideMenu] width according to displayMode and notify parent widget
   double _widthSize(SideMenuDisplayMode mode, BuildContext context) {
-    animationInProgress = false;
+    animationInProgress = true;
     if (mode == SideMenuDisplayMode.auto) {
       if (MediaQuery.of(context).size.width > collapseWidth) {
         if (widget.global.displayModeState.value != SideMenuDisplayMode.open) {
