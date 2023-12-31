@@ -83,7 +83,6 @@ class SideMenu extends StatefulWidget {
           builder: data.builder ?? null,
         );
       } else if (data is SideMenuExpansionItem) {
-        // print('Aditya');
         return SideMenuExpansionItemWithGlobal(
           global: this.global,
           children: data.children ?? [],
@@ -107,6 +106,7 @@ class _SideMenuState extends State<SideMenu> {
   late bool alwaysShowFooter;
   late int collapseWidth;
   bool animationInProgress = false;
+  SideMenuHamburgerMode _hamburgerMode = SideMenuHamburgerMode.open;
 
   @override
   void initState() {
@@ -130,6 +130,18 @@ class _SideMenuState extends State<SideMenu> {
     super.didChangeDependencies();
     _currentWidth = _widthSize(
         widget.global.style.displayMode ?? SideMenuDisplayMode.auto, context);
+  }
+
+  void _toggleHamburgerState() {
+    if (this._hamburgerMode == SideMenuHamburgerMode.close) {
+      setState(() {
+        this._hamburgerMode = SideMenuHamburgerMode.open;
+      });
+    } else {
+      setState(() {
+        this._hamburgerMode = SideMenuHamburgerMode.close;
+      });
+    }
   }
 
   void _notifyParent() {
@@ -215,79 +227,85 @@ class _SideMenuState extends State<SideMenu> {
   Widget build(BuildContext context) {
     widget.global.controller = widget.controller;
     widget.global.items = widget.sidemenuitems;
-
+    IconButton hamburgerIcon = IconButton(
+        icon: Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
+        onPressed: _toggleHamburgerState);
     _currentWidth = _widthSize(
         widget.global.style.displayMode ?? SideMenuDisplayMode.auto, context);
-
-    return AnimatedContainer(
-      duration: _toggleDuration(),
-      width: _currentWidth,
-      height: MediaQuery.sizeOf(context).height,
-      decoration: _decoration(widget.style),
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return (_hamburgerMode == SideMenuHamburgerMode.close)
+        ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
+        : AnimatedContainer(
+            duration: _toggleDuration(),
+            width: _currentWidth,
+            height: MediaQuery.sizeOf(context).height,
+            decoration: _decoration(widget.style),
+            child: Stack(
               children: [
-                if (widget.global.style.displayMode ==
-                        SideMenuDisplayMode.compact &&
-                    showToggle)
-                  const SizedBox(
-                    height: 42,
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      hamburgerIcon,
+                      if (widget.global.style.displayMode ==
+                              SideMenuDisplayMode.compact &&
+                          showToggle)
+                        const SizedBox(
+                          height: 42,
+                        ),
+                      if (widget.title != null) widget.title!,
+                      ...widget.sidemenuitems,
+                    ],
                   ),
-                if (widget.title != null) widget.title!,
-                ...widget.sidemenuitems,
+                ),
+                if ((widget.footer != null &&
+                        widget.global.displayModeState.value !=
+                            SideMenuDisplayMode.compact) ||
+                    (widget.footer != null && alwaysShowFooter))
+                  Align(
+                      alignment: Alignment.bottomCenter, child: widget.footer!),
+                if (widget.global.style.displayMode !=
+                        SideMenuDisplayMode.auto &&
+                    showToggle)
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.global.displayModeState.value ==
+                                SideMenuDisplayMode.open
+                            ? 0
+                            : 4,
+                        vertical: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SideMenuToggle(
+                          global: widget.global,
+                          onTap: () {
+                            if (context
+                                    .findAncestorStateOfType<_SideMenuState>()
+                                    ?.animationInProgress ??
+                                false) {
+                              return;
+                            }
+                            if (widget.global.displayModeState.value ==
+                                SideMenuDisplayMode.compact) {
+                              setState(() {
+                                widget.global.style.displayMode =
+                                    SideMenuDisplayMode.open;
+                              });
+                            } else if (widget.global.displayModeState.value ==
+                                SideMenuDisplayMode.open) {
+                              setState(() {
+                                widget.global.style.displayMode =
+                                    SideMenuDisplayMode.compact;
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
-          ),
-          if ((widget.footer != null &&
-                  widget.global.displayModeState.value !=
-                      SideMenuDisplayMode.compact) ||
-              (widget.footer != null && alwaysShowFooter))
-            Align(alignment: Alignment.bottomCenter, child: widget.footer!),
-          if (widget.global.style.displayMode != SideMenuDisplayMode.auto &&
-              showToggle)
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: widget.global.displayModeState.value ==
-                          SideMenuDisplayMode.open
-                      ? 0
-                      : 4,
-                  vertical: 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SideMenuToggle(
-                    global: widget.global,
-                    onTap: () {
-                      if (context
-                              .findAncestorStateOfType<_SideMenuState>()
-                              ?.animationInProgress ??
-                          false) {
-                        return;
-                      }
-                      if (widget.global.displayModeState.value ==
-                          SideMenuDisplayMode.compact) {
-                        setState(() {
-                          widget.global.style.displayMode =
-                              SideMenuDisplayMode.open;
-                        });
-                      } else if (widget.global.displayModeState.value ==
-                          SideMenuDisplayMode.open) {
-                        setState(() {
-                          widget.global.style.displayMode =
-                              SideMenuDisplayMode.compact;
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-            )
-        ],
-      ),
-    );
+          );
   }
 
   @override
