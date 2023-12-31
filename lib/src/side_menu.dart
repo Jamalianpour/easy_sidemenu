@@ -83,7 +83,6 @@ class SideMenu extends StatefulWidget {
           builder: data.builder ?? null,
         );
       } else if (data is SideMenuExpansionItem) {
-        // print('Aditya');
         return SideMenuExpansionItemWithGlobal(
           global: this.global,
           children: data.children ?? [],
@@ -138,12 +137,10 @@ class _SideMenuState extends State<SideMenu> {
       setState(() {
         this._hamburgerMode = SideMenuHamburgerMode.open;
       });
-      print('Menu Open');
     } else {
       setState(() {
         this._hamburgerMode = SideMenuHamburgerMode.close;
       });
-      print('Menu Close');
     }
   }
 
