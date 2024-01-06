@@ -174,6 +174,7 @@ style: SideMenuStyle(
       Radius.circular(5.0),
   ),
   showTooltip: true,
+  showHamburger: true,
   itemHeight: 50.0,
   itemInnerSpacing: 8.0,
   itemOuterPadding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -195,6 +196,7 @@ style: SideMenuStyle(
   selectedIconColor: Colors.white,
   unselectedIconColor: Colors.white70,
   unselectedTitleTextStyle: TextStyle(color: Colors.white70),
+  showHamburger: false
   decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       boxShadow: [
@@ -236,6 +238,7 @@ style: SideMenuStyle(
 | itemInnerSpacing         |        `double`        |                           Inner spacing of menu item                            |
 | itemOuterPadding         |  `EdgeInsetsGeometry`  |                           Outer padding of menu item                            |
 | itemHeight               |        `double`        |                              Height of menu item                                |
+| showHamburger            |         `bool`         |       Property that will show Hamburger on topLeft corner if set as `true`      |
 
 ---
 
