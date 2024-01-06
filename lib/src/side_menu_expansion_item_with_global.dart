@@ -23,9 +23,7 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
 
   final List<SideMenuItem> children;
 
-  List<SideMenuItemWithGlobal> processedChildren = [];
-
-  SideMenuExpansionItemWithGlobal(
+  const SideMenuExpansionItemWithGlobal(
       {Key? key,
       required this.global,
       this.title,
@@ -34,28 +32,35 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
       required this.children})
       : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
-        super() {
-    processedChildren = children
-        .map((data) => SideMenuItemWithGlobal(
-              global: this.global,
-              title: data.title ?? null,
-              onTap: data.onTap ?? null,
-              icon: data.icon ?? null,
-              iconWidget: data.iconWidget ?? null,
-              badgeContent: data.badgeContent ?? null,
-              badgeColor: data.badgeColor ?? null,
-              tooltipContent: data.tooltipContent ?? null,
-              trailing: data.trailing ?? null,
-              builder: data.builder ?? null,
-            ))
-        .toList();
-  }
-
+        super(key: key);
+  
   @override
-  _SideMenuExpansionState createState() => _SideMenuExpansionState();
+  State<SideMenuExpansionItemWithGlobal> createState() => _SideMenuExpansionState();
 }
 
 class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
+   List<SideMenuItemWithGlobal> processedChildren = [];
+
+   void initstate(){
+    super.initState();
+    processedChildren = widget.children
+        .map((data) => SideMenuItemWithGlobal(
+              global: widget.global,
+              title: data.title,
+              onTap: data.onTap,
+              icon: data.icon,
+              iconWidget: data.iconWidget,
+              badgeContent: data.badgeContent,
+              badgeColor: data.badgeColor,
+              tooltipContent: data.tooltipContent,
+              trailing: data.trailing,
+              builder: data.builder,
+              insideExpansionItem: true,
+            ))
+        .toList();
+   }
+
+
   /// Set icon for of [SideMenuExpansionItemWithGlobal]
   Widget _generateIcon(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
@@ -96,11 +101,7 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
               ),
             ),
             // Make sure children do not cause overflow
-            children: widget.processedChildren.map((item) {
-              // Ensure child items are properly sized as well
-              item.insideExpansionItem = true;
-              return item;
-            }).toList(),
+            children: processedChildren
           ),
         );
       },

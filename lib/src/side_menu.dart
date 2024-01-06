@@ -13,13 +13,10 @@ class SideMenu extends StatefulWidget {
   /// Page controller to control [PageView] widget
   final SideMenuController controller;
 
-  /// List of [SideMenuItem] on [SideMenu]
+  /// List of [SideMenuItem] or [SideMenuExpansionItem] on  [SideMenu]
   final List items;
 
-  /// List of [SideMenuItemWithGlobal] or [SideMenuExpansionItemWithGlobal] on [SideMenu]
-  List sidemenuitems = [];
-
-  Global global = Global();
+  final Global global = Global();
 
   /// Title widget will shows on top of all items,
   /// it can be a logo or a Title text
@@ -66,33 +63,8 @@ class SideMenu extends StatefulWidget {
     this.alwaysShowFooter = false,
     this.collapseWidth = 600,
   }) : super(key: key) {
-    this.global.style = this.style ?? SideMenuStyle();
-    this.global.controller = this.controller;
-    sidemenuitems = items.map((data) {
-      if (data is SideMenuItem) {
-        return SideMenuItemWithGlobal(
-          global: this.global,
-          title: data.title ?? null,
-          onTap: data.onTap ?? null,
-          icon: data.icon ?? null,
-          iconWidget: data.iconWidget ?? null,
-          badgeContent: data.badgeContent ?? null,
-          badgeColor: data.badgeColor ?? null,
-          tooltipContent: data.tooltipContent ?? null,
-          trailing: data.trailing ?? null,
-          builder: data.builder ?? null,
-        );
-      } else if (data is SideMenuExpansionItem) {
-        return SideMenuExpansionItemWithGlobal(
-          global: this.global,
-          children: data.children ?? [],
-          title: data.title ?? null,
-          icon: data.icon ?? null,
-          iconWidget: data.iconWidget ?? null,
-        );
-      }
-    }).toList();
-    this.global.items = this.sidemenuitems;
+    global.style = style ?? SideMenuStyle();
+    global.controller = controller;
   }
 
   @override
@@ -100,12 +72,12 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
-  // late Global global;
   double _currentWidth = 0;
   late bool showToggle;
   late bool alwaysShowFooter;
   late int collapseWidth;
   bool animationInProgress = false;
+  List sidemenuitems = [];
   SideMenuHamburgerMode _hamburgerMode = SideMenuHamburgerMode.open;
 
   @override
@@ -114,6 +86,32 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
+    sidemenuitems = widget.items.map((data) {
+      if (data is SideMenuItem) {
+        return SideMenuItemWithGlobal(
+          global: widget.global,
+          title: data.title,
+          onTap: data.onTap,
+          icon: data.icon,
+          iconWidget: data.iconWidget,
+          badgeContent: data.badgeContent,
+          badgeColor: data.badgeColor,
+          tooltipContent: data.tooltipContent,
+          trailing: data.trailing,
+          builder: data.builder,
+          insideExpansionItem: false
+        );
+      } else if (data is SideMenuExpansionItem) {
+        return SideMenuExpansionItemWithGlobal(
+          global: widget.global,
+          children: data.children,
+          title: data.title,
+          icon: data.icon,
+          iconWidget: data.iconWidget
+        );
+      }
+    }).toList();
+    widget.global.items = sidemenuitems;
   }
 
   @override
@@ -133,13 +131,13 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void _toggleHamburgerState() {
-    if (this._hamburgerMode == SideMenuHamburgerMode.close) {
+    if (_hamburgerMode == SideMenuHamburgerMode.close) {
       setState(() {
-        this._hamburgerMode = SideMenuHamburgerMode.open;
+        _hamburgerMode = SideMenuHamburgerMode.open;
       });
     } else {
       setState(() {
-        this._hamburgerMode = SideMenuHamburgerMode.close;
+        _hamburgerMode = SideMenuHamburgerMode.close;
       });
     }
   }
@@ -226,9 +224,9 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     widget.global.controller = widget.controller;
-    widget.global.items = widget.sidemenuitems;
+    widget.global.items = sidemenuitems;
     IconButton hamburgerIcon = IconButton(
-        icon: Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
+        icon: const Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
         onPressed: _toggleHamburgerState);
     _currentWidth = _widthSize(
         widget.global.style.displayMode ?? SideMenuDisplayMode.auto, context);
@@ -246,14 +244,12 @@ class _SideMenuState extends State<SideMenu> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       hamburgerIcon,
-                      if (widget.global.style.displayMode ==
-                              SideMenuDisplayMode.compact &&
-                          showToggle)
+                      if (widget.global.style.displayMode == SideMenuDisplayMode.compact && showToggle)
                         const SizedBox(
                           height: 42,
                         ),
                       if (widget.title != null) widget.title!,
-                      ...widget.sidemenuitems,
+                      ...sidemenuitems,
                     ],
                   ),
                 ),

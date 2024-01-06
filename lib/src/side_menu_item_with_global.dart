@@ -7,13 +7,15 @@ import 'package:easy_sidemenu/src/side_menu_controller.dart';
 typedef SideMenuItemBuilder = Widget Function(
     BuildContext context, SideMenuDisplayMode displayMode);
 
+
 class SideMenuItemWithGlobal extends StatefulWidget {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
-  SideMenuItemWithGlobal({
+  const SideMenuItemWithGlobal({
     Key? key,
     required this.global,
+    required this.insideExpansionItem,
     this.onTap,
     this.title,
     this.icon,
@@ -34,7 +36,7 @@ class SideMenuItemWithGlobal extends StatefulWidget {
   final Global global;
 
   /// If inside [SideMenuExpansionItem]
-  bool insideExpansionItem = false;
+  // bool insideExpansionItem = false;
 
   /// Title text
   final String? title;
@@ -72,8 +74,14 @@ class SideMenuItemWithGlobal extends StatefulWidget {
   /// Builder has `(BuildContext context, SideMenuDisplayMode displayMode)`
   final SideMenuItemBuilder? builder;
 
+  /// If it is inside [SideMenuExpansionItem]
+  final bool insideExpansionItem;
+
+
   @override
   State<SideMenuItemWithGlobal> createState() => _SideMenuItemState();
+
+
 }
 
 class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
@@ -155,15 +163,17 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
       if (widget.global.items[i] is SideMenuItemWithGlobal) {
         if (isSameWidget(widget.global.items[i])) {
           return index;
-        } else
+        } else {
           index = index + 1;
+        }
       } else {
         int m = widget.global.items[i].processedChildren.length;
         for (int j = 0; j < m; j++) {
           if (isSameWidget(widget.global.items[i].processedChildren[j])) {
             return index;
-          } else
+          } else {
             index = index + 1;
+          }
         }
       }
     }
@@ -280,7 +290,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                               ),
                             ),
                           ),
-                          SizedBox.shrink(),
+                          const SizedBox.shrink(),
                           if (widget.trailing != null &&
                               widget.global.showTrailing) ...[
                             // Aligning the trailing widget to the right
