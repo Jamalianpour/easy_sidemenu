@@ -1,4 +1,5 @@
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
+import 'package:easy_sidemenu/src/side_menu_hamburger_mode.dart';
 import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_toggle.dart';
@@ -230,7 +231,7 @@ class _SideMenuState extends State<SideMenu> {
         onPressed: _toggleHamburgerState);
     _currentWidth = _widthSize(
         widget.global.style.displayMode ?? SideMenuDisplayMode.auto, context);
-    return (_hamburgerMode == SideMenuHamburgerMode.close)
+    return ((widget.global.style.showHamburger) && (_hamburgerMode == SideMenuHamburgerMode.close))
         ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
         : AnimatedContainer(
             duration: _toggleDuration(),
@@ -243,7 +244,7 @@ class _SideMenuState extends State<SideMenu> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      hamburgerIcon,
+                      if(widget.global.style.showHamburger) hamburgerIcon,
                       if (widget.global.style.displayMode == SideMenuDisplayMode.compact && showToggle)
                         const SizedBox(
                           height: 42,

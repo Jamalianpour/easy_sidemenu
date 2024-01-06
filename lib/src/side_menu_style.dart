@@ -63,10 +63,14 @@ class SideMenuStyle {
   /// [SideMenuDisplayMode] is set compact
   bool showTooltip;
 
+  /// Property that will show Hamburger Icon on TopLeft Corner
+  bool showHamburger;
+
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
     this.compactSideMenuWidth = 70,
+    this.showHamburger = false,
     this.backgroundColor,
     this.selectedColor,
     this.hoverColor = Colors.transparent,
