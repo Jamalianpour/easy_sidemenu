@@ -105,10 +105,22 @@ class _SideMenuState extends State<SideMenu> {
       } else if (data is SideMenuExpansionItem) {
         return SideMenuExpansionItemWithGlobal(
           global: widget.global,
-          children: data.children,
           title: data.title,
           icon: data.icon,
-          iconWidget: data.iconWidget
+          iconWidget: data.iconWidget,
+          children: data.children.map((childData) => SideMenuItemWithGlobal( 
+            global: widget.global,
+            title: childData.title,
+            onTap: childData.onTap,
+            icon: childData.icon,
+            iconWidget: childData.iconWidget,
+            badgeContent: childData.badgeContent,
+            badgeColor: childData.badgeColor,
+            tooltipContent: childData.tooltipContent,
+            trailing: childData.trailing,
+            builder: childData.builder,
+            insideExpansionItem: true,
+          )).toList()
         );
       }
     }).toList();

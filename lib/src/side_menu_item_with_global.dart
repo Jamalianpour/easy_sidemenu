@@ -167,9 +167,9 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
           index = index + 1;
         }
       } else {
-        int m = widget.global.items[i].processedChildren.length;
+        int m = widget.global.items[i].children.length;
         for (int j = 0; j < m; j++) {
-          if (isSameWidget(widget.global.items[i].processedChildren[j])) {
+          if (isSameWidget(widget.global.items[i].children[j])) {
             return index;
           } else {
             index = index + 1;

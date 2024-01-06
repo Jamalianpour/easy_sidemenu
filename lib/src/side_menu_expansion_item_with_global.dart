@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
-import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 
 import 'global/global.dart';
@@ -21,7 +20,8 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
   /// This is displayed instead if [icon] is null
   final Widget? iconWidget;
 
-  final List<SideMenuItem> children;
+  final List<SideMenuItemWithGlobal> children;
+
 
   const SideMenuExpansionItemWithGlobal(
       {Key? key,
@@ -33,34 +33,12 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
       : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
         super(key: key);
-  
+
   @override
   State<SideMenuExpansionItemWithGlobal> createState() => _SideMenuExpansionState();
 }
 
 class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
-   List<SideMenuItemWithGlobal> processedChildren = [];
-
-   void initstate(){
-    super.initState();
-    processedChildren = widget.children
-        .map((data) => SideMenuItemWithGlobal(
-              global: widget.global,
-              title: data.title,
-              onTap: data.onTap,
-              icon: data.icon,
-              iconWidget: data.iconWidget,
-              badgeContent: data.badgeContent,
-              badgeColor: data.badgeColor,
-              tooltipContent: data.tooltipContent,
-              trailing: data.trailing,
-              builder: data.builder,
-              insideExpansionItem: true,
-            ))
-        .toList();
-   }
-
-
   /// Set icon for of [SideMenuExpansionItemWithGlobal]
   Widget _generateIcon(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
@@ -101,7 +79,7 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
               ),
             ),
             // Make sure children do not cause overflow
-            children: processedChildren
+            children: widget.children
           ),
         );
       },
