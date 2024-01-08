@@ -1,4 +1,5 @@
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
+import 'package:easy_sidemenu/src/side_menu_hamburger_mode.dart';
 import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_toggle.dart';
@@ -17,9 +18,9 @@ class SideMenu extends StatefulWidget {
   final List items;
 
   /// List of [SideMenuItemWithGlobal] or [SideMenuExpansionItemWithGlobal] on [SideMenu]
-  List sidemenuitems = [];
+  final SideMenuItemList sidemenuitems = SideMenuItemList();
 
-  Global global = Global();
+  final Global global = Global();
 
   /// Title widget will shows on top of all items,
   /// it can be a logo or a Title text
@@ -66,33 +67,53 @@ class SideMenu extends StatefulWidget {
     this.alwaysShowFooter = false,
     this.collapseWidth = 600,
   }) : super(key: key) {
-    this.global.style = this.style ?? SideMenuStyle();
-    this.global.controller = this.controller;
-    sidemenuitems = items.map((data) {
+    global.style = style ?? SideMenuStyle();
+    global.controller = controller;
+    int sideMenuExpansionItemCount = 0, sideMenuExpansionItemIndex = -1;
+    for(int index = 0; index < items.length; index ++){
+      if(items[index] is SideMenuExpansionItem){
+        sideMenuExpansionItemCount = sideMenuExpansionItemCount + 1;
+      }
+    }
+    global.expansionStateList = List<bool>.filled(sideMenuExpansionItemCount, false);
+    sidemenuitems.items = items.map((data) {
       if (data is SideMenuItem) {
         return SideMenuItemWithGlobal(
-          global: this.global,
-          title: data.title ?? null,
-          onTap: data.onTap ?? null,
-          icon: data.icon ?? null,
-          iconWidget: data.iconWidget ?? null,
-          badgeContent: data.badgeContent ?? null,
-          badgeColor: data.badgeColor ?? null,
-          tooltipContent: data.tooltipContent ?? null,
-          trailing: data.trailing ?? null,
-          builder: data.builder ?? null,
+          global: global,
+          title: data.title,
+          onTap: data.onTap,
+          icon: data.icon,
+          iconWidget: data.iconWidget,
+          badgeContent: data.badgeContent,
+          badgeColor: data.badgeColor,
+          tooltipContent: data.tooltipContent,
+          trailing: data.trailing,
+          builder: data.builder,
         );
       } else if (data is SideMenuExpansionItem) {
+        sideMenuExpansionItemIndex = sideMenuExpansionItemIndex + 1;
         return SideMenuExpansionItemWithGlobal(
-          global: this.global,
-          children: data.children ?? [],
-          title: data.title ?? null,
-          icon: data.icon ?? null,
-          iconWidget: data.iconWidget ?? null,
+          global: global,
+          title: data.title,
+          icon: data.icon,
+          index: sideMenuExpansionItemIndex,
+          iconWidget: data.iconWidget,
+          children: data.children.map((childData) => SideMenuItemWithGlobal( 
+            global: global,
+            title: childData.title,
+            onTap: childData.onTap,
+            icon: childData.icon,
+            iconWidget: childData.iconWidget,
+            badgeContent: childData.badgeContent,
+            badgeColor: childData.badgeColor,
+            tooltipContent: childData.tooltipContent,
+            trailing: childData.trailing,
+            builder: childData.builder,
+          )).toList(),
         );
       }
     }).toList();
-    this.global.items = this.sidemenuitems;
+    global.items = sidemenuitems.items;
   }
 
   @override
@@ -100,7 +121,6 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
-  // late Global global;
   double _currentWidth = 0;
   late bool showToggle;
   late bool alwaysShowFooter;
@@ -114,6 +134,7 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
+
   }
 
   @override
@@ -133,13 +154,13 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void _toggleHamburgerState() {
-    if (this._hamburgerMode == SideMenuHamburgerMode.close) {
+    if (_hamburgerMode == SideMenuHamburgerMode.close) {
       setState(() {
-        this._hamburgerMode = SideMenuHamburgerMode.open;
+        _hamburgerMode = SideMenuHamburgerMode.open;
       });
     } else {
       setState(() {
-        this._hamburgerMode = SideMenuHamburgerMode.close;
+        _hamburgerMode = SideMenuHamburgerMode.close;
       });
     }
   }
@@ -226,13 +247,13 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     widget.global.controller = widget.controller;
-    widget.global.items = widget.sidemenuitems;
+    widget.global.items = widget.sidemenuitems.items;
     IconButton hamburgerIcon = IconButton(
-        icon: Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
+        icon: const Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
         onPressed: _toggleHamburgerState);
     _currentWidth = _widthSize(
         widget.global.style.displayMode ?? SideMenuDisplayMode.auto, context);
-    return (_hamburgerMode == SideMenuHamburgerMode.close)
+    return ((widget.global.style.showHamburger) && (_hamburgerMode == SideMenuHamburgerMode.close))
         ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
         : AnimatedContainer(
             duration: _toggleDuration(),
@@ -245,7 +266,7 @@ class _SideMenuState extends State<SideMenu> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      hamburgerIcon,
+                      if(widget.global.style.showHamburger) hamburgerIcon,
                       if (widget.global.style.displayMode ==
                               SideMenuDisplayMode.compact &&
                           showToggle)
@@ -253,7 +274,7 @@ class _SideMenuState extends State<SideMenu> {
                           height: 42,
                         ),
                       if (widget.title != null) widget.title!,
-                      ...widget.sidemenuitems,
+                      ...widget.sidemenuitems.items,
                     ],
                   ),
                 ),

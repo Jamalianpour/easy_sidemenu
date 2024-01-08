@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
-import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 
 import 'global/global.dart';
@@ -21,48 +20,53 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
   /// This is displayed instead if [icon] is null
   final Widget? iconWidget;
 
-  final List<SideMenuItem> children;
+  /// The Children widgets
+  final List<SideMenuItemWithGlobal> children;
 
-  List<SideMenuItemWithGlobal> processedChildren = [];
+  /// for maintaining record of the state
+  final int index;
 
-  SideMenuExpansionItemWithGlobal(
+  const SideMenuExpansionItemWithGlobal(
       {Key? key,
       required this.global,
       this.title,
       this.icon,
       this.iconWidget,
+      required this.index,
       required this.children})
       : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
-        super() {
-    processedChildren = children
-        .map((data) => SideMenuItemWithGlobal(
-              global: this.global,
-              title: data.title ?? null,
-              onTap: data.onTap ?? null,
-              icon: data.icon ?? null,
-              iconWidget: data.iconWidget ?? null,
-              badgeContent: data.badgeContent ?? null,
-              badgeColor: data.badgeColor ?? null,
-              tooltipContent: data.tooltipContent ?? null,
-              trailing: data.trailing ?? null,
-              builder: data.builder ?? null,
-            ))
-        .toList();
-  }
+        super(key: key);
 
   @override
-  _SideMenuExpansionState createState() => _SideMenuExpansionState();
+  State<SideMenuExpansionItemWithGlobal> createState() =>
+      _SideMenuExpansionState();
 }
 
 class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
   /// Set icon for of [SideMenuExpansionItemWithGlobal]
+  late bool isExpanded;
+  @override
+  void initState() {
+    super.initState();
+    isExpanded = widget.global.expansionStateList[widget.index];
+  }
+
   Widget _generateIcon(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color: widget.global.style.unselectedIconColor ?? Colors.black54,
-      size: widget.global.style.iconSize ?? 24,
+      color: (widget.global.expansionStateList[widget
+              .index]) // If value is true then the Expandable Item is fully expanded, else it is collapsed
+          ? widget.global.style.selectedIconColorExpandable ??
+              widget.global.style.selectedColor ??
+              Colors.black
+          : widget.global.style.unselectedIconColorExpandable ??
+              widget.global.style.unselectedIconColor ??
+              Colors.black54,
+      size: widget.global.style.iconSizeExpandable ??
+          widget.global.style.iconSize ??
+          24,
     );
     return icon;
   }
@@ -80,28 +84,43 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
           ),
           horizontalTitleGap: 0,
           child: ExpansionTile(
-            leading: SizedBox(
-              // Ensures the icon does not take the full tile width
-              width: 40.0, // Adjust size constraints as required
-              child: _generateIcon(widget.icon, widget.iconWidget),
-            ),
-            // The title should only take space when SideMenuDisplayMode is open
-            title: Visibility(
-              visible: value == SideMenuDisplayMode.open,
-              maintainState: true,
-              maintainSize: false,
-              maintainAnimation: true,
-              child: Text(
-                widget.title ?? '',
+              leading: SizedBox(
+                // Ensures the icon does not take the full tile width
+                width: 40.0, // Adjust size constraints as required
+                child: _generateIcon(widget.icon, widget.iconWidget),
               ),
-            ),
-            // Make sure children do not cause overflow
-            children: widget.processedChildren.map((item) {
-              // Ensure child items are properly sized as well
-              item.insideExpansionItem = true;
-              return item;
-            }).toList(),
-          ),
+              // The title should only take space when SideMenuDisplayMode is open
+              maintainState: true,
+              onExpansionChanged: (value) {
+                setState(() {
+                  isExpanded = value;
+                  widget.global.expansionStateList[widget.index] = value;
+                });
+              },
+              trailing: Icon(
+                isExpanded
+                    ? Icons.arrow_drop_down_circle
+                    : Icons.arrow_drop_down,
+                color: isExpanded
+                    ? widget.global.style.arrowOpen
+                    : widget.global.style.arrowCollapse,
+              ),
+              initiallyExpanded: widget.global.expansionStateList[widget.index],
+              title: (value == SideMenuDisplayMode.open)
+                  ? Text(
+                      widget.title ?? '',
+                      style: widget.global.expansionStateList[widget.index]
+                          ? const TextStyle(fontSize: 17, color: Colors.black)
+                              .merge(widget.global.style
+                                      .selectedTitleTextStyleExpandable ??
+                                  widget.global.style.selectedTitleTextStyle)
+                          : const TextStyle(fontSize: 17, color: Colors.black54)
+                              .merge(widget.global.style
+                                      .unselectedTitleTextStyleExpandable ??
+                                  widget.global.style.unselectedTitleTextStyle),
+                    )
+                  : const Text(''),
+              children: widget.children),
         );
       },
     );

@@ -24,20 +24,41 @@ class SideMenuStyle {
   /// display modes for the [SideMenu]
   SideMenuDisplayMode? displayMode;
 
-  /// Style of [title] text when item is selected
+  /// Style of [title] text when item is selected in [SideMenuItem]
   TextStyle? selectedTitleTextStyle;
 
-  /// Style of [title] text when item is unselected
+  /// Style of [title] text when item is unselected in [SideMenuItem]
   TextStyle? unselectedTitleTextStyle;
 
-  /// Color of icon when item is selected
+  /// Color of icon when item is selected in [SideMenuItem]
   Color? selectedIconColor;
 
-  /// Color of icon when item is unselected
+  /// Color of icon when item is unselected in [SideMenuItem]
   Color? unselectedIconColor;
 
   /// Size of icon on [SideMenuItem]
   double? iconSize;
+  
+  /// Style of [title] text when item is selected in [SideMenuExpandableItem]
+  TextStyle? selectedTitleTextStyleExpandable;
+
+  /// Style of [title] text when item is unselected in [SideMenuExpandableItem]
+  TextStyle? unselectedTitleTextStyleExpandable;
+
+  /// Color of icon when item is selected in [SideMenuExpandableItem]
+  Color? selectedIconColorExpandable;
+
+  /// Color of icon when item is unselected in [SideMenuExpandableItem]
+  Color? unselectedIconColorExpandable;
+
+  /// Color of arrow in collapsed state in [SideMenuExpandableItem]
+  Color? arrowCollapse;
+
+  /// Color of arrow in open state in [SideMenuExpandableItem]
+  Color? arrowOpen;
+
+  /// Size of icon on [SideMenuExpandableItem]
+  double? iconSizeExpandable;
 
   /// Decoration of [SideMenu] container
   BoxDecoration? decoration;
@@ -63,10 +84,14 @@ class SideMenuStyle {
   /// [SideMenuDisplayMode] is set compact
   bool showTooltip;
 
+  /// Property that will show Hamburger Icon on TopLeft Corner
+  bool showHamburger;
+
   /// Style class to configure [SideMenu]
   SideMenuStyle({
     this.openSideMenuWidth = 300,
     this.compactSideMenuWidth = 70,
+    this.showHamburger = false,
     this.backgroundColor,
     this.selectedColor,
     this.hoverColor = Colors.transparent,
@@ -77,6 +102,13 @@ class SideMenuStyle {
     this.selectedIconColor = Colors.black,
     this.unselectedIconColor = Colors.black54,
     this.iconSize = 24,
+    this.selectedTitleTextStyleExpandable,
+    this.unselectedTitleTextStyleExpandable,
+    this.selectedIconColorExpandable = Colors.black,
+    this.unselectedIconColorExpandable = Colors.black54,
+    this.iconSizeExpandable = 24,
+    this.arrowOpen = Colors.black,
+    this.arrowCollapse = Colors.black54,
     this.decoration,
     this.toggleColor = Colors.black54,
     this.itemOuterPadding = const EdgeInsets.symmetric(horizontal: 5.0),

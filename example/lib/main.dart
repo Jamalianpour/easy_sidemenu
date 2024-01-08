@@ -31,12 +31,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  PageController page = PageController();
+  PageController pageController = PageController();
   SideMenuController sideMenu = SideMenuController();
+
   @override
   void initState() {
-    sideMenu.addListener((p0) {
-      page.jumpToPage(p0);
+    sideMenu.addListener((index) {
+      pageController.jumpToPage(index);
     });
     super.initState();
   }
@@ -56,7 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
             style: SideMenuStyle(
               // showTooltip: false,
               displayMode: SideMenuDisplayMode.auto,
+              showHamburger: true,
               hoverColor: Colors.blue[100],
+              selectedHoverColor: Colors.blue[100],
               selectedColor: Colors.lightBlue,
               selectedTitleTextStyle: const TextStyle(color: Colors.white),
               selectedIconColor: Colors.white,
@@ -82,144 +85,121 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            footer: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'mohada',
-                style: TextStyle(fontSize: 15),
+            footer: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.lightBlue[100],
+                    borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                  child: Text(
+                    'mohada',
+                    style: TextStyle(fontSize: 15, color: Colors.grey[800]),
+                  ),
+                ),
               ),
             ),
-            //folders: fList,
             items: [
+              SideMenuItem(
+                title: 'Dashboard',
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
+                },
+                icon: const Icon(Icons.home),
+                badgeContent: const Text(
+                  '3',
+                  style: TextStyle(color: Colors.white),
+                ),
+                tooltipContent: "This is a tooltip for Dashboard item",
+              ),
+              SideMenuItem(
+                title: 'Users',
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
+                },
+                icon: const Icon(Icons.supervisor_account),
+              ),
               SideMenuExpansionItem(
-                  title: "First folder",
-                  icon: Icon(Icons.kitchen),
-                  children: [
-                    SideMenuItem(
-                      0,
-                      title: 'Dashboard 1',
-                      onTap: (priority, _) {
-                        int page = 0;
-                        sideMenu.changePage(page);
-                      },
-                      icon: const Icon(Icons.home),
-                      badgeContent: const Text(
-                        '5',
-                        style: TextStyle(color: Colors.white),
+                title: "Expansion Item",
+                icon: const Icon(Icons.kitchen),
+                children: [
+                  SideMenuItem(
+                    title: 'Expansion Item 1',
+                    onTap: (index, _) {
+                      sideMenu.changePage(index);
+                    },
+                    icon: const Icon(Icons.home),
+                    badgeContent: const Text(
+                      '3',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    tooltipContent:"Expansion Item 1",
+                  ),
+                  SideMenuItem(
+                    title: 'Expansion Item 2',
+                    onTap: (index, _) {
+                      sideMenu.changePage(index);
+                    },
+                    icon: const Icon(Icons.supervisor_account),
+                  )
+                ]
+              ),
+              SideMenuItem(
+                title: 'Files',
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
+                },
+                icon: const Icon(Icons.file_copy_rounded),
+                trailing: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(Radius.circular(6))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0, vertical: 3),
+                      child: Text(
+                        'New',
+                        style: TextStyle(fontSize: 11, color: Colors.grey[800]),
                       ),
-                      tooltipContent: "This is a tooltip for Dashboard item",
-                    ),
-                    SideMenuItem(
-                      title: 'Users',
-                      onTap: (priority, _) {
-                        int page = 1;
-                        sideMenu.changePage(page);
-                      },
-                      icon: const Icon(Icons.supervisor_account),
-                    ),
-                    SideMenuItem(
-                      title: 'Files',
-                      onTap: (priority, _) {
-                        int page = 2;
-                        sideMenu.changePage(page);
-                      },
-                      icon: const Icon(Icons.file_copy_rounded),
-                      trailing: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6.0, vertical: 3),
-                            child: Text(
-                              'New',
-                              style: TextStyle(
-                                  fontSize: 11, color: Colors.grey[800]),
-                            ),
-                          )),
-                    )
-                  ]),
-
-              SideMenuExpansionItem(
-                  title: "Second folder",
-                  icon: Icon(Icons.kitchen),
-                  children: [
-                    SideMenuItem(
-                      title: 'Dashboard',
-                      onTap: (priority, _) {
-                        int page = 3;
-                        sideMenu.changePage(page);
-                      },
-                      icon: const Icon(Icons.home),
-                      badgeContent: const Text(
-                        '3',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      tooltipContent: "This is a tooltip for Dashboard item",
-                    ),
-                    SideMenuItem(
-                      title: 'Users',
-                      onTap: (priority, _) {
-                        int page = 4;
-                        sideMenu.changePage(page);
-                      },
-                      icon: const Icon(Icons.supervisor_account),
-                    ),
-                    SideMenuItem(
-                      title: 'Files',
-                      onTap: (priority, _) {
-                        int page = priority;
-                        sideMenu.changePage(page);
-                      },
-                      icon: const Icon(Icons.file_copy_rounded),
-                      trailing: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6.0, vertical: 3),
-                            child: Text(
-                              'New',
-                              style: TextStyle(
-                                  fontSize: 11, color: Colors.grey[800]),
-                            ),
-                          )),
-                    )
-                  ]),
+                    )),
+              ),
               SideMenuItem(
                 title: 'Download',
-                onTap: (priority, _) {
-                  int page = 5;
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.download),
               ),
               SideMenuItem(
+                builder: (context, displayMode) {
+                  return const Divider(
+                    endIndent: 8,
+                    indent: 8,
+                  );
+                },
+              ),
+              SideMenuItem(
                 title: 'Settings',
-                onTap: (priority, _) {
-                  int page = priority;
-                  sideMenu.changePage(page);
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
                 },
                 icon: const Icon(Icons.settings),
               ),
               // SideMenuItem(
-              //    5,
-              //   onTap:(page){
-              //     sideMenu.changePage(5);
+              //   onTap:(index, _){
+              //     sideMenu.changePage(index);
               //   },
               //   icon: const Icon(Icons.image_rounded),
               // ),
               // SideMenuItem(
-              //    6,
               //   title: 'Only Title',
-              //   onTap:(page){
-              //     sideMenu.changePage(6);
+              //   onTap:(index, _){
+              //     sideMenu.changePage(index);
               //   },
               // ),
-              SideMenuItem(
+              const SideMenuItem(
                 title: 'Exit',
                 icon: Icon(Icons.exit_to_app),
               ),
@@ -227,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: PageView(
-              controller: page,
+              controller: pageController,
               children: [
                 Container(
                   color: Colors.white,
@@ -243,6 +223,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Center(
                     child: Text(
                       'Users',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Expansion Item 1',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Expansion Item 2',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),

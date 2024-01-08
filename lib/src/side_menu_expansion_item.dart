@@ -25,5 +25,5 @@ class SideMenuExpansionItem {
     required this.children,
   })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
-        super(); // Fix here
+        super(); 
 }

@@ -7,11 +7,15 @@ import 'package:easy_sidemenu/src/side_menu_controller.dart';
 typedef SideMenuItemBuilder = Widget Function(
     BuildContext context, SideMenuDisplayMode displayMode);
 
+class SideMenuItemList{
+  late List<dynamic> items;
+}
+
 class SideMenuItemWithGlobal extends StatefulWidget {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
-  SideMenuItemWithGlobal({
+  const SideMenuItemWithGlobal({
     Key? key,
     required this.global,
     this.onTap,
@@ -32,9 +36,6 @@ class SideMenuItemWithGlobal extends StatefulWidget {
 
   /// Global object of [SideMenu]
   final Global global;
-
-  /// If inside [SideMenuExpansionItem]
-  bool insideExpansionItem = false;
 
   /// Title text
   final String? title;
@@ -155,15 +156,17 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
       if (widget.global.items[i] is SideMenuItemWithGlobal) {
         if (isSameWidget(widget.global.items[i])) {
           return index;
-        } else
+        } else {
           index = index + 1;
+        }
       } else {
-        int m = widget.global.items[i].processedChildren.length;
+        int m = widget.global.items[i].children.length;
         for (int j = 0; j < m; j++) {
-          if (isSameWidget(widget.global.items[i].processedChildren[j])) {
+          if (isSameWidget(widget.global.items[i].children[j])) {
             return index;
-          } else
+          } else {
             index = index + 1;
+          }
         }
       }
     }
@@ -248,9 +251,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                     padding: EdgeInsets.symmetric(
                         vertical: value == SideMenuDisplayMode.compact
                             ? widget.global.style.itemInnerSpacing
-                            : widget.insideExpansionItem
-                                ? widget.global.style.itemInnerSpacing * 2
-                                : widget.global.style.itemInnerSpacing),
+                            : widget.global.style.itemInnerSpacing),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -280,7 +281,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                               ),
                             ),
                           ),
-                          SizedBox.shrink(),
+                          const SizedBox.shrink(),
                           if (widget.trailing != null &&
                               widget.global.showTrailing) ...[
                             // Aligning the trailing widget to the right
