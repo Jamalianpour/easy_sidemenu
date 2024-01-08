@@ -22,7 +22,6 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
 
   final List<SideMenuItemWithGlobal> children;
 
-
   const SideMenuExpansionItemWithGlobal(
       {Key? key,
       required this.global,
@@ -35,7 +34,8 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
         super(key: key);
 
   @override
-  State<SideMenuExpansionItemWithGlobal> createState() => _SideMenuExpansionState();
+  State<SideMenuExpansionItemWithGlobal> createState() =>
+      _SideMenuExpansionState();
 }
 
 class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
@@ -63,24 +63,18 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
           ),
           horizontalTitleGap: 0,
           child: ExpansionTile(
-            leading: SizedBox(
-              // Ensures the icon does not take the full tile width
-              width: 40.0, // Adjust size constraints as required
-              child: _generateIcon(widget.icon, widget.iconWidget),
-            ),
-            // The title should only take space when SideMenuDisplayMode is open
-            title: Visibility(
-              visible: value == SideMenuDisplayMode.open,
-              maintainState: true,
-              maintainSize: false,
-              maintainAnimation: true,
-              child: Text(
-                widget.title ?? '',
+              leading: SizedBox(
+                // Ensures the icon does not take the full tile width
+                width: 40.0, // Adjust size constraints as required
+                child: _generateIcon(widget.icon, widget.iconWidget),
               ),
-            ),
-            // Make sure children do not cause overflow
-            children: widget.children
-          ),
+              // The title should only take space when SideMenuDisplayMode is open
+              title: (value == SideMenuDisplayMode.open)
+                  ? Text(
+                      widget.title ?? '',
+                    )
+                  : const Text(''),
+              children: widget.children),
         );
       },
     );

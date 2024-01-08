@@ -7,7 +7,6 @@ import 'package:easy_sidemenu/src/side_menu_controller.dart';
 typedef SideMenuItemBuilder = Widget Function(
     BuildContext context, SideMenuDisplayMode displayMode);
 
-
 class SideMenuItemWithGlobal extends StatefulWidget {
   /// #### Side Menu Item
   ///
@@ -15,7 +14,6 @@ class SideMenuItemWithGlobal extends StatefulWidget {
   const SideMenuItemWithGlobal({
     Key? key,
     required this.global,
-    required this.insideExpansionItem,
     this.onTap,
     this.title,
     this.icon,
@@ -34,9 +32,6 @@ class SideMenuItemWithGlobal extends StatefulWidget {
 
   /// Global object of [SideMenu]
   final Global global;
-
-  /// If inside [SideMenuExpansionItem]
-  // bool insideExpansionItem = false;
 
   /// Title text
   final String? title;
@@ -74,14 +69,8 @@ class SideMenuItemWithGlobal extends StatefulWidget {
   /// Builder has `(BuildContext context, SideMenuDisplayMode displayMode)`
   final SideMenuItemBuilder? builder;
 
-  /// If it is inside [SideMenuExpansionItem]
-  final bool insideExpansionItem;
-
-
   @override
   State<SideMenuItemWithGlobal> createState() => _SideMenuItemState();
-
-
 }
 
 class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
@@ -258,9 +247,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                     padding: EdgeInsets.symmetric(
                         vertical: value == SideMenuDisplayMode.compact
                             ? widget.global.style.itemInnerSpacing
-                            : widget.insideExpansionItem
-                                ? widget.global.style.itemInnerSpacing * 2
-                                : widget.global.style.itemInnerSpacing),
+                            : widget.global.style.itemInnerSpacing),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

@@ -100,7 +100,6 @@ class _SideMenuState extends State<SideMenu> {
           tooltipContent: data.tooltipContent,
           trailing: data.trailing,
           builder: data.builder,
-          insideExpansionItem: false
         );
       } else if (data is SideMenuExpansionItem) {
         return SideMenuExpansionItemWithGlobal(
@@ -119,7 +118,6 @@ class _SideMenuState extends State<SideMenu> {
             tooltipContent: childData.tooltipContent,
             trailing: childData.trailing,
             builder: childData.builder,
-            insideExpansionItem: true,
           )).toList()
         );
       }
