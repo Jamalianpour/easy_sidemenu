@@ -20,7 +20,11 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
   /// This is displayed instead if [icon] is null
   final Widget? iconWidget;
 
+  /// The Children widgets
   final List<SideMenuItemWithGlobal> children;
+
+  /// for maintaining record of the state
+  final int index;
 
   const SideMenuExpansionItemWithGlobal(
       {Key? key,
@@ -28,6 +32,7 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
       this.title,
       this.icon,
       this.iconWidget,
+      required this.index,
       required this.children})
       : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
@@ -40,11 +45,20 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
 
 class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
   /// Set icon for of [SideMenuExpansionItemWithGlobal]
+  late bool isExpanded;
+  @override
+  void initState() {
+    super.initState();
+    isExpanded = widget.global.expansionStateList[widget.index];
+  }
+
   Widget _generateIcon(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color: widget.global.style.unselectedIconColor ?? Colors.black54,
+      color: (widget.global.expansionStateList[widget.index]) // If value is true then the Expandable Item is fully expanded, else it is collapsed
+          ? widget.global.style.selectedColor ?? Colors.black
+          : widget.global.style.unselectedIconColor ?? Colors.black54,
       size: widget.global.style.iconSize ?? 24,
     );
     return icon;
@@ -69,6 +83,14 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
                 child: _generateIcon(widget.icon, widget.iconWidget),
               ),
               // The title should only take space when SideMenuDisplayMode is open
+              maintainState: true,
+              onExpansionChanged: (value) {
+                setState(() {
+                  isExpanded = value;
+                  widget.global.expansionStateList[widget.index] = value;
+                });
+              },
+              initiallyExpanded: widget.global.expansionStateList[widget.index],
               title: (value == SideMenuDisplayMode.open)
                   ? Text(
                       widget.title ?? '',

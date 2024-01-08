@@ -7,6 +7,10 @@ import 'package:easy_sidemenu/src/side_menu_controller.dart';
 typedef SideMenuItemBuilder = Widget Function(
     BuildContext context, SideMenuDisplayMode displayMode);
 
+class SideMenuItemList{
+  late List<dynamic> items;
+}
+
 class SideMenuItemWithGlobal extends StatefulWidget {
   /// #### Side Menu Item
   ///

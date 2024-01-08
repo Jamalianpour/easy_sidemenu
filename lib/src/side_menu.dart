@@ -14,8 +14,11 @@ class SideMenu extends StatefulWidget {
   /// Page controller to control [PageView] widget
   final SideMenuController controller;
 
-  /// List of [SideMenuItem] or [SideMenuExpansionItem] on  [SideMenu]
+  /// List of [SideMenuItem] on [SideMenu]
   final List items;
+
+  /// List of [SideMenuItemWithGlobal] or [SideMenuExpansionItemWithGlobal] on [SideMenu]
+  final SideMenuItemList sidemenuitems = SideMenuItemList();
 
   final Global global = Global();
 
@@ -66,6 +69,51 @@ class SideMenu extends StatefulWidget {
   }) : super(key: key) {
     global.style = style ?? SideMenuStyle();
     global.controller = controller;
+    int sideMenuExpansionItemCount = 0, sideMenuExpansionItemIndex = -1;
+    for(int index = 0; index < items.length; index ++){
+      if(items[index] is SideMenuExpansionItem){
+        sideMenuExpansionItemCount = sideMenuExpansionItemCount + 1;
+      }
+    }
+    global.expansionStateList = List<bool>.filled(sideMenuExpansionItemCount, false);
+    sidemenuitems.items = items.map((data) {
+      if (data is SideMenuItem) {
+        return SideMenuItemWithGlobal(
+          global: global,
+          title: data.title,
+          onTap: data.onTap,
+          icon: data.icon,
+          iconWidget: data.iconWidget,
+          badgeContent: data.badgeContent,
+          badgeColor: data.badgeColor,
+          tooltipContent: data.tooltipContent,
+          trailing: data.trailing,
+          builder: data.builder,
+        );
+      } else if (data is SideMenuExpansionItem) {
+        sideMenuExpansionItemIndex = sideMenuExpansionItemIndex + 1;
+        return SideMenuExpansionItemWithGlobal(
+          global: global,
+          title: data.title,
+          icon: data.icon,
+          index: sideMenuExpansionItemIndex,
+          iconWidget: data.iconWidget,
+          children: data.children.map((childData) => SideMenuItemWithGlobal( 
+            global: global,
+            title: childData.title,
+            onTap: childData.onTap,
+            icon: childData.icon,
+            iconWidget: childData.iconWidget,
+            badgeContent: childData.badgeContent,
+            badgeColor: childData.badgeColor,
+            tooltipContent: childData.tooltipContent,
+            trailing: childData.trailing,
+            builder: childData.builder,
+          )).toList(),
+        );
+      }
+    }).toList();
+    global.items = sidemenuitems.items;
   }
 
   @override
@@ -78,7 +126,6 @@ class _SideMenuState extends State<SideMenu> {
   late bool alwaysShowFooter;
   late int collapseWidth;
   bool animationInProgress = false;
-  List sidemenuitems = [];
   SideMenuHamburgerMode _hamburgerMode = SideMenuHamburgerMode.open;
 
   @override
@@ -87,42 +134,7 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
-    sidemenuitems = widget.items.map((data) {
-      if (data is SideMenuItem) {
-        return SideMenuItemWithGlobal(
-          global: widget.global,
-          title: data.title,
-          onTap: data.onTap,
-          icon: data.icon,
-          iconWidget: data.iconWidget,
-          badgeContent: data.badgeContent,
-          badgeColor: data.badgeColor,
-          tooltipContent: data.tooltipContent,
-          trailing: data.trailing,
-          builder: data.builder,
-        );
-      } else if (data is SideMenuExpansionItem) {
-        return SideMenuExpansionItemWithGlobal(
-          global: widget.global,
-          title: data.title,
-          icon: data.icon,
-          iconWidget: data.iconWidget,
-          children: data.children.map((childData) => SideMenuItemWithGlobal( 
-            global: widget.global,
-            title: childData.title,
-            onTap: childData.onTap,
-            icon: childData.icon,
-            iconWidget: childData.iconWidget,
-            badgeContent: childData.badgeContent,
-            badgeColor: childData.badgeColor,
-            tooltipContent: childData.tooltipContent,
-            trailing: childData.trailing,
-            builder: childData.builder,
-          )).toList()
-        );
-      }
-    }).toList();
-    widget.global.items = sidemenuitems;
+
   }
 
   @override
@@ -235,7 +247,7 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     widget.global.controller = widget.controller;
-    widget.global.items = sidemenuitems;
+    widget.global.items = widget.sidemenuitems.items;
     IconButton hamburgerIcon = IconButton(
         icon: const Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
         onPressed: _toggleHamburgerState);
@@ -255,12 +267,14 @@ class _SideMenuState extends State<SideMenu> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if(widget.global.style.showHamburger) hamburgerIcon,
-                      if (widget.global.style.displayMode == SideMenuDisplayMode.compact && showToggle)
+                      if (widget.global.style.displayMode ==
+                              SideMenuDisplayMode.compact &&
+                          showToggle)
                         const SizedBox(
                           height: 42,
                         ),
                       if (widget.title != null) widget.title!,
-                      ...sidemenuitems,
+                      ...widget.sidemenuitems.items,
                     ],
                   ),
                 ),

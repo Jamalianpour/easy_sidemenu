@@ -10,6 +10,7 @@ class Global {
   bool showTrailing = true;
   List<Function> itemsUpdate = [];
   List items = [];
+  List<bool> expansionStateList = [];
 }
 
 class DisplayModeNotifier extends ValueNotifier<SideMenuDisplayMode> {
