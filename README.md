@@ -157,7 +157,7 @@ Widget build(BuildContext context) {
 you can change style of side menu with `SideMenuStyle` :
 
 ```dart
-style: SideMenuStyle(
+SideMenuStyle(
   displayMode: SideMenuDisplayMode.auto,
   decoration: BoxDecoration(),
   openSideMenuWidth: 200,
@@ -171,14 +171,23 @@ style: SideMenuStyle(
   unselectedTitleTextStyle: TextStyle(color: Colors.black54),
   iconSize: 20,
   itemBorderRadius: const BorderRadius.all(
-      Radius.circular(5.0),
+    Radius.circular(5.0),
   ),
   showTooltip: true,
   showHamburger: true,
   itemHeight: 50.0,
   itemInnerSpacing: 8.0,
   itemOuterPadding: const EdgeInsets.symmetric(horizontal: 5.0),
-  toggleColor: Colors.black54
+  toggleColor: Colors.black54,
+
+  // Additional properties for expandable items
+  selectedTitleTextStyleExpandable: TextStyle(color: Colors.white), // Adjust the style as needed
+  unselectedTitleTextStyleExpandable: TextStyle(color: Colors.black54), // Adjust the style as needed
+  selectedIconColorExpandable: Colors.white, // Adjust the color as needed
+  unselectedIconColorExpandable: Colors.black54, // Adjust the color as needed
+  arrowCollapse: Colors.blueGrey, // Adjust the color as needed
+  arrowOpen: Colors.lightBlueAccent, // Adjust the color as needed
+  iconSizeExpandable: 24.0, // Adjust the size as needed
 ),
 ```
 
@@ -217,28 +226,36 @@ style: SideMenuStyle(
 ![Open](images/Screenshot_style.png)
 
 #### Style Props
+| props                             | types          | description                                                                 |
+|-----------------------------------|----------------|-----------------------------------------------------------------------------|
+| displayMode                       | `SideMenuDisplayMode?` | SideMenuDisplayMode.auto, SideMenuDisplayMode.open, SideMenuDisplayMode.compact|
+| decoration                        | `BoxDecoration?`    | Decoration of `SideMenu` background (container)                            |
+| openSideMenuWidth                 | `double?`        | Width of `SideMenu` when displayMode was SideMenuDisplayMode.open          |
+| compactSideMenuWidth              | `double?`        | Width of `SideMenu` when displayMode was SideMenuDisplayMode.compact       |
+| hoverColor                        | `Color?`         | Color of `SideMenuItem` when mouse hover on that                           |
+| selectedColor                     | `Color?`         | Background color of `SideMenuItem` when item is selected                   |
+| selectedIconColor                 | `Color?`         | Color of icon when item is selected                                        |
+| unselectedIconColor               | `Color?`         | Color of icon when item is unselected                                      |
+| backgroundColor                   | `Color?`         | Background color of `SideMenu`                                             |
+| selectedTitleTextStyle            | `TextStyle?`     | Style of `title` text when item is selected                                |
+| unselectedTitleTextStyle          | `TextStyle?`     | Style of `title` text when item is unselected                              |
+| iconSize                          | `double?`        | Size of icon on `SideMenuItem`                                             |
+| toggleColor                       | `Color?`         | Color of toggle button                                                     |
+| itemBorderRadius                  | `BorderRadius`   | Border Radius of menu item                                                 |
+| showTooltip                       | `bool`           | Property that will show user itemName in Tooltip when they'll hover over the item|
+| itemInnerSpacing                  | `double`         | Inner spacing of menu item                                                 |
+| itemOuterPadding                  | `EdgeInsetsGeometry` | Outer padding of menu item                                              |
+| itemHeight                        | `double`         | Height of menu item                                                        |
+| showHamburger                     | `bool`           | Property that will show Hamburger on top-left corner if set as `true`      |
+| selectedTitleTextStyleExpandable  | `TextStyle?`     | Style of `title` text when item is selected in `SideMenuExpandableItem`    |
+| unselectedTitleTextStyleExpandable| `TextStyle?`     | Style of `title` text when item is unselected in `SideMenuExpandableItem`  |
+| selectedIconColorExpandable       | `Color?`         | Color of icon when item is selected in `SideMenuExpandableItem`            |
+| unselectedIconColorExpandable     | `Color?`         | Color of icon when item is unselected in `SideMenuExpandableItem`          |
+| arrowCollapse                     | `Color?`         | Color of arrow in collapsed state in `SideMenuExpandableItem`              |
+| arrowOpen                         | `Color?`         | Color of arrow in open state in `SideMenuExpandableItem`                   |
+| iconSizeExpandable                | `double?`        | Size of icon on `SideMenuExpandableItem`                                   |
 
-| props                    |         types          |                                   description                                   |
-| :----------------------- | :--------------------: | :-----------------------------------------------------------------------------: |
-| displayMode              | `SideMenuDisplayMode?` | SideMenuDisplayMode.auto, SideMenuDisplayMode.open, SideMenuDisplayMode.compact |
-| decoration               |    `BoxDecoration?`    |                 Decoration of `SideMenu` background (container)                 |
-| openSideMenuWidth        |       `double?`        |        Width of `SideMenu` when displayMode was SideMenuDisplayMode.open        |
-| compactSideMenuWidth     |       `double?`        |      Width of `SideMenu` when displayMode was SideMenuDisplayMode.compact       |
-| hoverColor               |        `Color?`        |                Color of `SideMenuItem` when mouse hover on that                 |
-| selectedColor            |        `Color?`        |            Background color of `SideMenuItem` when item is selected             |
-| selectedIconColor        |        `Color?`        |                       Color of icon when item is selected                       |
-| unselectedIconColor      |        `Color?`        |                      Color of icon when item is unselected                      |
-| backgroundColor          |        `Color?`        |                         Background color of `SideMenu`                          |
-| selectedTitleTextStyle   |      `TextStyle?`      |                   Style of `title` text when item is selected                   |
-| unselectedTitleTextStyle |      `TextStyle?`      |                  Style of `title` text when item is unselected                  |
-| iconSize                 |       `double?`        |                         Size of icon on `SideMenuItem`                          |
-| toggleColor              |        `Color?`        |                             Color of toggle button                              |
-| itemBorderRadius         |     `BorderRadius`     |                           Border Radius of menu item                            |
-| showTooltip              |         `bool`         |Property that will show user itemName in Tooltip when they'll hover over the item|
-| itemInnerSpacing         |        `double`        |                           Inner spacing of menu item                            |
-| itemOuterPadding         |  `EdgeInsetsGeometry`  |                           Outer padding of menu item                            |
-| itemHeight               |        `double`        |                              Height of menu item                                |
-| showHamburger            |         `bool`         |       Property that will show Hamburger on topLeft corner if set as `true`      |
+
 
 ---
 

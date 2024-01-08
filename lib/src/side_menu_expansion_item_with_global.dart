@@ -56,10 +56,17 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
     Icon icon = Icon(
       mainIcon.icon,
-      color: (widget.global.expansionStateList[widget.index]) // If value is true then the Expandable Item is fully expanded, else it is collapsed
-          ? widget.global.style.selectedColor ?? Colors.black
-          : widget.global.style.unselectedIconColor ?? Colors.black54,
-      size: widget.global.style.iconSize ?? 24,
+      color: (widget.global.expansionStateList[widget
+              .index]) // If value is true then the Expandable Item is fully expanded, else it is collapsed
+          ? widget.global.style.selectedIconColorExpandable ??
+              widget.global.style.selectedColor ??
+              Colors.black
+          : widget.global.style.unselectedIconColorExpandable ??
+              widget.global.style.unselectedIconColor ??
+              Colors.black54,
+      size: widget.global.style.iconSizeExpandable ??
+          widget.global.style.iconSize ??
+          24,
     );
     return icon;
   }
@@ -90,10 +97,27 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
                   widget.global.expansionStateList[widget.index] = value;
                 });
               },
+              trailing: Icon(
+                isExpanded
+                    ? Icons.arrow_drop_down_circle
+                    : Icons.arrow_drop_down,
+                color: isExpanded
+                    ? widget.global.style.arrowOpen
+                    : widget.global.style.arrowCollapse,
+              ),
               initiallyExpanded: widget.global.expansionStateList[widget.index],
               title: (value == SideMenuDisplayMode.open)
                   ? Text(
                       widget.title ?? '',
+                      style: widget.global.expansionStateList[widget.index]
+                          ? const TextStyle(fontSize: 17, color: Colors.black)
+                              .merge(widget.global.style
+                                      .selectedTitleTextStyleExpandable ??
+                                  widget.global.style.selectedTitleTextStyle)
+                          : const TextStyle(fontSize: 17, color: Colors.black54)
+                              .merge(widget.global.style
+                                      .unselectedTitleTextStyleExpandable ??
+                                  widget.global.style.unselectedTitleTextStyle),
                     )
                   : const Text(''),
               children: widget.children),
