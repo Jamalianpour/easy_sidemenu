@@ -1,3 +1,11 @@
+## [0.6.0]
+* **New Features** 
+  * Add expansion item -> `SideMenuExpansionItem`
+  * Add Hamburger Icon [#77](https://github.com/Jamalianpour/easy_sidemenu/pull/77)
+
+* Fix: width not being returned on 2nd load [#61](https://github.com/Jamalianpour/easy_sidemenu/pull/61)
+* Refactor codes
+
 ## [0.5.0]
 * **Braking**: priority has been removed from `SideMenuItem`
 * builder has been changed and now can use any widget as `SideMenuItem`

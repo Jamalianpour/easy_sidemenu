@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'easy_sidemenu Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: false
       ),
       home: const MyHomePage(title: 'easy_sidemenu Demo'),
       debugShowCheckedModeBanner: false,
@@ -66,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // decoration: BoxDecoration(
               //   borderRadius: BorderRadius.all(Radius.circular(10)),
               // ),
-              // backgroundColor: Colors.blueGrey[700]
+              // backgroundColor: Colors.grey[200]
             ),
             title: Column(
               children: [
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.lightBlue[100],
+                    color: Colors.lightBlue[50],
                     borderRadius: BorderRadius.circular(12)),
                 child: Padding(
                   padding:
@@ -135,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       '3',
                       style: TextStyle(color: Colors.white),
                     ),
-                    tooltipContent:"Expansion Item 1",
+                    tooltipContent: "Expansion Item 1",
                   ),
                   SideMenuItem(
                     title: 'Expansion Item 2',
@@ -144,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     icon: const Icon(Icons.supervisor_account),
                   )
-                ]
+                ],
               ),
               SideMenuItem(
                 title: 'Files',
@@ -205,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
+          const VerticalDivider(width: 0,),
           Expanded(
             child: PageView(
               controller: pageController,
@@ -263,29 +265,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
+
+                // this is for SideMenuItem with builder (divider)
+                const SizedBox.shrink(),
+
                 Container(
                   color: Colors.white,
                   child: const Center(
                     child: Text(
                       'Settings',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Only Title',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Only Icon',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:flutter/material.dart';
 import 'global/global.dart';
 
+// Builds a widget with padding and an IconButton that changes based on the display mode state.
 class SideMenuToggle extends StatefulWidget {
   final Function? onTap;
   final Global global;

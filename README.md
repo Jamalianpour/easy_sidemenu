@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.5.0
+  easy_sidemenu: ^0.6.0
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -68,12 +68,25 @@ List<SideMenuItem> items = [
       style: TextStyle(color: Colors.white),
     ),
   ),
-  SideMenuItem(
-    title: 'Settings',
-    onTap: (index, _) {
-      sideMenu.changePage(index);
-    },
-    icon: Icon(Icons.settings),
+  SideMenuExpansionItem(
+    title: "Expansion Item",
+    icon: const Icon(Icons.kitchen),
+    children: [
+      SideMenuItem(
+        title: 'Expansion Item 1',
+        onTap: (index, _) {
+          sideMenu.changePage(index);
+        },
+        icon: const Icon(Icons.home),
+      ),
+      SideMenuItem(
+        title: 'Expansion Item 2',
+        onTap: (index, _) {
+          sideMenu.changePage(index);
+        },
+        icon: const Icon(Icons.supervisor_account),
+      )
+    ],
   ),
   SideMenuItem(
     title: 'Exit',
@@ -141,7 +154,12 @@ Widget build(BuildContext context) {
             ),
             Container(
               child: Center(
-                child: Text('Settings'),
+                child: Text('Expansion Item 1'),
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text('Expansion Item 2'),
               ),
             ),
           ],
@@ -255,6 +273,10 @@ style: SideMenuStyle(
 | arrowOpen                         | `Color?`         | Color of arrow in open state in `SideMenuExpandableItem`                   |
 | iconSizeExpandable                | `double?`        | Size of icon on `SideMenuExpandableItem`                                   |
 
+
+
+#### Thanks
+Special thanks to [aditya113141](https://github.com/aditya113141) for contributing and implementing `SideMenuExpansionItem`
 
 
 ---

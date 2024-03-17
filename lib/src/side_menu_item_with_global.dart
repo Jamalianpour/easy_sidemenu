@@ -7,7 +7,7 @@ import 'package:easy_sidemenu/src/side_menu_controller.dart';
 typedef SideMenuItemBuilder = Widget Function(
     BuildContext context, SideMenuDisplayMode displayMode);
 
-class SideMenuItemList{
+class SideMenuItemList {
   late List<dynamic> items;
 }
 
@@ -149,7 +149,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
   /// https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0#your-code
   T? _nonNullableWrap<T>(T? value) => value;
 
-  int _getIndexofCurrentSideMenuItemWidget() {
+  int _getIndexOfCurrentSideMenuItemWidget() {
     int index = 0;
     int n = widget.global.items.length;
     for (int i = 0; i < n; i++) {
@@ -175,7 +175,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
 
   /// Set background color of [SideMenuItemWithGlobal]
   Color _setColor() {
-    if (_getIndexofCurrentSideMenuItemWidget() == currentPage) {
+    if (_getIndexOfCurrentSideMenuItemWidget() == currentPage) {
       if (isHovered) {
         return widget.global.style.selectedHoverColor ??
             widget.global.style.selectedColor ??
@@ -191,28 +191,36 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
     }
   }
 
-  /// Set icon for of [SideMenuItemWithGlobal]
+  // Generates an icon based on the mainIcon and iconWidget provided. If mainIcon is null, it returns iconWidget or a SizedBox if iconWidget is also null.
+  // Determines the color and size of the icon based on the current selection state. If a badgeContent is provided,
+  // wraps the icon with a Badge widget using the badgeContent, badgeColor, and position specified.
   Widget _generateIcon(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
-    Icon icon = Icon(
+    final Color iconColor = _isCurrentSideMenuItemSelected()
+        ? widget.global.style.selectedIconColor ?? Colors.black
+        : widget.global.style.unselectedIconColor ?? Colors.black54;
+    final double iconSize = widget.global.style.iconSize ?? 24;
+
+    final Icon icon = Icon(
       mainIcon.icon,
-      color: _getIndexofCurrentSideMenuItemWidget() == currentPage
-          ? widget.global.style.selectedIconColor ?? Colors.black
-          : widget.global.style.unselectedIconColor ?? Colors.black54,
-      size: widget.global.style.iconSize ?? 24,
+      color: iconColor,
+      size: iconSize,
     );
-    if (widget.badgeContent == null) {
-      return icon;
-    } else {
-      return bdg.Badge(
-        badgeContent: widget.badgeContent!,
-        badgeStyle: bdg.BadgeStyle(
-          badgeColor: widget.badgeColor ?? Colors.red,
-        ),
-        position: bdg.BadgePosition.topEnd(top: -13, end: -7),
-        child: icon,
-      );
-    }
+
+    return widget.badgeContent == null
+        ? icon
+        : bdg.Badge(
+            badgeContent: widget.badgeContent!,
+            badgeStyle: bdg.BadgeStyle(
+              badgeColor: widget.badgeColor ?? Colors.red,
+            ),
+            position: bdg.BadgePosition.topEnd(top: -13, end: -7),
+            child: icon,
+          );
+  }
+
+  bool _isCurrentSideMenuItemSelected() {
+    return _getIndexOfCurrentSideMenuItemWidget() == currentPage;
   }
 
   @override
@@ -220,7 +228,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
     if (widget.builder == null) {
       return InkWell(
         onTap: () => widget.onTap?.call(
-            _getIndexofCurrentSideMenuItemWidget(), widget.global.controller),
+            _getIndexOfCurrentSideMenuItemWidget(), widget.global.controller),
         onHover: (value) {
           safeSetState(() {
             isHovered = value;
@@ -268,7 +276,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                                 widget.title ?? '',
                                 overflow: TextOverflow
                                     .ellipsis, // Helps to handle long text
-                                style: _getIndexofCurrentSideMenuItemWidget() ==
+                                style: _getIndexOfCurrentSideMenuItemWidget() ==
                                         currentPage.ceil()
                                     ? const TextStyle(
                                             fontSize: 17, color: Colors.black)

@@ -52,23 +52,26 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
     isExpanded = widget.global.expansionStateList[widget.index];
   }
 
-  Widget _generateIcon(Icon? mainIcon, Widget? iconWidget) {
+  // Generates an icon widget based on the main icon and icon widget provided. 
+  // If the main icon is null, returns the icon widget or a SizedBox if no icon widget is provided. 
+  // Determines the icon color and size based on the expansion state and global styling. 
+  // Returns an Icon widget with the specified icon, color, and size.
+  Widget _generateIconWidget(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
-    Icon icon = Icon(
-      mainIcon.icon,
-      color: (widget.global.expansionStateList[widget
-              .index]) // If value is true then the Expandable Item is fully expanded, else it is collapsed
-          ? widget.global.style.selectedIconColorExpandable ??
-              widget.global.style.selectedColor ??
-              Colors.black
-          : widget.global.style.unselectedIconColorExpandable ??
-              widget.global.style.unselectedIconColor ??
-              Colors.black54,
-      size: widget.global.style.iconSizeExpandable ??
-          widget.global.style.iconSize ??
-          24,
-    );
-    return icon;
+
+    final bool isExpanded = widget.global.expansionStateList[widget.index];
+    final Color iconColor = isExpanded
+        ? widget.global.style.selectedIconColorExpandable ??
+            widget.global.style.selectedColor ??
+            Colors.black
+        : widget.global.style.unselectedIconColorExpandable ??
+            widget.global.style.unselectedIconColor ??
+            Colors.black54;
+    final double iconSize = widget.global.style.iconSizeExpandable ??
+        widget.global.style.iconSize ??
+        24;
+
+    return Icon(mainIcon.icon, color: iconColor, size: iconSize);
   }
 
   @override
@@ -87,7 +90,7 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
               leading: SizedBox(
                 // Ensures the icon does not take the full tile width
                 width: 40.0, // Adjust size constraints as required
-                child: _generateIcon(widget.icon, widget.iconWidget),
+                child: _generateIconWidget(widget.icon, widget.iconWidget),
               ),
               // The title should only take space when SideMenuDisplayMode is open
               maintainState: true,
