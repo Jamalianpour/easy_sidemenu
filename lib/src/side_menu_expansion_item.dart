@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_item.dart';
+import 'package:easy_sidemenu/src/side_menu_controller.dart';
 
 class SideMenuExpansionItem {
   /// #### Side Menu Item
@@ -8,6 +9,10 @@ class SideMenuExpansionItem {
 
   /// name
   final String? title;
+
+  /// A function that will be called when tap on [SideMenuExpansionItem] corresponding
+  /// to this [SideMenuExpansionItem]
+  final void Function(int index, SideMenuController sideMenuController, bool isExpanded)? onTap;
 
   /// A Icon to display before [title]
   final Icon? icon;
@@ -19,6 +24,7 @@ class SideMenuExpansionItem {
 
   const SideMenuExpansionItem({
     Key? key,
+    this.onTap,
     this.title,
     this.icon,
     this.iconWidget,

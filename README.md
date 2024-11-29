@@ -71,6 +71,9 @@ List<SideMenuItem> items = [
   SideMenuExpansionItem(
     title: "Expansion Item",
     icon: const Icon(Icons.kitchen),
+    onTap: (index, _, isExpanded) => {
+        print('$index, expanded $isExpanded')
+    },
     children: [
       SideMenuItem(
         title: 'Expansion Item 1',

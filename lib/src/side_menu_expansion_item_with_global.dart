@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
+import 'package:easy_sidemenu/src/side_menu_controller.dart';
 
 import 'global/global.dart';
 
@@ -26,12 +27,17 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
   /// for maintaining record of the state
   final int index;
 
+  /// A function that will be called when tap on [SideMenuExpansionItem] corresponding
+  /// to this [SideMenuExpansionItem]
+  final void Function(int index, SideMenuController sideMenuController, bool isExpanded)? onTap;
+
   const SideMenuExpansionItemWithGlobal(
       {Key? key,
       required this.global,
       this.title,
       this.icon,
       this.iconWidget,
+      this.onTap,
       required this.index,
       required this.children})
       : assert(title != null || icon != null,
@@ -99,6 +105,7 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
                   isExpanded = value;
                   widget.global.expansionStateList[widget.index] = value;
                 });
+                widget.onTap?.call(widget.index, widget.global.controller, value);
               },
               trailing: Icon(
                 isExpanded
