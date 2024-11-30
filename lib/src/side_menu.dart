@@ -99,6 +99,7 @@ class SideMenu extends StatefulWidget {
           icon: data.icon,
           index: sideMenuExpansionItemIndex,
           iconWidget: data.iconWidget,
+          onTap: data.onTap,
           children: data.children
               .map((childData) => SideMenuItemWithGlobal(
                     global: global,
