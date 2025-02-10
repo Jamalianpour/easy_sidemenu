@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart' as bdg;
+// import 'package:badges/badges.dart' as bdg;
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'global/global.dart';
@@ -209,12 +209,11 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
 
     return widget.badgeContent == null
         ? icon
-        : bdg.Badge(
-            badgeContent: widget.badgeContent!,
-            badgeStyle: bdg.BadgeStyle(
-              badgeColor: widget.badgeColor ?? Colors.red,
-            ),
-            position: bdg.BadgePosition.topEnd(top: -13, end: -7),
+        : Badge(
+            label: widget.badgeContent!,
+            backgroundColor: widget.badgeColor ?? Colors.red,
+            offset: const Offset(-13, -7),
+            alignment: Alignment.topRight,
             child: icon,
           );
   }
@@ -270,35 +269,27 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                         if (value == SideMenuDisplayMode.open) ...[
                           Expanded(
                             // Expanded will allow the text to take up all available space
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                widget.title ?? '',
-                                overflow: TextOverflow
-                                    .ellipsis, // Helps to handle long text
-                                style: _getIndexOfCurrentSideMenuItemWidget() ==
-                                        currentPage.ceil()
-                                    ? const TextStyle(
-                                            fontSize: 17, color: Colors.black)
-                                        .merge(widget.global.style
-                                            .selectedTitleTextStyle)
-                                    : const TextStyle(
-                                            fontSize: 17, color: Colors.black54)
-                                        .merge(widget.global.style
-                                            .unselectedTitleTextStyle),
-                              ),
+                            child: Text(
+                              widget.title ?? '',
+                              overflow: TextOverflow
+                                  .ellipsis, // Helps to handle long text
+                              style: _getIndexOfCurrentSideMenuItemWidget() ==
+                                      currentPage.ceil()
+                                  ? const TextStyle(
+                                          fontSize: 17, color: Colors.black)
+                                      .merge(widget
+                                          .global.style.selectedTitleTextStyle)
+                                  : const TextStyle(
+                                          fontSize: 17, color: Colors.black54)
+                                      .merge(widget.global.style
+                                          .unselectedTitleTextStyle),
                             ),
                           ),
-                          const SizedBox.shrink(),
+                          // const SizedBox.shrink(),
                           if (widget.trailing != null &&
                               widget.global.showTrailing) ...[
                             // Aligning the trailing widget to the right
-                            Flexible(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: widget.trailing!,
-                              ),
-                            ),
+                            widget.trailing!,
                           ],
                         ],
                       ],

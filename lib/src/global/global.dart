@@ -6,7 +6,8 @@ import 'package:flutter/widgets.dart';
 class Global {
   late SideMenuController controller;
   late SideMenuStyle style;
-  DisplayModeNotifier displayModeState = DisplayModeNotifier(SideMenuDisplayMode.auto);
+  DisplayModeNotifier displayModeState =
+      DisplayModeNotifier(SideMenuDisplayMode.auto);
   bool showTrailing = true;
   List<Function> itemsUpdate = [];
   List items = [];

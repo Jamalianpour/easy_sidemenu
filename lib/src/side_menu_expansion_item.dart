@@ -12,7 +12,8 @@ class SideMenuExpansionItem {
 
   /// A function that will be called when tap on [SideMenuExpansionItem] corresponding
   /// to this [SideMenuExpansionItem]
-  final void Function(int index, SideMenuController sideMenuController, bool isExpanded)? onTap;
+  final void Function(
+      int index, SideMenuController sideMenuController, bool isExpanded)? onTap;
 
   /// A Icon to display before [title]
   final Icon? icon;
@@ -31,5 +32,5 @@ class SideMenuExpansionItem {
     required this.children,
   })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
-        super(); 
+        super();
 }

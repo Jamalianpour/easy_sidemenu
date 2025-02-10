@@ -12,10 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'easy_sidemenu Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: false
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: false),
       home: const MyHomePage(title: 'easy_sidemenu Demo'),
       debugShowCheckedModeBanner: false,
     );
@@ -125,9 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuExpansionItem(
                 title: "Expansion Item",
                 icon: const Icon(Icons.kitchen),
-                onTap: (index, _, isExpanded) => {
-                  print('$index, expanded $isExpanded')
-                },
+                onTap: (index, _, isExpanded) =>
+                    {print('$index, expanded $isExpanded')},
                 children: [
                   SideMenuItem(
                     title: 'Expansion Item 1',
@@ -209,7 +205,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          const VerticalDivider(width: 0,),
+          const VerticalDivider(
+            width: 0,
+          ),
           Expanded(
             child: PageView(
               controller: pageController,

@@ -38,7 +38,7 @@ class SideMenuStyle {
 
   /// Size of icon on [SideMenuItem]
   double? iconSize;
-  
+
   /// Style of [title] text when item is selected in [SideMenuExpandableItem]
   TextStyle? selectedTitleTextStyleExpandable;
 

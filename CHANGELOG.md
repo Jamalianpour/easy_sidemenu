@@ -1,3 +1,10 @@
+## [0.6.1]
+* **New Features**
+  * add onTap event -> `SideMenuExpansionItem` [#85](https://github.com/Jamalianpour/easy_sidemenu/pull/85)
+
+* Removed `Badge` dependencies and use Flutter builtin `Badge`
+* Fix RTL issues
+
 ## [0.6.0]
 * **New Features** 
   * Add expansion item -> `SideMenuExpansionItem`

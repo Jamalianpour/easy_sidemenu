@@ -29,7 +29,8 @@ class SideMenuExpansionItemWithGlobal extends StatefulWidget {
 
   /// A function that will be called when tap on [SideMenuExpansionItem] corresponding
   /// to this [SideMenuExpansionItem]
-  final void Function(int index, SideMenuController sideMenuController, bool isExpanded)? onTap;
+  final void Function(
+      int index, SideMenuController sideMenuController, bool isExpanded)? onTap;
 
   const SideMenuExpansionItemWithGlobal(
       {Key? key,
@@ -58,9 +59,9 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
     isExpanded = widget.global.expansionStateList[widget.index];
   }
 
-  // Generates an icon widget based on the main icon and icon widget provided. 
-  // If the main icon is null, returns the icon widget or a SizedBox if no icon widget is provided. 
-  // Determines the icon color and size based on the expansion state and global styling. 
+  // Generates an icon widget based on the main icon and icon widget provided.
+  // If the main icon is null, returns the icon widget or a SizedBox if no icon widget is provided.
+  // Determines the icon color and size based on the expansion state and global styling.
   // Returns an Icon widget with the specified icon, color, and size.
   Widget _generateIconWidget(Icon? mainIcon, Widget? iconWidget) {
     if (mainIcon == null) return iconWidget ?? const SizedBox();
@@ -105,7 +106,8 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
                   isExpanded = value;
                   widget.global.expansionStateList[widget.index] = value;
                 });
-                widget.onTap?.call(widget.index, widget.global.controller, value);
+                widget.onTap
+                    ?.call(widget.index, widget.global.controller, value);
               },
               trailing: Icon(
                 isExpanded
