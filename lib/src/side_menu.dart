@@ -51,7 +51,7 @@ class SideMenu extends StatefulWidget {
   /// Width when will our open menu collapse into the compact one
   final int? collapseWidth;
 
-  final double? customCollapseWidth;
+  final double? customContentWidth;
 
   /// ### Easy Sidemenu widget
   ///
@@ -64,7 +64,7 @@ class SideMenu extends StatefulWidget {
     this.title,
     this.footer,
     this.style,
-    this.customCollapseWidth,
+    this.customContentWidth,
     this.showToggle = false,
     this.onDisplayModeChanged,
     this.displayModeToggleDuration,
@@ -201,7 +201,7 @@ class _SideMenuState extends State<SideMenu> {
 
   double _calculateAutoWidth(BuildContext context) {
     final customContentWidth =
-        widget.customCollapseWidth ?? MediaQuery.of(context).size.width;
+        widget.customContentWidth ?? MediaQuery.of(context).size.width;
     if (customContentWidth > collapseWidth) {
       return _calculateOpenWidth();
     } else {
