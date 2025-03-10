@@ -1,13 +1,14 @@
+import 'package:easy_sidemenu/src/side_menu_controller.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
-import 'package:easy_sidemenu/src/side_menu_hamburger_mode.dart';
-import 'package:easy_sidemenu/src/side_menu_item.dart';
-import 'package:easy_sidemenu/src/side_menu_style.dart';
-import 'package:easy_sidemenu/src/side_menu_toggle.dart';
-import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_expansion_item.dart';
 import 'package:easy_sidemenu/src/side_menu_expansion_item_with_global.dart';
-import 'package:easy_sidemenu/src/side_menu_controller.dart';
+import 'package:easy_sidemenu/src/side_menu_hamburger_mode.dart';
+import 'package:easy_sidemenu/src/side_menu_item.dart';
+import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
+import 'package:easy_sidemenu/src/side_menu_style.dart';
+import 'package:easy_sidemenu/src/side_menu_toggle.dart';
 import 'package:flutter/material.dart';
+
 import 'global/global.dart';
 
 class SideMenu extends StatefulWidget {
@@ -50,6 +51,8 @@ class SideMenu extends StatefulWidget {
   /// Width when will our open menu collapse into the compact one
   final int? collapseWidth;
 
+  final double? customCollapseWidth;
+
   /// ### Easy Sidemenu widget
   ///
   /// Sidemenu is a menu that is usually located
@@ -61,6 +64,7 @@ class SideMenu extends StatefulWidget {
     this.title,
     this.footer,
     this.style,
+    this.customCollapseWidth,
     this.showToggle = false,
     this.onDisplayModeChanged,
     this.displayModeToggleDuration,
@@ -196,7 +200,9 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   double _calculateAutoWidth(BuildContext context) {
-    if (MediaQuery.of(context).size.width > collapseWidth) {
+    final customContentWidth =
+        widget.customCollapseWidth ?? MediaQuery.of(context).size.width;
+    if (customContentWidth > collapseWidth) {
       return _calculateOpenWidth();
     } else {
       return _calculateCompactWidth();
