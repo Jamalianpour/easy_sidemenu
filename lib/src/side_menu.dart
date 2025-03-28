@@ -93,6 +93,10 @@ class SideMenu extends StatefulWidget {
         );
       } else if (data is SideMenuExpansionItem) {
         sideMenuExpansionItemIndex = sideMenuExpansionItemIndex + 1;
+        if (data.initialExpanded != null) {
+          global.expansionStateList[sideMenuExpansionItemIndex] =
+              data.initialExpanded!;
+        }
         return SideMenuExpansionItemWithGlobal(
           global: global,
           title: data.title,

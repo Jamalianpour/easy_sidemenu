@@ -23,12 +23,17 @@ class SideMenuExpansionItem {
 
   final List<SideMenuItem> children;
 
+  /// Control whether or not the SideMenuExpansion should be expanded initialy or not.
+  /// Default is collabsed
+  final bool? initialExpanded;
+
   const SideMenuExpansionItem({
     Key? key,
     this.onTap,
     this.title,
     this.icon,
     this.iconWidget,
+    this.initialExpanded,
     required this.children,
   })  : assert(title != null || icon != null,
             'Title and icon should not be empty at the same time'),
