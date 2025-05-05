@@ -82,6 +82,7 @@ class SideMenu extends StatefulWidget {
         return SideMenuItemWithGlobal(
           global: global,
           title: data.title,
+          titleFlex: data.titleFlex,
           onTap: data.onTap,
           icon: data.icon,
           iconWidget: data.iconWidget,
