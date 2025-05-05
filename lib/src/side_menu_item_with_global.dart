@@ -20,6 +20,7 @@ class SideMenuItemWithGlobal extends StatefulWidget {
     required this.global,
     this.onTap,
     this.title,
+    this.titleFlex = 1,
     this.icon,
     this.iconWidget,
     this.badgeContent,
@@ -39,6 +40,9 @@ class SideMenuItemWithGlobal extends StatefulWidget {
 
   /// Title text
   final String? title;
+
+  /// Title flex for expanding
+  final int titleFlex;
 
   /// A Icon to display before [title]
   final Icon? icon;
@@ -268,6 +272,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                         SizedBox(width: widget.global.style.itemInnerSpacing),
                         if (value == SideMenuDisplayMode.open) ...[
                           Expanded(
+                            flex: widget.titleFlex,
                             // Expanded will allow the text to take up all available space
                             child: Text(
                               widget.title ?? '',
