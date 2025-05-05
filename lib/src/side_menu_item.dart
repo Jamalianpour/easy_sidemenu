@@ -6,6 +6,9 @@ class SideMenuItem {
   /// Title text
   final String? title;
 
+  /// Title flex for expanding
+  final int titleFlex;
+
   /// A function that will be called when tap on [SideMenuItem] corresponding
   /// to this [SideMenuItem]
   final void Function(int index, SideMenuController sideMenuController)? onTap;
@@ -41,9 +44,11 @@ class SideMenuItem {
   /// Create custom sideMenuItem widget with builder
   final Widget Function(BuildContext context, SideMenuDisplayMode displayMode)?
       builder;
+
   const SideMenuItem({
     this.onTap,
     this.title,
+    this.titleFlex = 1,
     this.icon,
     this.iconWidget,
     this.badgeContent,
