@@ -8,6 +8,7 @@ import 'package:easy_sidemenu/src/side_menu_expansion_item.dart';
 import 'package:easy_sidemenu/src/side_menu_expansion_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'global/global.dart';
 
 class SideMenu extends StatefulWidget {
@@ -142,6 +143,20 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
+    widget.global.displayModeState.addListener(_displayModeChangeListener);
+  }
+
+  void _displayModeChangeListener() {
+    _updateWidth();
+  }
+
+  void _updateWidth() {
+    final newWidth = _calculateWidth(widget.global.displayModeState.value, context);
+    if (mounted && newWidth != _currentWidth) {
+      setState(() {
+        _currentWidth = newWidth;
+      });
+    }
   }
 
   // Updates the widget with the new `SideMenu` and sets default values for `showToggle`, `alwaysShowFooter`, and `collapseWidth`.
@@ -149,18 +164,20 @@ class _SideMenuState extends State<SideMenu> {
   // Overrides the superclass method to handle widget updates.
   @override
   void didUpdateWidget(covariant SideMenu oldWidget) {
+    super.didUpdateWidget(oldWidget);
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
-    widget.global.style = widget.style ?? SideMenuStyle();
-    super.didUpdateWidget(oldWidget);
+    if (widget.style != oldWidget.style) {
+      widget.global.style = widget.style ?? SideMenuStyle();
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _currentWidth = _calculateWidth(
-        widget.global.style.displayMode ?? SideMenuDisplayMode.auto, context);
+    // Use displayModeState.value as the primary source of truth for current display mode
+    _currentWidth = _calculateWidth(widget.global.displayModeState.value, context);
   }
 
   // Toggles the state of the hamburger between open and close. No parameters. No return value.
@@ -212,9 +229,6 @@ class _SideMenuState extends State<SideMenu> {
     _notifyParent();
     Future.delayed(_toggleDuration(), () {
       widget.global.showTrailing = true;
-      for (var update in widget.global.itemsUpdate) {
-        update();
-      }
     });
     return widget.global.style.openSideMenuWidth ?? 300;
   }
@@ -258,101 +272,101 @@ class _SideMenuState extends State<SideMenu> {
     widget.global.controller = widget.controller;
     widget.global.items = widget.sidemenuitems.items;
 
-    // Create the hamburger icon button
-    final IconButton hamburgerIcon = IconButton(
-      icon: const Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
-      onPressed: _toggleHamburgerState,
-    );
+    return ChangeNotifierProvider.value(
+      value: widget.global,
+      child: Builder(builder: (context) {
+        // Create the hamburger icon button
+        final IconButton hamburgerIcon = IconButton(
+          icon: const Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
+          onPressed: _toggleHamburgerState,
+        );
 
-    // Calculate the width of the side menu
-    _currentWidth = _calculateWidth(
-      widget.global.style.displayMode ?? SideMenuDisplayMode.auto,
-      context,
-    );
-
-    // Return the side menu widget
-    return ((widget.global.style.showHamburger) &&
-            (_hamburgerMode == SideMenuHamburgerMode.close))
-        ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
-        : AnimatedContainer(
-            duration: _toggleDuration(),
-            width: _currentWidth,
-            height: MediaQuery.sizeOf(context).height,
-            decoration: _decoration(widget.style),
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (widget.global.style.showHamburger) hamburgerIcon,
-                      if (widget.global.style.displayMode ==
-                              SideMenuDisplayMode.compact &&
-                          showToggle)
-                        const SizedBox(
-                          height: 42,
+        // Return the side menu widget
+        return ((widget.global.style.showHamburger) &&
+                (_hamburgerMode == SideMenuHamburgerMode.close))
+            ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
+            : AnimatedContainer(
+                duration: _toggleDuration(),
+                width: this._currentWidth, // Use the state variable
+                height: MediaQuery.sizeOf(context).height,
+                decoration: _decoration(widget.style),
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (widget.global.style.showHamburger) hamburgerIcon,
+                          if (widget.global.style.displayMode ==
+                                  SideMenuDisplayMode.compact &&
+                              showToggle)
+                            const SizedBox(
+                              height: 42,
+                            ),
+                          if (widget.title != null) widget.title!,
+                          ...widget.sidemenuitems.items,
+                        ],
+                      ),
+                    ),
+                    if ((widget.footer != null &&
+                            widget.global.displayModeState.value !=
+                                SideMenuDisplayMode.compact) ||
+                        (widget.footer != null && alwaysShowFooter))
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: widget.footer!,
+                      ),
+                    if (widget.global.style.displayMode !=
+                            SideMenuDisplayMode.auto &&
+                        showToggle)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: widget.global.displayModeState.value ==
+                                  SideMenuDisplayMode.open
+                              ? 0
+                              : 4,
+                          vertical: 0,
                         ),
-                      if (widget.title != null) widget.title!,
-                      ...widget.sidemenuitems.items,
-                    ],
-                  ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SideMenuToggle(
+                              global: widget.global,
+                              onTap: () {
+                                if (context
+                                        .findAncestorStateOfType<_SideMenuState>()
+                                        ?.animationInProgress ??
+                                    false) {
+                                  return;
+                                }
+                                if (widget.global.displayModeState.value ==
+                                    SideMenuDisplayMode.compact) {
+                                  setState(() {
+                                    widget.global.style.displayMode =
+                                        SideMenuDisplayMode.open;
+                                  });
+                                } else if (widget.global.displayModeState.value ==
+                                    SideMenuDisplayMode.open) {
+                                  setState(() {
+                                    widget.global.style.displayMode =
+                                        SideMenuDisplayMode.compact;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
                 ),
-                if ((widget.footer != null &&
-                        widget.global.displayModeState.value !=
-                            SideMenuDisplayMode.compact) ||
-                    (widget.footer != null && alwaysShowFooter))
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: widget.footer!,
-                  ),
-                if (widget.global.style.displayMode !=
-                        SideMenuDisplayMode.auto &&
-                    showToggle)
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: widget.global.displayModeState.value ==
-                              SideMenuDisplayMode.open
-                          ? 0
-                          : 4,
-                      vertical: 0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SideMenuToggle(
-                          global: widget.global,
-                          onTap: () {
-                            if (context
-                                    .findAncestorStateOfType<_SideMenuState>()
-                                    ?.animationInProgress ??
-                                false) {
-                              return;
-                            }
-                            if (widget.global.displayModeState.value ==
-                                SideMenuDisplayMode.compact) {
-                              setState(() {
-                                widget.global.style.displayMode =
-                                    SideMenuDisplayMode.open;
-                              });
-                            } else if (widget.global.displayModeState.value ==
-                                SideMenuDisplayMode.open) {
-                              setState(() {
-                                widget.global.style.displayMode =
-                                    SideMenuDisplayMode.compact;
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          );
+              );
+      }),
+    );
   }
 
   @override
   void dispose() {
+    widget.global.displayModeState.removeListener(_displayModeChangeListener);
     Future.delayed(Duration.zero, () {
       widget.global.displayModeState
           .change(widget.global.displayModeState.value);

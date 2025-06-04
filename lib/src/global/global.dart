@@ -3,14 +3,33 @@ import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_controller.dart';
 import 'package:flutter/widgets.dart';
 
-class Global {
+class Global extends ChangeNotifier {
   late SideMenuController controller;
-  late SideMenuStyle style;
+  SideMenuStyle? _style;
+  SideMenuStyle get style => _style!;
+  set style(SideMenuStyle value) {
+    _style = value;
+    notifyListeners();
+  }
+
   DisplayModeNotifier displayModeState =
       DisplayModeNotifier(SideMenuDisplayMode.auto);
-  bool showTrailing = true;
-  List<Function> itemsUpdate = [];
-  List items = [];
+  bool _showTrailing = true;
+  bool get showTrailing => _showTrailing;
+  set showTrailing(bool value) {
+    if (_showTrailing != value) {
+      _showTrailing = value;
+      notifyListeners();
+    }
+  }
+
+  List _items = [];
+  List get items => _items;
+  set items(List value) {
+    _items = value;
+    notifyListeners();
+  }
+
   List<bool> expansionStateList = [];
 }
 

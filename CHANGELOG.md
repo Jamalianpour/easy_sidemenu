@@ -1,3 +1,8 @@
+## [0.7.0]
+* Refactored the `Global` class to extend `ChangeNotifier`.
+* Optimized Width Calculation
+* Removed `itemsUpdate` Mechanism
+
 ## [0.6.1]
 * **New Features**
   * add onTap event -> `SideMenuExpansionItem` [#85](https://github.com/Jamalianpour/easy_sidemenu/pull/85)

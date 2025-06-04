@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_controller.dart';
@@ -83,56 +84,60 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: widget.global.displayModeState,
-      builder: (context, value, child) {
-        return ListTileTheme(
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: value == SideMenuDisplayMode.compact
-                ? widget.global.style.itemInnerSpacing
-                : widget.global.style.itemInnerSpacing + 5,
-          ),
-          horizontalTitleGap: 0,
-          child: ExpansionTile(
-              leading: SizedBox(
-                // Ensures the icon does not take the full tile width
-                width: 40.0, // Adjust size constraints as required
-                child: _generateIconWidget(widget.icon, widget.iconWidget),
+    return Consumer<Global>(
+      builder: (context, global, child) {
+        return ValueListenableBuilder(
+          valueListenable: global.displayModeState,
+          builder: (context, value, child) {
+            return ListTileTheme(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: value == SideMenuDisplayMode.compact
+                    ? global.style.itemInnerSpacing
+                    : global.style.itemInnerSpacing + 5,
               ),
-              // The title should only take space when SideMenuDisplayMode is open
-              maintainState: true,
-              onExpansionChanged: (value) {
-                setState(() {
-                  isExpanded = value;
-                  widget.global.expansionStateList[widget.index] = value;
-                });
-                widget.onTap
-                    ?.call(widget.index, widget.global.controller, value);
-              },
-              trailing: Icon(
-                isExpanded
-                    ? Icons.arrow_drop_down_circle
-                    : Icons.arrow_drop_down,
-                color: isExpanded
-                    ? widget.global.style.arrowOpen
-                    : widget.global.style.arrowCollapse,
-              ),
-              initiallyExpanded: widget.global.expansionStateList[widget.index],
-              title: (value == SideMenuDisplayMode.open)
-                  ? Text(
-                      widget.title ?? '',
-                      style: widget.global.expansionStateList[widget.index]
-                          ? const TextStyle(fontSize: 17, color: Colors.black)
-                              .merge(widget.global.style
-                                      .selectedTitleTextStyleExpandable ??
-                                  widget.global.style.selectedTitleTextStyle)
-                          : const TextStyle(fontSize: 17, color: Colors.black54)
-                              .merge(widget.global.style
-                                      .unselectedTitleTextStyleExpandable ??
-                                  widget.global.style.unselectedTitleTextStyle),
-                    )
-                  : const Text(''),
-              children: widget.children),
+              horizontalTitleGap: 0,
+              child: ExpansionTile(
+                  leading: SizedBox(
+                    // Ensures the icon does not take the full tile width
+                    width: 40.0, // Adjust size constraints as required
+                    child: _generateIconWidget(widget.icon, widget.iconWidget),
+                  ),
+                  // The title should only take space when SideMenuDisplayMode is open
+                  maintainState: true,
+                  onExpansionChanged: (value) {
+                    setState(() {
+                      isExpanded = value;
+                      global.expansionStateList[widget.index] = value;
+                    });
+                    widget.onTap
+                        ?.call(widget.index, global.controller, value);
+                  },
+                  trailing: Icon(
+                    isExpanded
+                        ? Icons.arrow_drop_down_circle
+                        : Icons.arrow_drop_down,
+                    color: isExpanded
+                        ? global.style.arrowOpen
+                        : global.style.arrowCollapse,
+                  ),
+                  initiallyExpanded: global.expansionStateList[widget.index],
+                  title: (value == SideMenuDisplayMode.open)
+                      ? Text(
+                          widget.title ?? '',
+                          style: global.expansionStateList[widget.index]
+                              ? const TextStyle(fontSize: 17, color: Colors.black)
+                                  .merge(global.style
+                                          .selectedTitleTextStyleExpandable ??
+                                      global.style.selectedTitleTextStyle)
+                              : const TextStyle(fontSize: 17, color: Colors.black54)
+                                  .merge(global.style
+                                          .unselectedTitleTextStyleExpandable ??
+                                      global.style.unselectedTitleTextStyle),
+                        )
+                      : const Text(''),
+                  children: widget.children),
+            );
+          },
         );
       },
     );
