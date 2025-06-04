@@ -1,3 +1,4 @@
+import 'package:easy_sidemenu/src/models/side_menu_item_with_global_base.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
@@ -6,7 +7,7 @@ import 'package:easy_sidemenu/src/side_menu_controller.dart';
 
 import 'global/global.dart';
 
-class SideMenuExpansionItemWithGlobal extends StatefulWidget {
+class SideMenuExpansionItemWithGlobal extends SideMenuItemWithGlobalBase {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
@@ -109,8 +110,7 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
                       isExpanded = value;
                       global.expansionStateList[widget.index] = value;
                     });
-                    widget.onTap
-                        ?.call(widget.index, global.controller, value);
+                    widget.onTap?.call(widget.index, global.controller, value);
                   },
                   trailing: Icon(
                     isExpanded
@@ -125,11 +125,13 @@ class _SideMenuExpansionState extends State<SideMenuExpansionItemWithGlobal> {
                       ? Text(
                           widget.title ?? '',
                           style: global.expansionStateList[widget.index]
-                              ? const TextStyle(fontSize: 17, color: Colors.black)
+                              ? const TextStyle(
+                                      fontSize: 17, color: Colors.black)
                                   .merge(global.style
                                           .selectedTitleTextStyleExpandable ??
                                       global.style.selectedTitleTextStyle)
-                              : const TextStyle(fontSize: 17, color: Colors.black54)
+                              : const TextStyle(
+                                      fontSize: 17, color: Colors.black54)
                                   .merge(global.style
                                           .unselectedTitleTextStyleExpandable ??
                                       global.style.unselectedTitleTextStyle),

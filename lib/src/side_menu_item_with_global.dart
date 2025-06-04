@@ -1,3 +1,5 @@
+import 'package:easy_sidemenu/src/models/side_menu_item_with_global_base.dart';
+import 'package:easy_sidemenu/src/side_menu_expansion_item_with_global.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
@@ -8,10 +10,10 @@ typedef SideMenuItemBuilder = Widget Function(
     BuildContext context, SideMenuDisplayMode displayMode);
 
 class SideMenuItemList {
-  late List<dynamic> items;
+  late List<SideMenuItemWithGlobalBase> items;
 }
 
-class SideMenuItemWithGlobal extends StatefulWidget {
+class SideMenuItemWithGlobal extends SideMenuItemWithGlobalBase {
   /// #### Side Menu Item
   ///
   /// This is a widget as [SideMenu] items with text and icon
@@ -143,22 +145,18 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
 
   int _getIndexOfCurrentSideMenuItemWidget() {
     int index = 0;
-    int n = widget.global.items.length;
-    for (int i = 0; i < n; i++) {
-      if (widget.global.items[i] is SideMenuItemWithGlobal) {
-        if (isSameWidget(widget.global.items[i])) {
+    for (final itemBase in widget.global.items) { // itemBase is SideMenuItemWithGlobalBase
+      if (itemBase is SideMenuItemWithGlobal) {
+        if (isSameWidget(itemBase)) { // Pass the specific type
           return index;
-        } else {
-          index = index + 1;
         }
-      } else {
-        int m = widget.global.items[i].children.length;
-        for (int j = 0; j < m; j++) {
-          if (isSameWidget(widget.global.items[i].children[j])) {
+        index++;
+      } else if (itemBase is SideMenuExpansionItemWithGlobal) {
+        for (final childItem in itemBase.children) { // childItem is SideMenuItemWithGlobal
+          if (isSameWidget(childItem)) {
             return index;
-          } else {
-            index = index + 1;
           }
+          index++;
         }
       }
     }

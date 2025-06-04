@@ -2,6 +2,7 @@
 * Refactored the `Global` class to extend `ChangeNotifier`.
 * Optimized Width Calculation
 * Removed `itemsUpdate` Mechanism
+* `SideMenuItemType` as a base interface for `SideMenuItem` and `SideMenuExpansionItem`.
 
 ## [0.6.1]
 * **New Features**

@@ -1,3 +1,4 @@
+import 'package:easy_sidemenu/src/models/side_menu_item_with_global_base.dart';
 import 'package:easy_sidemenu/src/side_menu_display_mode.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_controller.dart';
@@ -23,9 +24,9 @@ class Global extends ChangeNotifier {
     }
   }
 
-  List _items = [];
-  List get items => _items;
-  set items(List value) {
+  List<SideMenuItemWithGlobalBase> _items = [];
+  List<SideMenuItemWithGlobalBase> get items => _items;
+  set items(List<SideMenuItemWithGlobalBase> value) {
     _items = value;
     notifyListeners();
   }

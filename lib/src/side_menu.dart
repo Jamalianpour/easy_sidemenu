@@ -4,6 +4,7 @@ import 'package:easy_sidemenu/src/side_menu_item.dart';
 import 'package:easy_sidemenu/src/side_menu_style.dart';
 import 'package:easy_sidemenu/src/side_menu_toggle.dart';
 import 'package:easy_sidemenu/src/side_menu_item_with_global.dart';
+import 'package:easy_sidemenu/src/models/side_menu_item_type.dart';
 import 'package:easy_sidemenu/src/side_menu_expansion_item.dart';
 import 'package:easy_sidemenu/src/side_menu_expansion_item_with_global.dart';
 import 'package:easy_sidemenu/src/side_menu_controller.dart';
@@ -16,7 +17,7 @@ class SideMenu extends StatefulWidget {
   final SideMenuController controller;
 
   /// List of [SideMenuItem] or [SideMenuExpansionItem] on [SideMenu]
-  final List items;
+  final List<SideMenuItemType> items;
 
   /// List of [SideMenuItemWithGlobal] or [SideMenuExpansionItemWithGlobal] on [SideMenu]
   final SideMenuItemList sidemenuitems = SideMenuItemList();
@@ -92,7 +93,8 @@ class SideMenu extends StatefulWidget {
           trailing: data.trailing,
           builder: data.builder,
         );
-      } else if (data is SideMenuExpansionItem) {
+      } else {
+        data = data as SideMenuExpansionItem;
         sideMenuExpansionItemIndex = sideMenuExpansionItemIndex + 1;
         if (data.initialExpanded != null) {
           global.expansionStateList[sideMenuExpansionItemIndex] =
