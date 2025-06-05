@@ -153,7 +153,8 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void _updateWidth() {
-    final newWidth = _calculateWidth(widget.global.displayModeState.value, context);
+    final newWidth =
+        _calculateWidth(widget.global.displayModeState.value, context);
     if (mounted && newWidth != _currentWidth) {
       setState(() {
         _currentWidth = newWidth;
@@ -179,7 +180,8 @@ class _SideMenuState extends State<SideMenu> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Use displayModeState.value as the primary source of truth for current display mode
-    _currentWidth = _calculateWidth(widget.global.displayModeState.value, context);
+    _currentWidth =
+        _calculateWidth(widget.global.displayModeState.value, context);
   }
 
   // Toggles the state of the hamburger between open and close. No parameters. No return value.
@@ -336,7 +338,8 @@ class _SideMenuState extends State<SideMenu> {
                               global: widget.global,
                               onTap: () {
                                 if (context
-                                        .findAncestorStateOfType<_SideMenuState>()
+                                        .findAncestorStateOfType<
+                                            _SideMenuState>()
                                         ?.animationInProgress ??
                                     false) {
                                   return;
@@ -347,7 +350,8 @@ class _SideMenuState extends State<SideMenu> {
                                     widget.global.style.displayMode =
                                         SideMenuDisplayMode.open;
                                   });
-                                } else if (widget.global.displayModeState.value ==
+                                } else if (widget
+                                        .global.displayModeState.value ==
                                     SideMenuDisplayMode.open) {
                                   setState(() {
                                     widget.global.style.displayMode =

@@ -145,14 +145,17 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
 
   int _getIndexOfCurrentSideMenuItemWidget() {
     int index = 0;
-    for (final itemBase in widget.global.items) { // itemBase is SideMenuItemWithGlobalBase
+    for (final itemBase in widget.global.items) {
+      // itemBase is SideMenuItemWithGlobalBase
       if (itemBase is SideMenuItemWithGlobal) {
-        if (isSameWidget(itemBase)) { // Pass the specific type
+        if (isSameWidget(itemBase)) {
+          // Pass the specific type
           return index;
         }
         index++;
       } else if (itemBase is SideMenuExpansionItemWithGlobal) {
-        for (final childItem in itemBase.children) { // childItem is SideMenuItemWithGlobal
+        for (final childItem in itemBase.children) {
+          // childItem is SideMenuItemWithGlobal
           if (isSameWidget(childItem)) {
             return index;
           }
@@ -254,8 +257,7 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(
-                                width: global.style.itemInnerSpacing * 2),
+                            SizedBox(width: global.style.itemInnerSpacing * 2),
                             _generateIcon(widget.icon, widget.iconWidget),
                             SizedBox(width: global.style.itemInnerSpacing),
                             if (value == SideMenuDisplayMode.open) ...[
@@ -265,15 +267,19 @@ class _SideMenuItemState extends State<SideMenuItemWithGlobal> {
                                   widget.title ?? '',
                                   overflow: TextOverflow
                                       .ellipsis, // Helps to handle long text
-                                  style: _getIndexOfCurrentSideMenuItemWidget() ==
-                                          currentPage.ceil()
-                                      ? const TextStyle(
-                                              fontSize: 17, color: Colors.black)
-                                          .merge(global.style.selectedTitleTextStyle)
-                                      : const TextStyle(
-                                              fontSize: 17, color: Colors.black54)
-                                          .merge(global.style
-                                              .unselectedTitleTextStyle),
+                                  style:
+                                      _getIndexOfCurrentSideMenuItemWidget() ==
+                                              currentPage.ceil()
+                                          ? const TextStyle(
+                                                  fontSize: 17,
+                                                  color: Colors.black)
+                                              .merge(global
+                                                  .style.selectedTitleTextStyle)
+                                          : const TextStyle(
+                                                  fontSize: 17,
+                                                  color: Colors.black54)
+                                              .merge(global.style
+                                                  .unselectedTitleTextStyle),
                                 ),
                               ),
                               // const SizedBox.shrink(),

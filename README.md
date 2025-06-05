@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.6.1
+  easy_sidemenu: ^0.7.0
 ```
 
 Run `flutter packages get` in the root directory of your app.
