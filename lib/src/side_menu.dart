@@ -19,11 +19,6 @@ class SideMenu extends StatefulWidget {
   /// List of [SideMenuItem] or [SideMenuExpansionItem] on [SideMenu]
   final List<SideMenuItemType> items;
 
-  /// List of [SideMenuItemWithGlobal] or [SideMenuExpansionItemWithGlobal] on [SideMenu]
-  final SideMenuItemList sidemenuitems = SideMenuItemList();
-
-  final Global global = Global();
-
   /// Title widget will shows on top of all items,
   /// it can be a logo or a Title text
   final Widget? title;
@@ -56,7 +51,7 @@ class SideMenu extends StatefulWidget {
   ///
   /// Sidemenu is a menu that is usually located
   /// on the left or right of the page and can used for navigation
-  SideMenu({
+  const SideMenu({
     Key? key,
     required this.items,
     required this.controller,
@@ -68,18 +63,63 @@ class SideMenu extends StatefulWidget {
     this.displayModeToggleDuration,
     this.alwaysShowFooter = false,
     this.collapseWidth = 600,
-  }) : super(key: key) {
-    global.style = style ?? SideMenuStyle();
-    global.controller = controller;
-    int sideMenuExpansionItemCount = 0, sideMenuExpansionItemIndex = -1;
-    for (int index = 0; index < items.length; index++) {
-      if (items[index] is SideMenuExpansionItem) {
-        sideMenuExpansionItemCount = sideMenuExpansionItemCount + 1;
+  }) : super(key: key);
+
+  @override
+  State<SideMenu> createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
+  double _currentWidth = 0;
+  late bool showToggle;
+  late bool alwaysShowFooter;
+  late int collapseWidth;
+  bool animationInProgress = false;
+  SideMenuHamburgerMode _hamburgerMode = SideMenuHamburgerMode.open;
+
+  late final Global global;
+  final SideMenuItemList sidemenuitems = SideMenuItemList();
+
+  @override
+  void initState() {
+    super.initState();
+    global = Global();
+    _initializeSideMenu();
+
+    showToggle = widget.showToggle ?? false;
+    alwaysShowFooter = widget.alwaysShowFooter ?? false;
+    collapseWidth = widget.collapseWidth ?? 600;
+    global.displayModeState.addListener(_displayModeChangeListener);
+  }
+
+  void _initializeSideMenu() {
+    global.style = widget.style ?? SideMenuStyle();
+    global.controller = widget.controller;
+
+    int sideMenuExpansionItemCount = 0;
+    for (int index = 0; index < widget.items.length; index++) {
+      if (widget.items[index] is SideMenuExpansionItem) {
+        sideMenuExpansionItemCount++;
       }
     }
-    global.expansionStateList =
-        List<bool>.filled(sideMenuExpansionItemCount, false);
-    sidemenuitems.items = items.map((data) {
+
+    if (global.expansionStateList.length != sideMenuExpansionItemCount) {
+      global.expansionStateList =
+          List<bool>.filled(sideMenuExpansionItemCount, false);
+
+      int expansionItemIndex = -1;
+      for (final item in widget.items) {
+        if (item is SideMenuExpansionItem) {
+          expansionItemIndex++;
+          if (item.initialExpanded == true) {
+            global.expansionStateList[expansionItemIndex] = true;
+          }
+        }
+      }
+    }
+
+    int sideMenuExpansionItemIndex = -1;
+    sidemenuitems.items = widget.items.map((data) {
       if (data is SideMenuItem) {
         return SideMenuItemWithGlobal(
           global: global,
@@ -96,10 +136,6 @@ class SideMenu extends StatefulWidget {
       } else {
         data = data as SideMenuExpansionItem;
         sideMenuExpansionItemIndex = sideMenuExpansionItemIndex + 1;
-        if (data.initialExpanded != null) {
-          global.expansionStateList[sideMenuExpansionItemIndex] =
-              data.initialExpanded!;
-        }
         return SideMenuExpansionItemWithGlobal(
           global: global,
           title: data.title,
@@ -127,34 +163,12 @@ class SideMenu extends StatefulWidget {
     global.items = sidemenuitems.items;
   }
 
-  @override
-  State<SideMenu> createState() => _SideMenuState();
-}
-
-class _SideMenuState extends State<SideMenu> {
-  double _currentWidth = 0;
-  late bool showToggle;
-  late bool alwaysShowFooter;
-  late int collapseWidth;
-  bool animationInProgress = false;
-  SideMenuHamburgerMode _hamburgerMode = SideMenuHamburgerMode.open;
-
-  @override
-  void initState() {
-    super.initState();
-    showToggle = widget.showToggle ?? false;
-    alwaysShowFooter = widget.alwaysShowFooter ?? false;
-    collapseWidth = widget.collapseWidth ?? 600;
-    widget.global.displayModeState.addListener(_displayModeChangeListener);
-  }
-
   void _displayModeChangeListener() {
     _updateWidth();
   }
 
   void _updateWidth() {
-    final newWidth =
-        _calculateWidth(widget.global.displayModeState.value, context);
+    final newWidth = _calculateWidth(global.displayModeState.value, context);
     if (mounted && newWidth != _currentWidth) {
       setState(() {
         _currentWidth = newWidth;
@@ -171,8 +185,13 @@ class _SideMenuState extends State<SideMenu> {
     showToggle = widget.showToggle ?? false;
     alwaysShowFooter = widget.alwaysShowFooter ?? false;
     collapseWidth = widget.collapseWidth ?? 600;
+
+    if (widget.controller != oldWidget.controller ||
+        widget.items != oldWidget.items) {
+      _initializeSideMenu();
+    }
     if (widget.style != oldWidget.style) {
-      widget.global.style = widget.style ?? SideMenuStyle();
+      global.style = widget.style ?? SideMenuStyle();
     }
   }
 
@@ -180,8 +199,7 @@ class _SideMenuState extends State<SideMenu> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Use displayModeState.value as the primary source of truth for current display mode
-    _currentWidth =
-        _calculateWidth(widget.global.displayModeState.value, context);
+    _currentWidth = _calculateWidth(global.displayModeState.value, context);
   }
 
   // Toggles the state of the hamburger between open and close. No parameters. No return value.
@@ -200,14 +218,14 @@ class _SideMenuState extends State<SideMenu> {
   // Notifies the parent widget if the onDisplayModeChanged callback is provided.
   void _notifyParent() {
     if (widget.onDisplayModeChanged != null) {
-      widget.onDisplayModeChanged!(widget.global.displayModeState.value);
+      widget.onDisplayModeChanged!(global.displayModeState.value);
     }
   }
 
   // Calculate and return the appropriate width size based on the SideMenuDisplayMode and BuildContext.
   /// Set [SideMenu] width according to displayMode and notify parent widget.
   double _calculateWidth(SideMenuDisplayMode mode, BuildContext context) {
-    double width = widget.global.style.openSideMenuWidth ?? 300;
+    double width = global.style.openSideMenuWidth ?? 300;
 
     if (mode == SideMenuDisplayMode.auto) {
       width = _calculateAutoWidth(context);
@@ -229,25 +247,27 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   double _calculateOpenWidth() {
-    widget.global.displayModeState.change(SideMenuDisplayMode.open);
+    global.displayModeState.change(SideMenuDisplayMode.open);
     _notifyParent();
     Future.delayed(_toggleDuration(), () {
-      widget.global.showTrailing = true;
+      if (mounted) {
+        global.showTrailing = true;
+      }
     });
-    return widget.global.style.openSideMenuWidth ?? 300;
+    return global.style.openSideMenuWidth ?? 300;
   }
 
   double _calculateCompactWidth() {
-    widget.global.displayModeState.change(SideMenuDisplayMode.compact);
+    global.displayModeState.change(SideMenuDisplayMode.compact);
     _notifyParent();
-    widget.global.showTrailing = false;
-    return widget.global.style.compactSideMenuWidth ?? 50;
+    global.showTrailing = false;
+    return global.style.compactSideMenuWidth ?? 50;
   }
 
   Decoration _decoration(SideMenuStyle? menuStyle) {
     if (menuStyle == null || menuStyle.decoration == null) {
       return BoxDecoration(
-        color: widget.global.style.backgroundColor,
+        color: global.style.backgroundColor,
       );
     } else {
       if (menuStyle.backgroundColor != null) {
@@ -272,12 +292,8 @@ class _SideMenuState extends State<SideMenu> {
   /// width of the side menu based on the display mode and the context, and returns
   /// the side menu widget.
   Widget build(BuildContext context) {
-    // Set the variables in the SideMenuGlobalState
-    widget.global.controller = widget.controller;
-    widget.global.items = widget.sidemenuitems.items;
-
     return ChangeNotifierProvider.value(
-      value: widget.global,
+      value: global,
       child: Builder(builder: (context) {
         // Create the hamburger icon button
         final IconButton hamburgerIcon = IconButton(
@@ -286,12 +302,12 @@ class _SideMenuState extends State<SideMenu> {
         );
 
         // Return the side menu widget
-        return ((widget.global.style.showHamburger) &&
+        return ((global.style.showHamburger) &&
                 (_hamburgerMode == SideMenuHamburgerMode.close))
             ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
             : AnimatedContainer(
                 duration: _toggleDuration(),
-                width: this._currentWidth, // Use the state variable
+                width: this._currentWidth,
                 height: MediaQuery.sizeOf(context).height,
                 decoration: _decoration(widget.style),
                 child: Stack(
@@ -300,32 +316,31 @@ class _SideMenuState extends State<SideMenu> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (widget.global.style.showHamburger) hamburgerIcon,
-                          if (widget.global.style.displayMode ==
+                          if (global.style.showHamburger) hamburgerIcon,
+                          if (global.style.displayMode ==
                                   SideMenuDisplayMode.compact &&
                               showToggle)
                             const SizedBox(
                               height: 42,
                             ),
                           if (widget.title != null) widget.title!,
-                          ...widget.sidemenuitems.items,
+                          ...sidemenuitems.items,
                         ],
                       ),
                     ),
                     if ((widget.footer != null &&
-                            widget.global.displayModeState.value !=
+                            global.displayModeState.value !=
                                 SideMenuDisplayMode.compact) ||
                         (widget.footer != null && alwaysShowFooter))
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: widget.footer!,
                       ),
-                    if (widget.global.style.displayMode !=
-                            SideMenuDisplayMode.auto &&
+                    if (global.style.displayMode != SideMenuDisplayMode.auto &&
                         showToggle)
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: widget.global.displayModeState.value ==
+                          horizontal: global.displayModeState.value ==
                                   SideMenuDisplayMode.open
                               ? 0
                               : 4,
@@ -335,7 +350,7 @@ class _SideMenuState extends State<SideMenu> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SideMenuToggle(
-                              global: widget.global,
+                              global: global,
                               onTap: () {
                                 if (context
                                         .findAncestorStateOfType<
@@ -344,17 +359,16 @@ class _SideMenuState extends State<SideMenu> {
                                     false) {
                                   return;
                                 }
-                                if (widget.global.displayModeState.value ==
+                                if (global.displayModeState.value ==
                                     SideMenuDisplayMode.compact) {
                                   setState(() {
-                                    widget.global.style.displayMode =
+                                    global.style.displayMode =
                                         SideMenuDisplayMode.open;
                                   });
-                                } else if (widget
-                                        .global.displayModeState.value ==
+                                } else if (global.displayModeState.value ==
                                     SideMenuDisplayMode.open) {
                                   setState(() {
-                                    widget.global.style.displayMode =
+                                    global.style.displayMode =
                                         SideMenuDisplayMode.compact;
                                   });
                                 }
@@ -372,11 +386,8 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   void dispose() {
-    widget.global.displayModeState.removeListener(_displayModeChangeListener);
-    Future.delayed(Duration.zero, () {
-      widget.global.displayModeState
-          .change(widget.global.displayModeState.value);
-    });
+    global.displayModeState.removeListener(_displayModeChangeListener);
+    global.dispose();
     super.dispose();
   }
 }
