@@ -176,6 +176,9 @@ class _SideMenuState extends State<SideMenu> {
     }
   }
 
+  // Updates the widget with the new `SideMenu` and sets default values for `showToggle`, `alwaysShowFooter`, and `collapseWidth`.
+  // If `style` is not provided, a new `SideMenuStyle` is assigned to the `global.style`.
+  // Overrides the superclass method to handle widget updates.
   @override
   void didUpdateWidget(covariant SideMenu oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -195,9 +198,11 @@ class _SideMenuState extends State<SideMenu> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Use displayModeState.value as the primary source of truth for current display mode
     _currentWidth = _calculateWidth(global.displayModeState.value, context);
   }
 
+  // Toggles the state of the hamburger between open and close. No parameters. No return value.
   void _toggleHamburgerState() {
     if (_hamburgerMode == SideMenuHamburgerMode.close) {
       setState(() {
@@ -210,12 +215,15 @@ class _SideMenuState extends State<SideMenu> {
     }
   }
 
+  // Notifies the parent widget if the onDisplayModeChanged callback is provided.
   void _notifyParent() {
     if (widget.onDisplayModeChanged != null) {
       widget.onDisplayModeChanged!(global.displayModeState.value);
     }
   }
 
+  // Calculate and return the appropriate width size based on the SideMenuDisplayMode and BuildContext.
+  /// Set [SideMenu] width according to displayMode and notify parent widget.
   double _calculateWidth(SideMenuDisplayMode mode, BuildContext context) {
     double width = global.style.openSideMenuWidth ?? 300;
 
@@ -276,15 +284,24 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   @override
+
+  /// Builds the side menu widget.
+  ///
+  /// This method builds the side menu widget based on the provided parameters.
+  /// It sets the necessary variables in the [SideMenuGlobalState], calculates the
+  /// width of the side menu based on the display mode and the context, and returns
+  /// the side menu widget.
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: global,
       child: Builder(builder: (context) {
+        // Create the hamburger icon button
         final IconButton hamburgerIcon = IconButton(
           icon: const Icon(IconData(0xe3dc, fontFamily: 'MaterialIcons')),
           onPressed: _toggleHamburgerState,
         );
 
+        // Return the side menu widget
         return ((global.style.showHamburger) &&
                 (_hamburgerMode == SideMenuHamburgerMode.close))
             ? Align(alignment: Alignment.topLeft, child: hamburgerIcon)
