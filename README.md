@@ -38,7 +38,7 @@ You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.7.0
+  easy_sidemenu: ^0.7.1
 ```
 
 Run `flutter packages get` in the root directory of your app.
@@ -53,10 +53,10 @@ Now you can use `SideMenu` as a widget in your code.
 
 ##### 3. use SideMenu
 
-You must first define a list of items to display on `SideMenu`:
+You must first define a list of items `SideMenuItemType` to display on `SideMenu`:
 
 ```dart
-List items = [
+List<SideMenuItemType> items = [
   SideMenuItem(
     title: 'Dashboard',
     onTap: (index, _) {

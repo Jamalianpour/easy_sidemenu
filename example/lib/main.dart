@@ -61,6 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
               selectedColor: Colors.lightBlue,
               selectedTitleTextStyle: const TextStyle(color: Colors.white),
               selectedIconColor: Colors.white,
+              selectedTitleTextStyleExpandable:
+                  const TextStyle(color: Colors.lightBlue),
               // decoration: BoxDecoration(
               //   borderRadius: BorderRadius.all(Radius.circular(10)),
               // ),
@@ -99,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            items: [
+            items: <SideMenuItemType>[
               SideMenuItem(
                 title: 'Dashboard',
                 onTap: (index, _) {

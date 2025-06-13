@@ -1,3 +1,8 @@
+## [0.7.1]
+* Fix: Preserve menu state on hot reload [#89](https://github.com/Jamalianpour/easy_sidemenu/pull/89)
+* Fix: export side_menu_item_type [#90](https://github.com/Jamalianpour/easy_sidemenu/pull/90)
+* Fix some typo in example
+
 ## [0.7.0]
 * Refactored the `Global` class to extend `ChangeNotifier`.
 * Optimized Width Calculation
