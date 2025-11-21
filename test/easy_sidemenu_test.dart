@@ -11,6 +11,7 @@ final controller = SideMenuController();
 
 const compactWidth = 64.0;
 
+//everything here is regression tests
 void main() {
   /// This is a regression test for https://github.com/Jamalianpour/easy_sidemenu/issues/46
   testWidgets(
